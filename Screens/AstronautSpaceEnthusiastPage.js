@@ -2,6 +2,7 @@ import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import firebase from 'firebase'
 import {Ionicons} from '@expo/vector-icons'
+import JoinProject from '../Screens/JoinProject'
 export default class AstronautSpaceEnthusiastPage extends React.Component{
 
     render() {
@@ -13,8 +14,9 @@ export default class AstronautSpaceEnthusiastPage extends React.Component{
                     <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreateProject")} style = {{backgroundColor: "lightgrey", left: 130,width: 36, height: 36, borderRadius: 18, alignItems: 'center', alignContent: 'center'}}>
                     <Ionicons name = "ios-add" style = {{alignSelf: 'center',}} size = {32} color = "black"></Ionicons>
                 </TouchableOpacity>  
-                </View>  
                 
+                </View>  
+                <JoinProject/>
             </View>
         )
     }

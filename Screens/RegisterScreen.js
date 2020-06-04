@@ -31,7 +31,7 @@ export default class RegisterScreen extends React.Component {
     }
     
     handleSignUp = () => {
-        Fire.shared.addUser({name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio})
+        Fire.shared.addUser({name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: []})
         .then(userCredentials => {
             // return userCredentials.user.updateProfile({
             //     displayName: this.state.name

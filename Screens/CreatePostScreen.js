@@ -43,7 +43,7 @@ export default class ProfilePage extends React.Component{
     }
 
     pickImage = async () => {
-        console.log("hey")
+      
         let result = await ImagePicker.launchImageLibraryAsync({
            mediaTypes: ImagePicker.MediaTypeOptions.Images,
            allowsEditing: true,

@@ -75,7 +75,7 @@ class Fire {
             })
             .catch(error => {
                 rej(error)
-                console.log(error)
+                console.log("The error is", error)
             })
         })
     }
