@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import firebase from 'firebase'
 import {Ionicons} from '@expo/vector-icons'
 import JoinProject from '../Screens/JoinProject'
+import MyProjects from '../Screens/MyProjects'
 export default class AstronautSpaceEnthusiastPage extends React.Component{
 
     render() {
@@ -17,6 +18,7 @@ export default class AstronautSpaceEnthusiastPage extends React.Component{
                 
                 </View>  
                 <JoinProject/>
+                <MyProjects/>
             </View>
         )
     }

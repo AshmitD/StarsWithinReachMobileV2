@@ -30,7 +30,7 @@ export default class CreateNewProjectScreen extends React.Component {
     
     }
     
-    handleSignUp = () => {
+    handleSignUp = () => { 
         Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, resources: this.state.resources, endGoal: this.state.endGoal, studentsActions: this.state.studentsActions})
         .then(userCredentials => {
             // return userCredentials.user.updateProfile({

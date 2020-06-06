@@ -56,9 +56,24 @@ class Fire {
             })
             .catch(error => {
                 rej(error)
-                console.log(error)
+              //  console.log(error)
             })
         })
+    }
+
+    joinProject = projectId => {
+       
+        this.getUserData(firebase.auth().currentUser.email).then(({id, user}) => {
+            const arr = user["projects"] 
+           
+            arr.push(projectId)
+            const userDoc = this.firestore.collection("users").doc(id)
+          
+             userDoc.update({
+                projects: arr
+              });
+        }) 
+
     }
     addProject = async({title, descrip, resources, endGoal, studentsActiosn}) => {
         return new Promise((res, rej) => {
@@ -75,7 +90,7 @@ class Fire {
             })
             .catch(error => {
                 rej(error)
-                console.log("The error is", error)
+               // console.log("The error is", error)
             })
         })
     }

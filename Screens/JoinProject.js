@@ -33,20 +33,13 @@ export default class JoinProject extends React.Component {
   
     }
     handleJoin = projectId => {
-        console.log("This is the uid", projectId)
-        Fire.shared.getUserData(firebase.auth().currentUser.email).then(({id, user}) => {
-            const arr = user["projects"] 
-            arr.push(projectId)
-            
-             Fire.shared.database().ref('users/' + id).set({
-                projects: arr
-              });
-        }) 
+       
+      Fire.shared.joinProject(projectId)
 
     }
     renderProject = projectId => {
        
-         const project = this.state.projects[projectId]
+        const project = this.state.projects[projectId]
        // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
         return (
@@ -66,9 +59,9 @@ export default class JoinProject extends React.Component {
                      {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
                  
                   <TouchableOpacity onPress ={() => this.handleJoin(projectId)}><Text>Join this project</Text></TouchableOpacity>
-                    
+                   
                 </View>
-            
+               
                
             </View>
         )
