@@ -10,11 +10,10 @@ export default class AstronautSpaceEnthusiastPage extends React.Component{
         this.state = {
             projects: {}
         }
-        // this.fillProjects()
+         this.fillProjects()
     }
 
     render() {
-        console.log("I am on  enthusiast and state and props are " + JSON.stringify(this.state) + JSON.stringify(this.props))
         return (
             <View style = {styles.container}>
                 <View style = {styles.header}>
@@ -24,8 +23,9 @@ export default class AstronautSpaceEnthusiastPage extends React.Component{
                 </TouchableOpacity>  
                 
                 </View>  
-                <JoinProject projects = {this.state.projects}/>
-                <MyProjects projects = {this.state.projects}/>
+
+                <JoinProject projects = {this.state.projects} navigation = {this.props.navigation}/>
+                <MyProjects projects = {this.state.projects} navigation = {this.props.navigation}/>
             </View>
         )
     }

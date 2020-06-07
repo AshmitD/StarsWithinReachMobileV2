@@ -8,61 +8,55 @@ import Fire from '../Fire'
 export default class MyProjects extends React.Component {
    
      
-   constructor(projects) {
+   constructor() {
        super()
-        this.fillMyProjects()
-       this.state = {
-            projects: projects,
+      
+       this.state = {  
             projectIDs: []
         }
+        this.fillMyProjects()
    }
 
    
-   fillMyProjects = () => {
-    Fire.shared.getUserData(firebase.auth().currentUser.email).then(({id, user}) => {
-        const temp = user["projects"]
-        this.setState({projects: temp})
-       
+    fillMyProjects = () => {
+    Fire.shared.getUserData(firebase.auth().currentUser.email).then(({user}) => {
+        this.setState({projectIDs: user["projects"]})  
     }) 
     }  
 
     renderProject = projectID => {
-        
-        var docRef = this.state.projects[projectID];
-      
-        docRef.get().then(function(doc) {
-          this.setState({currDoc: doc.data()})
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
-     
-       
+        console.log("These are all the projects", this.props.projects)
+        const project = this.props.projects[projectID]
+        // console.log("this is projects", project)
        // const ref = firebase.storage().ref(post.image);
-       //const url =  ref.getDownloadURL();
-       return (
-       
-        <View style = {styles.feedItem}>
-            {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
-            <View style = {{flex: 1}}>
-                
-                <View style = {{flexDirection: 'row', justifyContent: "space-between",alignItems: 'center'}}>
-                    <View>     
-                        <Text style = {styles.name}>{project.title}</Text>
-                    </View>
-                   
-                </View><Text style = {styles.descrip}>{project.descrip}</Text>
-                 {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>   */}
-             
-           
-       </View>
+        //const url =  ref.getDownloadURL();
+         return project && (
         
-           
-        </View>
+            <View style = {styles.feedItem}>
+                {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
+                <View style = {{flex: 1}}>
+                    <View style = {{flexDirection: 'row', justifyContent: "space-between",alignItems: 'center'}}>
+                        <View>
+                            
+                            <Text style = {styles.name}>{project["title"]}</Text>
+  
+                        </View>
+                       
+                    </View>
+                    <Text style = {styles.descrip}>{project.descrip}</Text>
+                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+                 
+               
+                   
+                </View>
+               
+               
+            </View>
+         
     )
     }
     render() {
         LayoutAnimation.easeInEaseOut()
-
         return (
            
             <View style = {styles.container}>
@@ -70,14 +64,13 @@ export default class MyProjects extends React.Component {
                     <Text style = {styles.headerTitle}>My Projects</Text>
                     
                 </View>
-          
-                <FlatList
+                { <FlatList
                     style={styles.feed} 
                     data={this.state.projectIDs} 
                     renderItem={({ item }) => this.renderProject(item)} 
-                    keyExtractor = {item => item.id}    
+                    keyExtractor = {item => item}    
                     showsVerticalScrollIndicator = {false}  
-                /> 
+                /> }
                {/* <View style = {{width: 15}}>
                 <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
                    <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>

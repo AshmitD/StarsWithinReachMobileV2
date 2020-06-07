@@ -22,17 +22,19 @@ export default class JoinProject extends React.Component {
     //         .then(onReceive.bind(this));
   
     // }
-    handleJoin = projectId => {
+    handleJoin = projectID => {
        
-      Fire.shared.joinProject(projectId)
-
+      Fire.shared.joinProject(projectID)
+    
+      
     }
     renderProject = projectID => {
-       console.log("here?")
+        
         const project = this.props.projects[projectID]
+
        // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
-        return (
+         return (
         
             <View style = {styles.feedItem}>
                 {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
@@ -40,7 +42,7 @@ export default class JoinProject extends React.Component {
                     <View style = {{flexDirection: 'row', justifyContent: "space-between",alignItems: 'center'}}>
                         <View>
                             
-                            <Text style = {styles.name}>{project.title}</Text>
+                            <Text style = {styles.name}>{project["title"]}</Text>
   
                         </View>
                        
@@ -48,7 +50,7 @@ export default class JoinProject extends React.Component {
                     <Text style = {styles.descrip}>{project.descrip}</Text>
                      {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
                  
-                  <TouchableOpacity onPress ={() => this.handleJoin(projectId)}><Text>Join this project</Text></TouchableOpacity>
+                  <TouchableOpacity onPress ={() => this.handleJoin(projectID)}><Text>Join this project</Text></TouchableOpacity>
                    
                 </View>
                
@@ -58,22 +60,22 @@ export default class JoinProject extends React.Component {
     }
     render() {
         LayoutAnimation.easeInEaseOut()
-       
         return (
-           
+         
             <View style = {styles.container}>
                 <View style = {styles.header}>
                     <Text style = {styles.headerTitle}>Join a project</Text>
-                    
+                   
                 </View>
-        
                 <FlatList
+                
                     style={styles.feed} 
                     data={Object.keys(this.props.projects)} 
-                    renderItem={( item ) => this.renderProject(item)} 
-                    keyExtractor = {item => item.id}    
+                    renderItem={( elem ) => this.renderProject(elem.item)} 
+                    keyExtractor = {elem => elem.item}    
                     showsVerticalScrollIndicator = {false}  
                 /> 
+ 
                {/* <View style = {{width: 15}}>
                 <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
                    <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>

@@ -23,11 +23,11 @@ constructor() {
         
        
         if (this.state.userWho == "Student") {
-            return (<StudentPage/>)
+            return (<StudentPage navigation={this.props.navigation}/>)
           }
         
           return (
-          <AstronautSpaceEnthusiastPage />
+          <AstronautSpaceEnthusiastPage navigation={this.props.navigation}/>
           );
     }
 }
