@@ -8,36 +8,30 @@ import Fire from '../Fire'
 export default class MyProjects extends React.Component {
    
      
-   constructor() {
+   constructor(projects) {
        super()
         this.fillMyProjects()
        this.state = {
-        projects: [],
+            projects: projects,
+            projectIDs: []
         }
    }
 
    
    fillMyProjects = () => {
-  
     Fire.shared.getUserData(firebase.auth().currentUser.email).then(({id, user}) => {
         const temp = user["projects"]
         this.setState({projects: temp})
        
     }) 
+    }  
 
-
- 
- 
-    
-}
-
-    renderProject = projectId => {
+    renderProject = projectID => {
         
-        var docRef = Fire.shared.firestore.collection("projects").doc(projectId);
-        var tempDoc = null
+        var docRef = this.state.projects[projectID];
+      
         docRef.get().then(function(doc) {
-           tempDoc = doc
-           console.log("this is the temp", tempDoc)
+          this.setState({currDoc: doc.data()})
         }).catch(function(error) {
             console.log("Error getting document:", error);
         });
@@ -46,31 +40,29 @@ export default class MyProjects extends React.Component {
        // const ref = firebase.storage().ref(post.image);
        //const url =  ref.getDownloadURL();
        return (
-        
+       
         <View style = {styles.feedItem}>
             {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
             <View style = {{flex: 1}}>
+                
                 <View style = {{flexDirection: 'row', justifyContent: "space-between",alignItems: 'center'}}>
-                    <View>
-                        
-                        <Text style = {styles.name}>{tempDoc["descrip"]}</Text>
-
+                    <View>     
+                        <Text style = {styles.name}>{project.title}</Text>
                     </View>
                    
-                </View>
-                <Text style = {styles.descrip}>{tempDoc.descrip}</Text>
-                 {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+                </View><Text style = {styles.descrip}>{project.descrip}</Text>
+                 {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>   */}
              
            
-            </View>
-           
+       </View>
+        
            
         </View>
     )
     }
     render() {
         LayoutAnimation.easeInEaseOut()
-       
+
         return (
            
             <View style = {styles.container}>
@@ -81,7 +73,7 @@ export default class MyProjects extends React.Component {
           
                 <FlatList
                     style={styles.feed} 
-                    data={this.state.projects} 
+                    data={this.state.projectIDs} 
                     renderItem={({ item }) => this.renderProject(item)} 
                     keyExtractor = {item => item.id}    
                     showsVerticalScrollIndicator = {false}  

@@ -6,40 +6,30 @@ import moment from 'moment'
 import db from "firebase"
 import Fire from '../Fire'
 export default class JoinProject extends React.Component {
-   
-     
-   constructor() {
-       super()
-        this.fillProjects()
-       this.state = {
-        projects: {},
-        }
-   }
 
-    fillProjects = () => {
-        const projects = {};
-        const db = firebase.firestore();
-   //    .log(firebase.database().ref('posts').orderByValue());
-        
-        const onReceive = (querySnapshot) => {
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                projects[doc.id] = doc.data();
-            });
-            this.setState({projects: projects})
-        }
-        db.collection("projects").get()
-            .then(onReceive.bind(this));
+    // fillProjects = () => {
+    //     const projects = {};
+    //     const db = firebase.firestore();
+
+    //     const onReceive = (querySnapshot) => {
+    //         querySnapshot.forEach(function(doc) {
+    //             // doc.data() is never undefined for query doc snapshots
+    //             projects[doc.id] = doc.data();
+    //         });
+    //         this.setState({projects: projects})
+    //     }
+    //     db.collection("projects").get()
+    //         .then(onReceive.bind(this));
   
-    }
+    // }
     handleJoin = projectId => {
        
       Fire.shared.joinProject(projectId)
 
     }
-    renderProject = projectId => {
-       
-        const project = this.state.projects[projectId]
+    renderProject = projectID => {
+       console.log("here?")
+        const project = this.props.projects[projectID]
        // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
         return (
@@ -76,11 +66,11 @@ export default class JoinProject extends React.Component {
                     <Text style = {styles.headerTitle}>Join a project</Text>
                     
                 </View>
-          
+        
                 <FlatList
                     style={styles.feed} 
-                    data={Object.keys(this.state.projects)} 
-                    renderItem={({ item }) => this.renderProject(item)} 
+                    data={Object.keys(this.props.projects)} 
+                    renderItem={( item ) => this.renderProject(item)} 
                     keyExtractor = {item => item.id}    
                     showsVerticalScrollIndicator = {false}  
                 /> 

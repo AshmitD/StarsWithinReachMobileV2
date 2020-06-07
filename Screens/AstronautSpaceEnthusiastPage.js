@@ -5,9 +5,16 @@ import {Ionicons} from '@expo/vector-icons'
 import JoinProject from '../Screens/JoinProject'
 import MyProjects from '../Screens/MyProjects'
 export default class AstronautSpaceEnthusiastPage extends React.Component{
+    constructor() {
+        super()
+        this.state = {
+            projects: {}
+        }
+        // this.fillProjects()
+    }
 
     render() {
- 
+        console.log("I am on  enthusiast and state and props are " + JSON.stringify(this.state) + JSON.stringify(this.props))
         return (
             <View style = {styles.container}>
                 <View style = {styles.header}>
@@ -17,12 +24,30 @@ export default class AstronautSpaceEnthusiastPage extends React.Component{
                 </TouchableOpacity>  
                 
                 </View>  
-                <JoinProject/>
-                <MyProjects/>
+                <JoinProject projects = {this.state.projects}/>
+                <MyProjects projects = {this.state.projects}/>
             </View>
         )
     }
+
+    fillProjects = () => {
+        const projects = {};
+        const db = firebase.firestore();
+                
+        const onReceive = (querySnapshot) => {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                projects[doc.id] = doc.data();
+            });
+            this.setState({projects: projects})
+            console.log("state has been set with projects of length " + Object.keys(projects).length)
+        }
+        db.collection("projects").get()
+            .then(onReceive.bind(this));
+    }
 }
+
+
 
 const styles = StyleSheet.create({
     container: {

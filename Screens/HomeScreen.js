@@ -73,6 +73,7 @@ export default class HomeScreen extends React.Component {
         )
     }
     render() {
+        console.log("home page")
         LayoutAnimation.easeInEaseOut()
         
         return (
