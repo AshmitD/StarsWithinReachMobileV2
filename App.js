@@ -14,6 +14,7 @@ import ProjectsScreen from './Screens/Projects'
 import GroupsScreen from './Screens/Groups'
 import ProfilePage from './Screens/ProfilePage'
 import firebaseKeys from './Config'
+import OneProjectScreen from './Screens/OneProjectScreen'
 import CreateNewProjectScreen from './Screens/CreateNewProjectScreen'
 var firebaseConfig = firebaseKeys;
 // Initialize Firebase
@@ -71,15 +72,16 @@ const AppTabNavigator = createBottomTabNavigator(
         name = "ios-person" 
         size = {24} 
         color = {tintColor}/> 
-      }
+      } 
     }},
     {
       tabBarOptions: {
         activeTintColor: "#F76C6C",
         inactiveTintColor: "#B8BBC4",
-        showLabel: false
-      }
-    }
+        showLabel: false,
+        lazy: false,
+      } 
+    } 
   );
 const AuthStack = createStackNavigator({
   Login: {
@@ -102,6 +104,12 @@ const OtherStack = createSwitchNavigator({
   },
   CreateProject: {
     screen: CreateNewProjectScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  OneProject: {
+    screen: OneProjectScreen,
     navigationOptions: {
       header: () => false
     }

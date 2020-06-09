@@ -21,11 +21,11 @@ export default class AstronautSpaceEnthusiastPage extends React.Component{
                     <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreateProject")} style = {{backgroundColor: "lightgrey", left: 130,width: 36, height: 36, borderRadius: 18, alignItems: 'center', alignContent: 'center'}}>
                     <Ionicons name = "ios-add" style = {{alignSelf: 'center',}} size = {32} color = "black"></Ionicons>
                 </TouchableOpacity>  
-                
+                 
                 </View>  
-
-                <JoinProject projects = {this.state.projects} navigation = {this.props.navigation}/>
                 <MyProjects projects = {this.state.projects} navigation = {this.props.navigation}/>
+                <JoinProject projects = {this.state.projects} navigation = {this.props.navigation}/>
+               
             </View>
         )
     }

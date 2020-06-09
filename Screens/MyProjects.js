@@ -12,7 +12,8 @@ export default class MyProjects extends React.Component {
        super()
       
        this.state = {  
-            projectIDs: []
+            projectIDs: [],
+         
         }
         this.fillMyProjects()
    }
@@ -35,19 +36,22 @@ export default class MyProjects extends React.Component {
             <View style = {styles.feedItem}>
                 {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
                 <View style = {{flex: 1}}>
-                    <View style = {{flexDirection: 'row', justifyContent: "space-between",alignItems: 'center'}}>
-                        <View>
+                    <View style = {{flexDirection: 'row', justifyContent: "space-between", alignItems: 'center'}}>
+                        <View style = {{flexDiretion: 'row'}}>
                             
                             <Text style = {styles.name}>{project["title"]}</Text>
-  
-                        </View>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('OneProject', {
+                                otherParam: projectID,
+                                })}>
+                         <Ionicons name = "ios-arrow-dropright" size = {24} color = {"black"}/>
+                         </TouchableOpacity>
+                        </View> 
                        
                     </View>
                     <Text style = {styles.descrip}>{project.descrip}</Text>
                      {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
                  
-               
-                   
+                 
                 </View>
                
                
