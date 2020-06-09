@@ -14,6 +14,7 @@ import ProjectsScreen from './Screens/Projects'
 import GroupsScreen from './Screens/Groups'
 import ProfilePage from './Screens/ProfilePage'
 import firebaseKeys from './Config'
+import UploadDesignScreen from './Screens/UploadDesign'
 import OneProjectScreen from './Screens/OneProjectScreen'
 import CreateNewProjectScreen from './Screens/CreateNewProjectScreen'
 var firebaseConfig = firebaseKeys;
@@ -110,6 +111,12 @@ const OtherStack = createSwitchNavigator({
   },
   OneProject: {
     screen: OneProjectScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  UploadDesign: {
+    screen: UploadDesignScreen,
     navigationOptions: {
       header: () => false
     }

@@ -6,121 +6,151 @@ class Fire {
         firebase.initializeApp(FirebaseKeys)
     }
 
-    addPost = async({text, localUri}) => {
+    addPost = async ({ text, localUri }) => {
         const remoteUri = await this.uploadPhotoAsync(localUri)
-      
-        return new Promise((res,rej) => {
-          
+        const name = ""
+        this.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
+            name = user["name"]
+        })
+
+        return new Promise((res, rej) => {
+
             this.firestore.collection("posts").add({
                 text,
                 uid: this.uid,
                 timestamp: this.timestamp,
                 image: remoteUri
             })
-            .then(ref => {
-                res(ref)
-            })
-            .catch(error => {
-                rej(error)
+                .then(ref => {
+                    res(ref)
+                })
+                .catch(error => {
+                    rej(error)
+                })
+        })
+    }
+    addDesign = async ({ text, localUri, projectID }) => {
+        const remoteUri = await this.uploadPhotoAsync(localUri)
+        const name = ""
+
+        return new Promise((res, rej) => {
+            this.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
+                name = user["name"]
+                console.log("this is user", user)
+                this.firestore.collection("projects").doc(projectID).collection("projectPosts").add({
+                    imageLink: remoteUri,
+                    name: name,
+                    text: text,
+                    timestamp: this.timestamp,
+                    uid: this.uid,
+
+                })
+                     .then(ref => {
+                        res(ref)
+                    })
+                    .catch(error => {
+                        console.log("this is the error", error)
+                        rej(error)
+                    })
             })
         })
     }
-    getUserData = async(email) => {
+    getUserData = async (email) => {
         return new Promise((res, rej) => {
             this.firestore.collection("users").where("email", "==", email)
-            .get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                   
-                    res({id: doc.id, user: doc.data()});
+                .get()
+                .then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        // doc.data() is never undefined for query doc snapshots
+
+                        res({ id: doc.id, user: doc.data() });
+                    });
+                })
+                .catch(function (error) {
+                    rej("Error getting documents: ", error);
                 });
-            })
-            .catch(function(error) {
-                rej("Error getting documents: ", error);
-            });        
         })
     }
-    addUser = async({name, email, who, shortBio}) => {
+    addUser = async ({ name, email, who, shortBio }) => {
         return new Promise((res, rej) => {
-        
+
             this.firestore.collection("users").add({
                 name: name,
-                email: email, 
+                email: email,
                 who: who,
                 shortBio: shortBio,
-            
-            }) 
-            .then(ref => {
-                res(ref)
+
             })
-            .catch(error => {
-                rej(error)
-              //  console.log(error)
-            })
+                .then(ref => {
+                    res(ref)
+                })
+                .catch(error => {
+                    rej(error)
+                    //  console.log(error)
+                })
         })
     }
 
     joinProject = projectId => {
-       
-        this.getUserData(firebase.auth().currentUser.email).then(({id, user}) => {
-            const arr = user["projects"] 
-           
+
+        this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
+            const arr = user["projects"]
+
             arr.push(projectId)
             const userDoc = this.firestore.collection("users").doc(id)
-          
-             userDoc.update({
+
+            userDoc.update({
                 projects: arr
-              });
-        }) 
+            });
+        })
 
     }
-    addProject = async({title, descrip, resources, endGoal, studentsActiosn}) => {
+    addProject = async ({ title, descrip, resources, endGoal, studentsActiosn }) => {
         return new Promise((res, rej) => {
-        
+
             this.firestore.collection("projects").add({
                 title: title,
-                descrip: descrip, 
+                descrip: descrip,
                 resources: resources,
                 endGoal: endGoal,
-            
-            }) 
-            .then(ref => {
-                res(ref)
+
             })
-            .catch(error => {
-                rej(error)
-               // console.log("The error is", error)
-            })
+                .then(ref => {
+                    res(ref)
+                })
+                .catch(error => {
+                    rej(error)
+                    // console.log("The error is", error)
+                })
         })
     }
     uploadPhotoAsync = async uri => {
         const path = `photos/${this.uid}/${Date.now()}.jpg`
-       
-        return new Promise(async (res,rej) => {
+
+        return new Promise(async (res, rej) => {
 
             const response = await fetch(uri).catch(error => {
-               
+
                 rej(error)
             })
-        
-            const file =await response.blob().catch(error => {
+
+            const file = await response.blob().catch(error => {
                 rej(error)
             })
-  
-          
+
+
             let upload = firebase.storage().ref(path).put(file)
-          
-            upload.on("state_changed", snapshot => {}, err => {
-               
+
+            upload.on("state_changed", snapshot => { }, err => {
+
                 rej(err)
             },
-            async() => {
-    
-                const url = await upload.snapshot.ref.getDownloadURL();
-   
-                res(url)
-            })
+                async () => {
+
+                    const url = await upload.snapshot.ref.getDownloadURL();
+
+                    res(url)
+                })
         })
     }
     get firestore() {
