@@ -90,9 +90,18 @@ export default class OneProjectScreen extends React.Component {
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
                         <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
                     </TouchableOpacity>
-{console.log("projcet title", this.state.projectContent)}
                 <Text style={styles.headerTitle1}>{this.state.projectContent.title}</Text>
                
+                </View>
+                <View style = {{backgroundColor: "#F76C6C"}}>
+                <View style = {{flexDirection: "row", borderBottomWidth: 4,borderBottomColor: "#F76C6C"}}>
+                    <Text style = {styles.communicate}>Communicate</Text>
+                    <TouchableOpacity style = {{alignSelf: 'center', left: 150,width: 36, height: 36, borderRadius: 18}}>
+                    <Ionicons name = "ios-arrow-dropright" onPress={() => this.props.navigation.navigate('Communicate', {
+                                otherParam: this.state.projectID,
+                                })} style = {{alignSelf: 'center',}} size = {32} color = "black"></Ionicons>
+                  </TouchableOpacity> 
+                </View>
                 </View>
                 <View style = {{flexDirection: 'row',padding: 5, alignSelf: 'center'}}>
                      <Text style = {styles.headerTitle2}>Group Designs</Text>
@@ -130,6 +139,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
 
+    },
+    communicate: {
+        fontWeight: "600",
+       
+        height: 50,
+        fontSize: 30,
+        textAlignVertical: "center",
+        padding: 5,
+        color: "#23405E"
     },
     header: {
         paddingTop: 64,
