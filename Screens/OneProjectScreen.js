@@ -3,18 +3,44 @@ import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import firebase from 'firebase'
+import { ScrollView } from 'react-native-gesture-handler'
 
 export default class OneProjectScreen extends React.Component {
     constructor(props) {
         super(props)
         const { params } = this.props.navigation.state;
         const currProjectID = params ? params.otherParam : null;
+        const orderedDocs = []
+       
         this.state = {
-            designsData: [],
-            projectID: currProjectID
+            orderedDocs: [],
+            projectID: currProjectID,
+            projectContent: {}
         }
-        this.fillProjects()
 
+        firebase.firestore().collection('projects').doc(currProjectID).get().then((doc) => {
+           this.setState({projectContent: doc.data()})
+        
+        })
+        firebase.firestore().collection("projects")
+        .doc(currProjectID).collection("projectPosts").orderBy("timestamp", "desc")
+        .get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                    orderedDocs.push(doc.data())
+                 
+            });
+        })
+        .then(() => {
+             this.setState({orderedDocs : orderedDocs })     
+             console.log("orederd", this.state.orderedDocs)})
+
+        // .then(() => {
+        //     this.fillProjects()
+        //  })
+      
+       
+    
     }
     renderPost = design => {
         // const ref = firebase.storage().ref(post.image);
@@ -34,12 +60,15 @@ export default class OneProjectScreen extends React.Component {
                     </View>
                     <Text style={styles.postss}>{design.text}</Text>
                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
-                    <Image
+                   { design.imageLink != " " && <Image
                         style={styles.postImage}
                         source={{
-                            uri: design.image
+                            uri: design.imageLink
                         }}
-                    />
+                    />}
+                    { design.imageLink == " " && <View style = {{height: 15}}></View>
+
+                    }
                     <View style={{ flexDirection: "row" }}>
                         <Ionicons name="ios-heart-empty" size={24} color="#73788B" style={{ marginRight: 16 }} />
                         <Ionicons name="ios-chatboxes" size={24} color="#73788B" style={{ marginRight: 16 }} />
@@ -52,51 +81,48 @@ export default class OneProjectScreen extends React.Component {
         )
     }
     render() {
-
-
-
-console.log("this is project id", this.state.projectID)
+        
         return (
 
             <View style={styles.container}>
                 <View style={styles.header}>
+
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
                         <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
                     </TouchableOpacity>
-                    <Text style={styles.headerTitle}></Text>
+{console.log("projcet title", this.state.projectContent)}
+                <Text style={styles.headerTitle1}>{this.state.projectContent.title}</Text>
+               
                 </View>
-                <FlatList
+                <View style = {{flexDirection: 'row',padding: 5, alignSelf: 'center'}}>
+                     <Text style = {styles.headerTitle2}>Group Designs</Text>
+
+                    <TouchableOpacity style = {{backgroundColor: "lightgrey", left: 100,width: 36, height: 36, borderRadius: 18}}>
+                    <Ionicons name = "ios-add" onPress={() => this.props.navigation.navigate('UploadDesign', {
+                                otherParam: this.state.projectID,
+                                })} style = {{alignSelf: 'center',}} size = {32} color = "black"></Ionicons>
+                  </TouchableOpacity> 
+                </View> 
+                              
+                    <FlatList
                     style={styles.feed}
-                    data={this.state.designsData}
+                    data={this.state.orderedDocs}
                     renderItem={({ item }) => this.renderPost(item)}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
-                />
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('UploadDesign', {
-                                otherParam: this.state.projectID,
-                                })}
-                    ><Text>Upload Posts</Text></TouchableOpacity>
+                   />
+              
+
+           
             </View>
         )
 
 
     }
-    fillProjects = () => {
-        const projects = [];
-        const db = firebase.firestore();
-      
+    
        
-     
-        db.collection("projects").doc(this.state.projectID).collection('projectPosts').get().then((querySnapshot) => {
-            querySnapshot.forEach(function (doc) {
-                // doc.data() is never undefined for query doc snapshots
-                projects.push(doc.data())
-            });
-            this.setState({ designsData: projects })
-        });
+       
 
-
-    }
 
 
 }
@@ -115,10 +141,13 @@ const styles = StyleSheet.create({
         borderBottomColor: "#EBECF4",
         flexDirection: "row"
     },
-    headerTitle: {
+    headerTitle1: {
         fontSize: 20,
-        fontWeight: "500",
-        alignSelf: 'center'
+        fontWeight: "500", 
+    },
+    headerTitle2: {
+        fontSize: 20,
+        fontWeight: "500"
     },
     back: {
         position: "absolute",
@@ -133,6 +162,12 @@ const styles = StyleSheet.create({
     },
     feed: {
         marginHorizontal: 16
+    },
+    headerTitle: {
+        fontSize: 20,
+        fontWeight: "500", 
+        alignContent: 'center',
+        padding: 5
     },
     feedItem: {
         backgroundColor: "#FFF",

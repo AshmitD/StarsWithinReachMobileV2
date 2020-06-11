@@ -1,59 +1,73 @@
 import FirebaseKeys from './Config'
 import firebase from 'firebase'
+import { Alert } from 'react-native'
 
 class Fire {
     constructor() {
         firebase.initializeApp(FirebaseKeys)
     }
 
-    addPost = async ({ text, localUri }) => {
-        const remoteUri = await this.uploadPhotoAsync(localUri)
-        const name = ""
-        this.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
-            name = user["name"]
-        })
+    addPost = async ({ text, localUri, name }) => {
+        let remoteUri;
+        if(localUri) {
+            console.log("this is url", localUri)
+            remoteUri = await this.uploadPhotoAsync(localUri)
+        }
+        else {
+            remoteUri = " "
+        }
+        console.log("This is local uri", localUri)
 
         return new Promise((res, rej) => {
 
             this.firestore.collection("posts").add({
-                text,
-                uid: this.uid,
+                name: name,
+                text: text,
                 timestamp: this.timestamp,
-                image: remoteUri
+                uid: this.uid,
+                image: remoteUri,
+
             })
                 .then(ref => {
                     res(ref)
                 })
                 .catch(error => {
+                    console.log("this is the error", error)
                     rej(error)
                 })
         })
+
     }
-    addDesign = async ({ text, localUri, projectID }) => {
-        const remoteUri = await this.uploadPhotoAsync(localUri)
-        const name = ""
+    addDesign = async ({ text, localUri, projectID, name }) => {
+        let remoteUri;
+        if(localUri) {
+            console.log("this is url", localUri)
+            remoteUri = await this.uploadPhotoAsync(localUri)
+        }
+        else {
+            remoteUri = " "
+        }
+        console.log("This is local uri", localUri)
 
         return new Promise((res, rej) => {
-            this.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
-                name = user["name"]
-                console.log("this is user", user)
-                this.firestore.collection("projects").doc(projectID).collection("projectPosts").add({
-                    imageLink: remoteUri,
-                    name: name,
-                    text: text,
-                    timestamp: this.timestamp,
-                    uid: this.uid,
 
-                })
-                     .then(ref => {
-                        res(ref)
-                    })
-                    .catch(error => {
-                        console.log("this is the error", error)
-                        rej(error)
-                    })
+            this.firestore.collection("projects").doc(projectID).collection("projectPosts").add({
+                name: name,
+                text: text,
+                timestamp: this.timestamp,
+                uid: this.uid,
+                imageLink: remoteUri,
+
             })
+                .then(ref => {
+                    res(ref)
+                })
+                .catch(error => {
+                    console.log("this is the error", error)
+                    rej(error)
+                })
         })
+
     }
     getUserData = async (email) => {
         return new Promise((res, rej) => {
@@ -88,20 +102,25 @@ class Fire {
                     rej(error)
                     //  console.log(error)
                 })
-        })
+        }) 
     }
 
     joinProject = projectId => {
-
+        console.log("This is project id",projectId)
         this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
             const arr = user["projects"]
-
-            arr.push(projectId)
-            const userDoc = this.firestore.collection("users").doc(id)
-
-            userDoc.update({
-                projects: arr
-            });
+            console.log("This is usre", arr)
+            if (arr.includes(projectId)) {
+               Alert.alert("You are already in this project.")
+            } else {
+                arr.push(projectId)
+                const userDoc = this.firestore.collection("users").doc(id)
+                userDoc.update({
+                    projects: arr
+                });
+             
+            }
+       
         })
 
     }
@@ -130,7 +149,6 @@ class Fire {
         return new Promise(async (res, rej) => {
 
             const response = await fetch(uri).catch(error => {
-
                 rej(error)
             })
 
@@ -169,3 +187,4 @@ class Fire {
 
 Fire.shared = new Fire()
 export default Fire
+ 

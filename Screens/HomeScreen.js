@@ -10,10 +10,22 @@ export default class HomeScreen extends React.Component {
      
    constructor() {
        super()
-        this.fillPost()
+       const orderedDocs = []
        this.state = {
         posts: [],
         }
+        firebase.firestore().collection("posts").orderBy("timestamp", "desc")
+        .get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                    orderedDocs.push(doc.data())
+                 
+            });
+        })
+        .then(() => {
+            this.setState({posts : orderedDocs })     
+            console.log("orederd", this.state.posts)})
+
    }
 
 
@@ -48,19 +60,23 @@ export default class HomeScreen extends React.Component {
                     <View style = {{flexDirection: 'row', justifyContent: "space-between",alignItems: 'center'}}>
                         <View>
                             
-                            <Text style = {styles.name}>Billy Bob Joe</Text>
+                            <Text style = {styles.name}>{post.name}</Text>
                             <Text style = {styles.name}>{moment(post.timestamp).fromNow()}</Text>
                         </View>
                         <Ionicons name = "ios-more" size = {24} color= "#73788B"/>
                     </View>
                     <Text style = {styles.postss}>{post.text}</Text>
-                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
-                     <Image
+                     {/* <Image source = {require('../Components/Oreo.jpg'} style = {styles.postImage} resizeMode = "cover"/>  */}
+                 { post.image != " "  && <Image
                     style={styles.postImage}
                     source={{
                         uri: post.image
                     }}
-                    />
+                    />}
+                    { post.image == " " && <View style = {{height: 15}}></View>}
+
+
+
                     <View style = {{flexDirection: "row"}}>
                         <Ionicons name = "ios-heart-empty" size = {24} color= "#73788B" style = {{marginRight: 16}}/>
                         <Ionicons name = "ios-chatboxes" size = {24} color= "#73788B" style = {{marginRight: 16}}/>
@@ -137,13 +153,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 8,
         flexDirection: 'row',
-        marginVertical: 8
-    },
-    avatar: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        marginRight: 16
+        marginVertical: 8,
+        textAlign: 'left'
     },
     name: {
         fontSize: 15,
