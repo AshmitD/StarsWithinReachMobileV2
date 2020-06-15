@@ -129,7 +129,7 @@ export default class RegisterScreen extends React.Component {
                             rowBackgroundColor={"#eee"}
                             rowHeight={40}
                             rowRadius={5}
-                            iconColor={"#00a2dd"}
+                            iconColor={"#F76C6C"}
                             iconSize={25}
 
                             selectedIconName={"ios-checkmark-circle-outline"}
@@ -140,7 +140,7 @@ export default class RegisterScreen extends React.Component {
                     </View>
 
                     <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-                        <Text style={{ color: "white" }}>Sign up</Text>
+                        <Text style={{ color: "#F8E9A1", fontSize: 15, fontWeight: "500", textTransform: "uppercase" }}>Sign up</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ alignSelf: 'center', marginTop: 32 }} onPress={() => this.props.navigation.navigate("Login")}>
@@ -163,10 +163,11 @@ const styles = StyleSheet.create({
         height: 1200
     },
     greeting: {
-        marginTop: 12,
+        marginTop: 22,
         fontSize: 18,
         fontWeight: "500",
-        textAlign: 'center'
+        textAlign: 'center',
+        color: "#24305E"
     },
     errorMessage: {
         height: 72,
@@ -179,13 +180,13 @@ const styles = StyleSheet.create({
         marginHorizontal: 30,
     },
     error: {
-        color: "#E9446A",
+        color: "#F76C6C",
         fontSize: 13,
         fontWeight: "600",
         textAlign: "center"
     },
     inputTitle: {
-        color: "#8a8F9E",
+        color: "#24305E",
         fontSize: 10,
         textTransform: "uppercase"
     },
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
         color: "#161F3D",
     },
     lastInputTitle: {
-        color: "#8a8F9E",
+        color: "#24305E",
         fontSize: 10,
         textTransform: "uppercase",
         marginLeft: 6,

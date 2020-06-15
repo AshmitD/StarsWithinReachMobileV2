@@ -21,7 +21,7 @@ export default class LoginScreen extends React.Component {
         <View style = {styles.container}>
             <StatusBar barStyle = "light-content"></StatusBar>
             <Image style = {{alignSelf: 'center', width: 205, height: 205, marginTop: 72}}source ={require('../forreallogo.png')}></Image>
-            <Text style = {styles.greeting}>{`Hello again\nWelcome Back.`}</Text>
+            <Text style = {styles.greeting}>Hiya there.</Text>
             
             <View style = {styles.errorMessage}>
                 {this.state.errorMessage && <Text style = {styles.error}>{this.state.errorMessage}</Text>}
@@ -49,12 +49,12 @@ export default class LoginScreen extends React.Component {
             </View>
 
             <TouchableOpacity style = {styles.button} onPress = {this.handleLogin}>
-                <Text style = {{color: "white"}}>Sign in</Text>
+                <Text style = {{color: "#F8E9A1", fontWeight: '500', fontSize: 15}}>SIGN IN</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style ={{alignSelf: 'center',marginTop: 32}} onPress ={() => this.props.navigation.navigate("Register")}>
                 <Text style = {{color: "#414959", fontSize: 13}}>
-                    New to Stars Within Reach? <Text style = {{fontWeight: "500", color: "#E9446A"}}>Sign Up</Text>
+                    New to Stars Within Reach? <Text style = {{fontWeight: "500", color: "#F76C6C"}}>Sign Up</Text>
 
                 </Text>
             </TouchableOpacity>
@@ -66,33 +66,36 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: 'white',
+      backgroundColor: '#FFF',
       height: 900
     },
     greeting: {
         marginTop: 12,
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: "500",
-        textAlign: 'center'
+        textAlign: 'center',
+        textTransform: "uppercase",
+        color: "#24305E"
     },
     errorMessage: {
         height: 72,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 30
+        marginHorizontal: 30,
+        color: "#F76C6C"
     },
     form: {
         marginBottom: 48,
         marginHorizontal: 30,
     },
     error: {
-        color: "#E9446A",
+        color: "#F76C6C",
         fontSize: 13,
         fontWeight: "600", 
         textAlign: "center"
     },
     inputTitle: {
-        color: "#8a8F9E",
+        color: "#24305E",
         fontSize: 10,
         textTransform: "uppercase"
     },
@@ -109,6 +112,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         height: 52,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+       
     }
 })

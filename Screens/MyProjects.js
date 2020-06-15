@@ -35,24 +35,25 @@ export default class MyProjects extends React.Component {
 
             <View style={styles.feedItem}>
                 {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, alignItems: 'center', }}>
                     <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
-                        <View style={{ flexDiretion: 'row' }}>
-                           
-                                <Text style={styles.name}>{project["title"]}</Text>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('OneProject', {
-                                    otherParam: projectID,
-                                })}>
-                                    <Ionicons name="ios-arrow-dropright" size={24} color={"black"} />
-                                </TouchableOpacity>
-                           
+                        <View style={{ flexDirection: 'row', }}>
+                            <Text style = {styles.name}>{project["title"].toUpperCase()}</Text>
                         </View>
 
                     </View>
                     <Text style={styles.descrip}>{project.descrip}</Text>
-                    {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
 
-
+                     <TouchableOpacity onPress={() => this.props.navigation.navigate('OneProject', {
+                        otherParam: projectID,
+                    })} style = {{marginTop: 15}}> 
+                        <View style = {{flexDirection: "row", backgroundColor: "#F76C6C", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15}} >                                  
+                        <Text style = {{fontWeight: "400", fontSize: 20, color: "#F8E9A1", fontWeight: "600"}}>Dive In</Text>
+                        <Ionicons name="ios-arrow-dropright" size={30} color={"#F8E9A1"} style = {{marginLeft: 7, top:-1,}} />
+                        </View>   
+                    </TouchableOpacity>
+          
                 </View>
 
 
@@ -65,23 +66,20 @@ export default class MyProjects extends React.Component {
         return (
 
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.headerTitle}>My Projects</Text>
-
-                </View>
+      <ScrollView showsVerticalScrollIndicator={true} indicatorStyle = "white">
                 {<FlatList
                     style={styles.feed}
                     data={this.state.projectIDs}
                     renderItem={({ item }) => this.renderProject(item)}
                     keyExtractor={item => item}
-                    showsVerticalScrollIndicator={false}
+                    
                 />}
                 {/* <View style = {{width: 15}}>
                 <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
                    <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>
                 </TouchableOpacity>  
                 </View> */}
-
+    </ScrollView>
             </View>
 
             /* <TouchableOpacity style ={{marginTop: 32}} onPress = {this.signOutUser}>
@@ -94,8 +92,9 @@ export default class MyProjects extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#EFECF4",
+        backgroundColor: "#24305E",
         flex: 1,
+
     },
     header: {
         paddingTop: 16,
@@ -114,14 +113,25 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     feed: {
-        marginHorizontal: 16
+        marginHorizontal: 25,
+        marginTop: 15
     },
     feedItem: {
-        backgroundColor: "#FFF",
+        marginTop: 25,
         borderRadius: 5,
-        padding: 8,
+        padding: 15,
         flexDirection: 'row',
-        marginVertical: 8
+        marginVertical: 8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        backgroundColor: "#F8E9A1",
+        borderRadius: 15
     },
     avatar: {
         width: 36,
@@ -130,30 +140,17 @@ const styles = StyleSheet.create({
         marginRight: 16
     },
     name: {
-        fontSize: 15,
-        fontWeight: "500",
-        color: "#454D65",
-     
-    },
-    timestamp: {
-        fontSize: 11,
-        color: '#C4C6CE',
-        marginTop: 4,
+        fontSize: 30,
+        fontWeight: "900",
+        alignSelf: 'center',
+        color: "#F76C6C"
+        
     },
     descrip: {
-        marginTop: 16,
-        fontSize: 14,
-        color: "#838899"
-    },
-    postImage: {
-        width: undefined,
-        height: 150,
-        borderRadius: 5,
-        marginVertical: 16
-    },
-    image: {
-        width: 500,
-        height: 500
+        marginTop: 6,
+        fontSize: 16,
+        color: "#23405E",
+        textAlign: 'center'
     },
     back: {
         width: 32,

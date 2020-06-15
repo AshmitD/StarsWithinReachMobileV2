@@ -38,6 +38,26 @@ class Fire {
         })
 
     }
+    addComm = async ({ projectID, type, link }) => {
+       
+
+        return new Promise((res, rej) => {
+
+            this.firestore.collection("projects").doc(projectID).collection("CommunicationLinks").add({
+                type: type,
+                link: link,
+
+            })
+                .then(ref => {
+                    res(ref)
+                })
+                .catch(error => {
+                    console.log("this is the error", error)
+                    rej(error)
+                })
+        })
+
+    }
     addDesign = async ({ text, localUri, projectID, name }) => {
         let remoteUri;
         if(localUri) {
@@ -85,7 +105,7 @@ class Fire {
                 });
         })
     }
-    addUser = async ({ name, email, who, shortBio }) => {
+    addUser = async ({ name, email, who, shortBio,projects }) => {
         return new Promise((res, rej) => {
 
             this.firestore.collection("users").add({
@@ -93,6 +113,7 @@ class Fire {
                 email: email,
                 who: who,
                 shortBio: shortBio,
+                projects: projects,
 
             })
                 .then(ref => {
@@ -132,7 +153,7 @@ class Fire {
                 descrip: descrip,
                 resources: resources,
                 endGoal: endGoal,
-
+ 
             })
                 .then(ref => {
                     res(ref)

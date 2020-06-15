@@ -39,11 +39,15 @@ export default class ProfilePage extends React.Component {
         if(this.state.localUri === null) {
             this.setState({localUri: ""})
         } 
+        
         Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
-            this.setState({ name: user["name"] })
+        
+           const currName = user["name"]
+            console.log("This is the name", this.state.name)
+            return currName;
 
-        }).then(() => {
-            Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image, name: this.state.name })
+        }).then((currName) => {
+            Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image, name: currName })
                 .then(ref => {
                     console.log("handle post")
                     this.setState({ text: "", image: null })
@@ -72,9 +76,8 @@ export default class ProfilePage extends React.Component {
         return (
             <SafeAreaView>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('OneProject', {
-                        otherParam: this.state.currProjectID,
-                    })}>
+                    <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('Home')
+                    }>
                         <Ionicons name="ios-arrow-round-back" size={24} color="black"></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity>

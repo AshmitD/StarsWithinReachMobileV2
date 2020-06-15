@@ -14,6 +14,7 @@ import ProjectsScreen from './Screens/Projects'
 import GroupsScreen from './Screens/Groups'
 import ProfilePage from './Screens/ProfilePage'
 import firebaseKeys from './Config'
+import JoinProjectScreen from './Screens/JoinProject'
 import UploadDesignScreen from './Screens/UploadDesign'
 import OneProjectScreen from './Screens/OneProjectScreen'
 import  CommunicationScreen from './Screens/CommunicationScreen'
@@ -27,6 +28,7 @@ const AppTabNavigator = createBottomTabNavigator(
     Home: {
       screen: HomeScreen,
       navigationOptions: {
+
         tabBarIcon: ({tintColor}) => <Ionicons
         style = {{alignContent: 'center'}}
         name = "ios-home" 
@@ -37,15 +39,18 @@ const AppTabNavigator = createBottomTabNavigator(
     Projects: {
       screen: ProjectsScreen,
       navigationOptions: {
+        header: () => false,
         tabBarIcon: ({tintColor}) => <Ionicons 
         style = {{
           alignContent: 'center',
+   
           shadowColor: "#E9446A",
           shadowOffset: {width: 0, height: 0, shadowRadius: 10, shadowOpacity: 0.3}
         }}
         name = "ios-document" 
         size = {24} 
-        color = {tintColor}/> 
+        color = {tintColor}/>,
+     
       }
     },
     Group: {
@@ -65,6 +70,7 @@ const AppTabNavigator = createBottomTabNavigator(
     Profile: {
       screen: ProfilePage,
       navigationOptions: {
+        
         tabBarIcon: ({tintColor}) => <Ionicons 
         style = {{
           alignContent: 'center',
@@ -78,10 +84,14 @@ const AppTabNavigator = createBottomTabNavigator(
     }},
     {
       tabBarOptions: {
+        inactiveTintColor: "#24305E",
         activeTintColor: "#F76C6C",
-        inactiveTintColor: "#B8BBC4",
         showLabel: false,
         lazy: false,
+        style: {
+          backgroundColor: '#F8E9A1',
+          height: 48
+        }
       } 
     } 
   );
@@ -112,6 +122,12 @@ const OtherStack = createSwitchNavigator({
   },
   OneProject: {
     screen: OneProjectScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  JoinProject: {
+    screen: JoinProjectScreen,
     navigationOptions: {
       header: () => false
     }

@@ -23,58 +23,65 @@ export default class JoinProject extends React.Component {
   
     // }
     handleJoin = projectID => {
-       
       Fire.shared.joinProject(projectID)
     
-      
     }
     renderProject = projectID => {
-        
-        const project = this.props.projects[projectID]
+        const { params } = this.props.navigation.state;
+        const projects = params ? params.otherParam : null;
+ 
+        const project = projects[projectID]
 
        // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
          return (
-        
-            <View style = {styles.feedItem}>
-                {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
-                <View style = {{flex: 1}}>
-                    <View style = {{flexDirection: 'row', justifyContent: "space-between",alignItems: 'center'}}>
-                        <View>
-                            
-                            <Text style = {styles.name}>{project["title"]}</Text>
-  
-                        </View>
-                       
+            <View style={styles.feedItem}>
+            {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
+            <View style={{ flex: 1, alignItems: 'center', }}>
+                <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', }}>
+                        <Text style = {styles.name}>{project["title"].toUpperCase()}</Text>
                     </View>
-                    <Text style = {styles.descrip}>{project.descrip}</Text>
-                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
-                 
-                  <TouchableOpacity onPress ={() => this.handleJoin(projectID)}><Text>Join this project</Text></TouchableOpacity>
-                   
+
                 </View>
-               
-               
+                <Text style={styles.descrip}>{project.descrip}</Text>
+                 {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+
+                 <TouchableOpacity onPress={() => this.handleJoin(projectID)} style = {{marginTop: 15}}> 
+                    <View style = {{flexDirection: "row", backgroundColor: "#F8E9A1", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15}} >                                  
+                    <Text style = {{fontWeight: "400", fontSize: 20, color: "#F76C6C", fontWeight: "600"}}>Join project</Text>
+                    <Ionicons name="ios-arrow-dropright" size={30} color={"#F76C6C"} style = {{marginLeft: 7, top:-1,}} />
+                    </View>   
+                </TouchableOpacity>
+      
             </View>
+
+
+        </View>
         )
     }
     render() {
         LayoutAnimation.easeInEaseOut()
+        const { params } = this.props.navigation.state;
+        const projects = params ? params.otherParam : null;
+        console.log("projects are ", projects)
         return (
          
             <View style = {styles.container}>
-                <View style = {styles.header}>
-                    <Text style = {styles.headerTitle}>Join a project</Text>
-                   
+    
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>JOIN A PROJECT</Text>
+                    <TouchableOpacity style ={styles.back} onPress = {() => this.props.navigation.navigate("Projects")}>
+                 <Ionicons name = "ios-arrow-round-back" size ={32} color = "black"></Ionicons>
+                 </TouchableOpacity>
                 </View>
-                <FlatList
-                
+               { projects && <FlatList
                     style={styles.feed} 
-                    data={Object.keys(this.props.projects)} 
+                    data={Object.keys(projects)} 
                     renderItem={( elem ) => this.renderProject(elem.item)} 
                     keyExtractor = {elem => elem.item}    
                     showsVerticalScrollIndicator = {false}  
-                /> 
+               /> }
  
                {/* <View style = {{width: 15}}>
                 <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
@@ -94,34 +101,50 @@ export default class JoinProject extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-       backgroundColor: "#EFECF4",
-       flex: 1,
+        backgroundColor: "#24305E",
+        flex: 1,
     },
     header: {
-       paddingTop: 16,
+        paddingTop: 64,
         paddingBottom: 16,
-        backgroundColor: "#FFF",
+        backgroundColor: "#24305E",
         alignItems: 'center',
         justifyContent: 'center',
-        borderBottomWidth: 1, 
-        borderBottomColor: "#EBECF4",
+        borderBottomWidth: 3,
+        borderBottomColor: '#F76C6C',
         flexDirection: "row",
-     
+        width: "75%",
+        paddingBottom: 5,
+        marginBottom: 15,
+        alignSelf: 'center'
     },
     headerTitle: {
-        fontSize: 20,
-        fontWeight: "500", 
-        alignSelf: 'center' 
+        fontSize: 30,
+        fontWeight: "500",
+        alignSelf: 'center',
+        color: "#F8E9A1",
+       
     },
     feed: {
-         marginHorizontal: 16
+        marginHorizontal: 25,
+        marginTop: 15
     },
     feedItem: {
-        backgroundColor: "#FFF",
+        marginTop: 25,
         borderRadius: 5,
-        padding: 8,
+        padding: 15,
         flexDirection: 'row',
-        marginVertical: 8
+        marginVertical: 8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        backgroundColor: "#F76C6C",
+        borderRadius: 15
     },
     avatar: {
         width: 36,
@@ -130,38 +153,28 @@ const styles = StyleSheet.create({
         marginRight: 16
     },
     name: {
-        fontSize: 15,
-        fontWeight: "500",
-        color: "#454D65"
-    },
-    timestamp: {
-        fontSize: 11,
-        color: '#C4C6CE',
-        marginTop: 4,
+        fontSize: 30,
+        fontWeight: "900",
+        alignSelf: 'center',
+        color: "#F8E9A1"
+        
     },
     descrip: {
-        marginTop: 16,
-        fontSize: 14,
-        color: "#838899"
-    },
-    postImage: {
-        width: undefined,
-        height: 150,
-         borderRadius: 5,
-         marginVertical: 16
-    },
-    image: {
-        width: 500,
-        height: 500
+        marginTop: 6,
+        fontSize: 16,
+        color: "#23405E",
+        textAlign: 'center'
     },
     back: {
-        width: 32,
-        height: 32,
+        position: "absolute",
+        top: 60,
+        left: -35,
+        width: 42,
+        height: 42,
         borderRadius: 21,
         alignItems: 'center',
         backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
     },
-
     
 })

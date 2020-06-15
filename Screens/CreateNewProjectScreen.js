@@ -6,15 +6,15 @@ import Fire from '../Fire'
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomMultiPicker from "react-native-multiple-select-list";
 
-var userList = ["Spaceship design","Special materials",
-    "Eating food grown in space",
-    "New propulsion designs",
-    "Building  on mars and the moon",
-    "Women astronauts",
-    "Space diplomats",
-    "Life on other planets",
-    "AI and the coming Quantum Brain",
-    "Have you seen a UFO?",
+var userList = ["SPACESHIP DESIGN","SPECIAL MATERIALS",
+"EATING FOOD GROWN IN SPACE",
+"NEW PROPULSION DESIGNS",
+"BUILDING  ON MARS AND THE MOON",
+"WOMEN ASTRONAUTS",
+"SPACE DIPLOMATS",
+"LIFE ON OTHER PLANETS",
+"AI AND THE COMING QUANTUM BRAIN",
+"HAVE YOU SEEN A UFO?",
     ];
 export default class CreateNewProjectScreen extends React.Component {
     static navigationOptions = {  
@@ -48,17 +48,20 @@ export default class CreateNewProjectScreen extends React.Component {
         <View style = {styles.container}>
             <StatusBar barStyle = "light-content"></StatusBar>
              {/* <Image style = {{left: 305, width: 100, height: 100, marginTop: 2}}source ={require('../forreallogo.png')}></Image> */}
+            
+             <View style={styles.header}>
              <TouchableOpacity style ={styles.back} onPress = {() => this.props.navigation.navigate("Projects")}>
                  <Ionicons name = "ios-arrow-round-back" size ={32} color = "black"></Ionicons>
-             </TouchableOpacity>
-            <Text style = {styles.greeting}>{`Thank's for starting a project.\nPlease answer these short questions.`}</Text>
+                 </TouchableOpacity>
+                  <Text style={styles.headerTitle}>CREATE A PROJECT</Text>
+            </View>
             
             <View style = {styles.errorMessage}>
                 {this.state.errorMessage && <Text style = {styles.error}>{this.state.errorMessage}</Text>}
             </View>
 
             <View style = {styles.form}>
-                <View>
+                <View style = {{marginTop: -35}}>
                     <Text style = {styles.inputTitle}>Title</Text>
                     <TextInput
                     style = {styles.input}
@@ -114,22 +117,24 @@ export default class CreateNewProjectScreen extends React.Component {
                 </View>
                     <View style = {{width: 370, marginLeft: 20, marginBottom: 32, zIndex: -1}}>
                         <Text style = {styles.lastInputTitle}>Does your project fit under any of these topics?</Text>
-                        <CustomMultiPicker
+                      <CustomMultiPicker
                             options={userList}
                             multiple={true} 
                             returnValue={"label"} // label or value
                         callback={(res)=>{ /*this.setState({interestingTopics: res}) */}} // callback, array of selected items
-                            rowBackgroundColor={"#eee"}
+                            
                             rowHeight={40}
                             rowRadius={5}
-                            iconColor={"#00a2dd"}
+                           
+                            iconColor={"#F76C6C"}
                             iconSize={25}
-                
+            
                             selectedIconName={"ios-checkmark-circle-outline"}
                         
                             scrollViewHeight={130}
                             //selected={[1,2]} // list of options which are selected by default
                         />
+                      
                 </View>
           
             <TouchableOpacity style = {styles.button} onPress = {this.handleSignUp}>
@@ -147,16 +152,17 @@ export default class CreateNewProjectScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: 'white',
+      backgroundColor: '#F8E9A1',
       height: 1200
     },
     greeting: {
         marginTop: 102,
         fontSize: 18,
-        fontWeight: "500",
+        fontWeight: "700",
         textAlign: 'center',
         paddingLeft: 15,
         paddingRight: 15,
+        color: "#F76C6C"
     },
     errorMessage: {
         height: 72,
@@ -175,28 +181,50 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     inputTitle: {
-        color: "#8a8F9E",
-        fontSize: 10,
+        color: "#24305E",
+        fontSize: 14,
         textTransform: "uppercase"
     },
+    header: {
+        paddingTop: 64,
+        paddingBottom: 16,
+        backgroundColor: "#F8E9A1",
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 3,
+        borderBottomColor: '#F76C6C',
+        flexDirection: "row",
+        width: "65%",
+        paddingBottom: 5,
+        marginBottom: 5,
+       
+        alignSelf: 'center'
+    },
+    headerTitle: {
+        fontSize: 25,
+        fontWeight: "500",
+        alignSelf: 'center',
+        color: "#F76C6C",
+    
+    },
     input: {
-        borderBottomColor: "#8a8F9E",
+        borderBottomColor: "#24305E",
         borderBottomWidth: StyleSheet.hairlineWidth,
         height: 40,
         fontSize: 15,
-        color: "#161F3D",
+        color: "#24305E",
         paddingTop: 10,
     },
     longText: {
-        borderBottomColor: "#8a8F9E",
+        borderBottomColor: "#24305E",
         borderBottomWidth: StyleSheet.hairlineWidth,
         height: 80,
         fontSize: 15,
         color: "#161F3D",      
     },
    lastInputTitle: { 
-    color: "#8a8F9E",
-        fontSize: 10,
+    color: "#24305E",
+        fontSize: 13,
         textTransform: "uppercase",
         marginLeft: 6,
         marginBottom: 5
@@ -213,13 +241,13 @@ const styles = StyleSheet.create({
     },
     back: {
         position: "absolute",
-        top: 40,
-        left: 22,
+        top: 60,
+        left: -60,
         width: 42,
         height: 42,
         borderRadius: 21,
         alignItems: 'center',
         backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
-    }
+    },
 })

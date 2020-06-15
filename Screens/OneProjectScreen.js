@@ -52,9 +52,8 @@ export default class OneProjectScreen extends React.Component {
                 <View style={{ flex: 1 }}>
                     <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
                         <View>
-
                             <Text style={styles.name}>{design.name}</Text>
-                            <Text style={styles.name}>{moment(design.timestamp).fromNow()}</Text>
+                            <Text style={styles.timestamp}>{moment(design.timestamp).fromNow()}</Text>
                         </View>
                         <Ionicons name="ios-more" size={24} color="#73788B" />
                     </View>
@@ -90,13 +89,13 @@ export default class OneProjectScreen extends React.Component {
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
                         <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
                     </TouchableOpacity>
-                <Text style={styles.headerTitle1}>{this.state.projectContent.title}</Text>
+                <Text style={styles.headerTitle}>{this.state.projectContent.title}</Text>
                
                 </View>
                 <View style = {{backgroundColor: "#F76C6C"}}>
                 <View style = {{flexDirection: "row", borderBottomWidth: 4,borderBottomColor: "#F76C6C"}}>
-                    <Text style = {styles.communicate}>Communicate</Text>
-                    <TouchableOpacity style = {{alignSelf: 'center', left: 150,width: 36, height: 36, borderRadius: 18}}>
+                    <Text style = {styles.communicate}>Chat now</Text>
+                    <TouchableOpacity style = {{alignSelf: 'center', left: 225,width: 36, height: 36, borderRadius: 18}}>
                     <Ionicons name = "ios-arrow-dropright" onPress={() => this.props.navigation.navigate('Communicate', {
                                 otherParam: this.state.projectID,
                                 })} style = {{alignSelf: 'center',}} size = {32} color = "black"></Ionicons>
@@ -138,11 +137,11 @@ export default class OneProjectScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
+        backgroundColor: "#24305E",
+        
     },
     communicate: {
         fontWeight: "600",
-       
         height: 50,
         fontSize: 30,
         textAlignVertical: "center",
@@ -152,16 +151,23 @@ const styles = StyleSheet.create({
     header: {
         paddingTop: 64,
         paddingBottom: 16,
-        backgroundColor: "#FFF",
+        backgroundColor: "#24305E",
         alignItems: 'center',
         justifyContent: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: "#EBECF4",
-        flexDirection: "row"
+        borderBottomWidth: 3,
+        borderBottomColor: '#F76C6C',
+        flexDirection: "row",
+        width: "25%",
+        paddingBottom: 5,
+        marginBottom: 15,
+        alignSelf: 'center'
     },
-    headerTitle1: {
-        fontSize: 20,
-        fontWeight: "500", 
+    headerTitle: {
+        fontSize: 30,
+        fontWeight: "500",
+        alignSelf: 'center',
+        color: "#F8E9A1",
+       
     },
     headerTitle2: {
         fontSize: 20,
@@ -169,8 +175,8 @@ const styles = StyleSheet.create({
     },
     back: {
         position: "absolute",
-        top: 50,
-        left: 22,
+        top: 60,
+        left: -35,
         width: 42,
         height: 42,
         borderRadius: 21,
@@ -178,42 +184,45 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
     },
+  
+   
     feed: {
-        marginHorizontal: 16
-    },
-    headerTitle: {
-        fontSize: 20,
-        fontWeight: "500", 
-        alignContent: 'center',
-        padding: 5
+        marginHorizontal: 16,
+        paddingHorizontal: 15
     },
     feedItem: {
-        backgroundColor: "#FFF",
-        borderRadius: 5,
+        backgroundColor: "#F8E9A1",
+        borderRadius: 15,
         padding: 8,
         flexDirection: 'row',
-        marginVertical: 8
-    },
-    avatar: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        marginRight: 16
+        marginVertical: 15,
+        textAlign: 'left',
+        padding: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
     },
     name: {
-        fontSize: 15,
+        fontSize: 20,
         fontWeight: "500",
-        color: "#454D65"
+        color: "#F76C6C",
+        marginBottom: 5
     },
     timestamp: {
-        fontSize: 11,
-        color: '#C4C6CE',
-        marginTop: 4,
+        fontSize: 15,
+        fontWeight: "500",
+        color: "#24305E"
     },
+ 
     postss: {
         marginTop: 16,
         fontSize: 14,
-        color: "#838899"
+        color: "#24305E"
     },
     postImage: {
         width: undefined,
