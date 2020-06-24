@@ -5,7 +5,7 @@ import {Ionicons} from '@expo/vector-icons'
 import Fire from '../Fire'
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomMultiPicker from "react-native-multiple-select-list";
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 var userList = ["SPACESHIP DESIGN","SPECIAL MATERIALS",
 "EATING FOOD GROWN IN SPACE",
 "NEW PROPULSION DESIGNS",
@@ -27,11 +27,11 @@ export default class CreateNewProjectScreen extends React.Component {
         error: null,
         endGoal: "",
         studentsActions: "",
-    
+        topics: []
     }
     
     handleSignUp = () => { 
-        Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, resources: this.state.resources, endGoal: this.state.endGoal, studentsActions: this.state.studentsActions})
+        Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, resources: this.state.resources, endGoal: this.state.endGoal, studentsActions: this.state.studentsActions, topics: this.state.topics})
         .then(userCredentials => {
             // return userCredentials.user.updateProfile({
             //     displayName: this.state.name
@@ -50,11 +50,12 @@ export default class CreateNewProjectScreen extends React.Component {
              {/* <Image style = {{left: 305, width: 100, height: 100, marginTop: 2}}source ={require('../forreallogo.png')}></Image> */}
             
              <View style={styles.header}>
-             <TouchableOpacity style ={styles.back} onPress = {() => this.props.navigation.navigate("Projects")}>
-                 <Ionicons name = "ios-arrow-round-back" size ={32} color = "black"></Ionicons>
-                 </TouchableOpacity>
-                  <Text style={styles.headerTitle}>CREATE A PROJECT</Text>
-            </View>
+
+<TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
+    <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
+</TouchableOpacity>
+<Text style={styles.headerTitle}>CREATE A GROUP</Text>
+</View>
             
             <View style = {styles.errorMessage}>
                 {this.state.errorMessage && <Text style = {styles.error}>{this.state.errorMessage}</Text>}
@@ -72,7 +73,7 @@ export default class CreateNewProjectScreen extends React.Component {
                 </View>
         
                 <View style = {{marginTop: 32}}>
-                    <Text style = {styles.inputTitle}>Please describe your project</Text>
+                    <Text style = {styles.inputTitle}>Please describe your group: </Text>
                     <TextInput
                     style = {styles.longText}
                   
@@ -83,13 +84,23 @@ export default class CreateNewProjectScreen extends React.Component {
                 </View>
 
                 <View style = {{marginTop: 32}}>
-                    <Text style = {styles.inputTitle}>Do you need us to provide any resources?</Text>
+                    <Text style = {styles.inputTitle}>Please provide some information about you: </Text>
                     <TextInput
                     style = {styles.longText}
                   
                     multiline = {true} numberOfLines={4} 
                     onChangeText ={resources => this.setState({resources})}
                     value = {this.state.resources}
+                    ></TextInput>
+                </View>
+                <View style = {{marginTop: 32}}>
+                    <Text style = {styles.inputTitle}>What will you discuss?</Text>
+                    <TextInput
+                    style = {styles.longText}
+                  
+                    multiline = {true} numberOfLines={4} 
+                    onChangeText ={studentsActions => this.setState({studentsActions})}
+                    value = {this.state.studentsActions}
                     ></TextInput>
                 </View>
                 <View style = {{marginTop: 32}}>
@@ -102,33 +113,24 @@ export default class CreateNewProjectScreen extends React.Component {
                     value = {this.state.endGoal}
                     ></TextInput>
                 </View>
-                <View style = {{marginTop: 32}}>
-                    <Text style = {styles.inputTitle}>What will the students do?</Text>
-                    <TextInput
-                    style = {styles.longText}
-                  
-                    multiline = {true} numberOfLines={4} 
-                    onChangeText ={studentsActions => this.setState({studentsActions})}
-                    value = {this.state.studentsActions}
-                    ></TextInput>
-                </View>
+               
 
                
                 </View>
                     <View style = {{width: 370, marginLeft: 20, marginBottom: 32, zIndex: -1}}>
-                        <Text style = {styles.lastInputTitle}>Does your project fit under any of these topics?</Text>
+                        <Text style = {styles.lastInputTitle}>Choose topics that your group will focus on: </Text>
                       <CustomMultiPicker
                             options={userList}
                             multiple={true} 
                             returnValue={"label"} // label or value
-                        callback={(res)=>{ /*this.setState({interestingTopics: res}) */}} // callback, array of selected items
+                        callback={(res)=>{this.setState({topics: res})}} // callback, array of selected items
                             
                             rowHeight={40}
                             rowRadius={5}
                            
                             iconColor={"#F76C6C"}
                             iconSize={25}
-            
+                            selected={[]}
                             selectedIconName={"ios-checkmark-circle-outline"}
                         
                             scrollViewHeight={130}
@@ -138,7 +140,7 @@ export default class CreateNewProjectScreen extends React.Component {
                 </View>
           
             <TouchableOpacity style = {styles.button} onPress = {this.handleSignUp}>
-                <Text style = {{color: "white"}}>Create Project</Text>
+                <Text style = {{color: "white"}}>CREATE GROUP</Text>
             </TouchableOpacity>
             
           
@@ -194,18 +196,28 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderBottomColor: '#F76C6C',
         flexDirection: "row",
-        width: "65%",
+        width: wp("45%"),
         paddingBottom: 5,
-        marginBottom: 5,
-       
+        marginBottom: 15,
         alignSelf: 'center'
     },
     headerTitle: {
-        fontSize: 25,
+        fontSize: 30,
         fontWeight: "500",
         alignSelf: 'center',
-        color: "#F76C6C",
-    
+        color: "#24305E",
+        textAlign: 'center'
+    },
+    back: {
+        position: "absolute",
+        top: hp("6%"),
+        left: wp("-24%"),
+        width: wp("15%"),
+        height: hp("7.5%"),
+        borderRadius: 31,
+        alignItems: 'center',
+        backgroundColor: "rgba(21,22,48,0.1)",
+        justifyContent: 'center'
     },
     input: {
         borderBottomColor: "#24305E",
@@ -239,15 +251,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: -1,
     },
-    back: {
-        position: "absolute",
-        top: 60,
-        left: -60,
-        width: 42,
-        height: 42,
-        borderRadius: 21,
-        alignItems: 'center',
-        backgroundColor: "rgba(21,22,48,0.1)",
-        justifyContent: 'center'
-    },
+
 })

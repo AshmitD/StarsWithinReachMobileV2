@@ -27,20 +27,21 @@ export default class RegisterScreen extends React.Component {
         errorMessage: null,
         who: "Space Enthusiast",
         shortBio: "",
+        topics: []
 
     }
 
     handleSignUp = () => {
-        Fire.shared.addUser({ name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: [] })
-            .then(userCredentials => {
-                // return userCredentials.user.updateProfile({
-                //     displayName: this.state.name
-                // })
-            })
-            .catch(error => console.log("The error is", error)
-            )
+       
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(userCredentials => {
+            .then(userCredentials => { Fire.shared.addUser({ name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: [], topics: this.state.topics })
+                .then(userCredentials => {
+                    // return userCredentials.user.updateProfile({
+                    //     displayName: this.state.name
+                    // })
+                })
+                .catch(error => console.log("The error is", error)
+                )
                 return userCredentials.user.updateProfile({
                     displayName: this.state.name
                 })
@@ -125,15 +126,16 @@ export default class RegisterScreen extends React.Component {
                             options={userList}
                             multiple={true}
                             returnValue={"label"} // label or value
-                            callback={(res) => { /*this.setState({interestingTopics: res}) */ }} // callback, array of selected items
+                            callback={(res) => {  
+                                this.setState({topics: res}) 
+                            }} // callback, array of selected items
                             rowBackgroundColor={"#eee"}
                             rowHeight={40}
                             rowRadius={5}
                             iconColor={"#F76C6C"}
                             iconSize={25}
-
                             selectedIconName={"ios-checkmark-circle-outline"}
-
+                            selected={[]} // list of options which are selected by default
                             scrollViewHeight={130}
                         //selected={[1,2]} // list of options which are selected by default
                         />

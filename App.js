@@ -14,11 +14,13 @@ import ProjectsScreen from './Screens/Projects'
 import GroupsScreen from './Screens/Groups'
 import ProfilePage from './Screens/ProfilePage'
 import firebaseKeys from './Config'
+import ReportScreen from './Screens/Report'
 import JoinProjectScreen from './Screens/JoinProject'
 import UploadDesignScreen from './Screens/UploadDesign'
 import OneProjectScreen from './Screens/OneProjectScreen'
 import  CommunicationScreen from './Screens/CommunicationScreen'
 import CreateNewProjectScreen from './Screens/CreateNewProjectScreen'
+import ForgotPasswordScreen from './Screens/ForgotPassword'
 var firebaseConfig = firebaseKeys;
 // Initialize Firebase
 // firebase.initializeApp(firebaseConfig);
@@ -67,21 +69,21 @@ const AppTabNavigator = createBottomTabNavigator(
         color = {tintColor}/> 
       }
     },
-    Profile: {
-      screen: ProfilePage,
-      navigationOptions: {
+    // Profile: {
+    //   screen: ProfilePage,
+    //   navigationOptions: {
         
-        tabBarIcon: ({tintColor}) => <Ionicons 
-        style = {{
-          alignContent: 'center',
-          shadowColor: "#E9446A",
-          shadowOffset: {width: 0, height: 0, shadowRadius: 10, shadowOpacity: 0.3}
-        }}
-        name = "ios-person" 
-        size = {24} 
-        color = {tintColor}/> 
-      } 
-    }},
+    //     tabBarIcon: ({tintColor}) => <Ionicons 
+    //     style = {{
+    //       alignContent: 'center',
+    //       shadowColor: "#E9446A",
+    //       shadowOffset: {width: 0, height: 0, shadowRadius: 10, shadowOpacity: 0.3}
+    //     }}
+    //     name = "ios-person" 
+    //     size = {24} 
+    //     color = {tintColor}/> 
+    //   } 
+    },
     {
       tabBarOptions: {
         inactiveTintColor: "#24305E",
@@ -105,11 +107,23 @@ const AuthStack = createStackNavigator({
       header: () => false
     }
   },
+  Forgot: {
+    screen: ForgotPasswordScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
 
 })
 const OtherStack = createSwitchNavigator({
   CreatePost: {
     screen: CreatePostScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  Report: {
+    screen: ReportScreen,
     navigationOptions: {
       header: () => false
     }

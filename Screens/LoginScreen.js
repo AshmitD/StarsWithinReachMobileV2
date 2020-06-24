@@ -55,8 +55,10 @@ export default class LoginScreen extends React.Component {
             <TouchableOpacity style ={{alignSelf: 'center',marginTop: 32}} onPress ={() => this.props.navigation.navigate("Register")}>
                 <Text style = {{color: "#414959", fontSize: 13}}>
                     New to Stars Within Reach? <Text style = {{fontWeight: "500", color: "#F76C6C"}}>Sign Up</Text>
-
                 </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style ={{alignSelf: 'center',marginTop: 12}} onPress ={() => this.props.navigation.navigate("Forgot")}>
+                <Text style = {{color: "#24305E", fontSize: 13, fontWeight: "600"}}>Forgot your password?</Text>
             </TouchableOpacity>
         </View>
         </ScrollView>
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "500",
         textAlign: 'center',
-        textTransform: "uppercase",
+        
         color: "#24305E"
     },
     errorMessage: {

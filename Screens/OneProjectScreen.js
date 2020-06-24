@@ -3,7 +3,9 @@ import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import firebase from 'firebase'
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native-gesture-handler'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class OneProjectScreen extends React.Component {
     constructor(props) {
@@ -11,7 +13,7 @@ export default class OneProjectScreen extends React.Component {
         const { params } = this.props.navigation.state;
         const currProjectID = params ? params.otherParam : null;
         const orderedDocs = []
-       
+
         this.state = {
             orderedDocs: [],
             projectID: currProjectID,
@@ -19,28 +21,29 @@ export default class OneProjectScreen extends React.Component {
         }
 
         firebase.firestore().collection('projects').doc(currProjectID).get().then((doc) => {
-           this.setState({projectContent: doc.data()})
-        
+            this.setState({ projectContent: doc.data() })
+
         })
         firebase.firestore().collection("projects")
-        .doc(currProjectID).collection("projectPosts").orderBy("timestamp", "desc")
-        .get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-                // doc.data() is never undefined for query doc snapshots
+            .doc(currProjectID).collection("projectPosts").orderBy("timestamp", "desc")
+            .get().then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    // doc.data() is never undefined for query doc snapshots
                     orderedDocs.push(doc.data())
-                 
-            });
-        })
-        .then(() => {
-             this.setState({orderedDocs : orderedDocs })     
-             console.log("orederd", this.state.orderedDocs)})
+
+                });
+            })
+            .then(() => {
+                this.setState({ orderedDocs: orderedDocs })
+                console.log("orederd", this.state.orderedDocs)
+            })
 
         // .then(() => {
         //     this.fillProjects()
         //  })
-      
-       
-    
+
+
+
     }
     renderPost = design => {
         // const ref = firebase.storage().ref(post.image);
@@ -55,17 +58,20 @@ export default class OneProjectScreen extends React.Component {
                             <Text style={styles.name}>{design.name}</Text>
                             <Text style={styles.timestamp}>{moment(design.timestamp).fromNow()}</Text>
                         </View>
-                        <Ionicons name="ios-more" size={24} color="#73788B" />
+                        <TouchableOpacity style={{ backgroundColor: "rgba(36, 48, 94, 0.9)", borderRadius: 15, o: 80 }} onPress={() => this.props.navigation.navigate('Report', {
+                            otherParam: design,
+                        })}><Ionicons name="ios-flag" size={24} style={{ alignSelf: 'center', paddingHorizontal: 15, paddingVertical: 7.5 }} color="grey" /></TouchableOpacity>
+
                     </View>
                     <Text style={styles.postss}>{design.text}</Text>
                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
-                   { design.imageLink != " " && <Image
+                    {design.imageLink != " " && <Image
                         style={styles.postImage}
                         source={{
                             uri: design.imageLink
                         }}
                     />}
-                    { design.imageLink == " " && <View style = {{height: 15}}></View>
+                    {design.imageLink == " " && <View style={{ height: 15 }}></View>
 
                     }
                     <View style={{ flexDirection: "row" }}>
@@ -80,7 +86,7 @@ export default class OneProjectScreen extends React.Component {
         )
     }
     render() {
-        
+
         return (
 
             <View style={styles.container}>
@@ -89,47 +95,57 @@ export default class OneProjectScreen extends React.Component {
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
                         <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
                     </TouchableOpacity>
-                <Text style={styles.headerTitle}>{this.state.projectContent.title}</Text>
+                    <Text style={styles.headerTitle}>{this.state.projectContent.title}</Text>
+                </View>
+                <View style = {{flexDirection: 'row', marginVertical: 15,backgroundColor: '#24305E'}}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Communicate', {
+                        otherParam: this.state.projectID,
+                    })} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
+            
+                    <Text style = {{textAlign: 'center', fontSize: 20,fontWeight: "500",color: "#23405E",overflow: "hidden", borderRadius: 10, backgroundColor: "#F76C6C",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>CHAT</Text>
+
+                    </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('UploadDesign', {
+                        otherParam: this.state.projectID,
+                    })} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
+            
+                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>SHARE</Text>
+
+                    </TouchableOpacity>
+                {/* <TouchableOpacity style = {{width: "50%", justifyContent: 'center', height: 50}} onPress={() => this.props.navigation.navigate("CreateProject")} >
+                <Text style = {{textAlign: 'center',borderRadius: 10, overflow: 'hidden', textAlignVertical: "center", backgroundColor: "#F8E9A1", paddingVertical: 15, width: 150}}>Create</Text>
+                </TouchableOpacity> */}
+            </View>
                
-                </View>
-                <View style = {{backgroundColor: "#F76C6C"}}>
-                <View style = {{flexDirection: "row", borderBottomWidth: 4,borderBottomColor: "#F76C6C"}}>
-                    <Text style = {styles.communicate}>Chat now</Text>
-                    <TouchableOpacity style = {{alignSelf: 'center', left: 225,width: 36, height: 36, borderRadius: 18}}>
-                    <Ionicons name = "ios-arrow-dropright" onPress={() => this.props.navigation.navigate('Communicate', {
-                                otherParam: this.state.projectID,
-                                })} style = {{alignSelf: 'center',}} size = {32} color = "black"></Ionicons>
-                  </TouchableOpacity> 
-                </View>
-                </View>
-                <View style = {{flexDirection: 'row',padding: 5, alignSelf: 'center'}}>
+
+                {/* <View style = {{flexDirection: 'row',padding: 5, marginBottom: 5,alignSelf: 'center'}}>
                      <Text style = {styles.headerTitle2}>Group Designs</Text>
 
-                    <TouchableOpacity style = {{backgroundColor: "lightgrey", left: 100,width: 36, height: 36, borderRadius: 18}}>
+                    <TouchableOpacity style = {{backgroundColor: "#F8E9A1", left: 50,width: 36, top:30,height: 36, borderRadius: 18}}>
                     <Ionicons name = "ios-add" onPress={() => this.props.navigation.navigate('UploadDesign', {
                                 otherParam: this.state.projectID,
-                                })} style = {{alignSelf: 'center',}} size = {32} color = "black"></Ionicons>
+                                })} style = {{alignSelf: 'center',}} size = {32} color = "#24305E"></Ionicons>
                   </TouchableOpacity> 
-                </View> 
-                              
-                    <FlatList
+                </View>  */}
+
+                <FlatList
                     style={styles.feed}
                     data={this.state.orderedDocs}
                     renderItem={({ item }) => this.renderPost(item)}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
-                   />
-              
+                />
 
-           
+
+
             </View>
         )
 
 
     }
-    
-       
-       
+
+
+
 
 
 
@@ -138,7 +154,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#24305E",
-        
+
     },
     communicate: {
         fontWeight: "600",
@@ -146,7 +162,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlignVertical: "center",
         padding: 5,
-        color: "#23405E"
+        color: "#23405E",
+
     },
     header: {
         paddingTop: 64,
@@ -157,7 +174,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderBottomColor: '#F76C6C',
         flexDirection: "row",
-        width: "25%",
+        width: wp("45%"),
         paddingBottom: 5,
         marginBottom: 15,
         alignSelf: 'center'
@@ -167,30 +184,29 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         alignSelf: 'center',
         color: "#F8E9A1",
-       
-    },
-    headerTitle2: {
-        fontSize: 20,
-        fontWeight: "500"
+
     },
     back: {
         position: "absolute",
-        top: 60,
-        left: -35,
-        width: 42,
-        height: 42,
-        borderRadius: 21,
+        top: hp("6%"),
+        left: wp("-24%"),
+        width: wp("15%"),
+        height: hp("7.5%"),
+        borderRadius: 31,
         alignItems: 'center',
+
         backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
     },
-  
-   
+
+
     feed: {
         marginHorizontal: 16,
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
+        
     },
     feedItem: {
+        alignSelf: 'center',
         backgroundColor: "#F8E9A1",
         borderRadius: 15,
         padding: 8,
@@ -218,20 +234,17 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         color: "#24305E"
     },
- 
+
     postss: {
         marginTop: 16,
         fontSize: 14,
         color: "#24305E"
     },
     postImage: {
-        width: undefined,
-        height: 150,
+        width: wp("80%"),
+        height: hp("40%"),
         borderRadius: 5,
         marginVertical: 16
     },
-    image: {
-        width: 500,
-        height: 500
-    },
+   
 })

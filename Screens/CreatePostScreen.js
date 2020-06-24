@@ -28,7 +28,7 @@ export default class ProfilePage extends React.Component {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
 
             if (status != "granted") {
-                alert("We need permissions to access your camera roll")
+                // alert("We need permissions to access your camera roll")
             }
         }
     }
@@ -74,7 +74,7 @@ export default class ProfilePage extends React.Component {
     }
     render() {
         return (
-            <SafeAreaView>
+            <View style ={{backgroundColor: "#F8E9A1", height: "100%"}}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('Home')
                     }>
@@ -92,7 +92,7 @@ export default class ProfilePage extends React.Component {
 
                 </View>
                 <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                    <Ionicons name="md-camera" size={32} color="lightgrey"></Ionicons>
+                    <Ionicons name="md-camera" size={32} color="#F76C6C"></Ionicons>
                 </TouchableOpacity>
 
                 <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
@@ -100,7 +100,7 @@ export default class ProfilePage extends React.Component {
                 </View>
 
 
-            </SafeAreaView>
+                </View>
         )
     }
 }
@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: 32,
         paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: "#D8D9DB",
+        
+        marginTop: 35
     },
     inputContainer: {
         margin: 32,

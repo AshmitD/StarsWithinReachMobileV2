@@ -105,7 +105,8 @@ class Fire {
                 });
         })
     }
-    addUser = async ({ name, email, who, shortBio,projects }) => {
+    addUser = async ({ name, email, who, shortBio, projects, topics }) => {
+       console.log("this is topics", topics)
         return new Promise((res, rej) => {
 
             this.firestore.collection("users").add({
@@ -114,14 +115,22 @@ class Fire {
                 who: who,
                 shortBio: shortBio,
                 projects: projects,
-
+                topics: []
             })
-                .then(ref => {
+                .get().then(ref => {
+                    console.log("this is topics in then", topics)
+                    this.getUserData(email).then(({ id}) => {   
+                            const userDoc = this.firestore.collection("users").doc(id)
+                            userDoc.update({
+                                topics: topics
+                            });
+                    })
                     res(ref)
                 })
                 .catch(error => {
+                    console.log("this is the error", error)
                     rej(error)
-                    //  console.log(error)
+                      console.log(error)
                 })
         }) 
     }
@@ -145,7 +154,7 @@ class Fire {
         })
 
     }
-    addProject = async ({ title, descrip, resources, endGoal, studentsActiosn }) => {
+    addProject = async ({ title, descrip, resources, endGoal, topics }) => {
         return new Promise((res, rej) => {
 
             this.firestore.collection("projects").add({
@@ -153,9 +162,11 @@ class Fire {
                 descrip: descrip,
                 resources: resources,
                 endGoal: endGoal,
- 
+                topics: topics
             })
                 .then(ref => {
+                    console.log("This is ref", ref.data())
+                    this.joinProject
                     res(ref)
                 })
                 .catch(error => {

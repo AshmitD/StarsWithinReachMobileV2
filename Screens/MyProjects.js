@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import db from "firebase"
 import Fire from '../Fire'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export default class MyProjects extends React.Component {
 
 
@@ -131,7 +132,9 @@ const styles = StyleSheet.create({
         shadowRadius: 7.49,
         elevation: 12,
         backgroundColor: "#F8E9A1",
-        borderRadius: 15
+        borderRadius: 15,
+        width: wp('80%'),
+        alignSelf: 'center'
     },
     avatar: {
         width: 36,
@@ -143,8 +146,8 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "900",
         alignSelf: 'center',
-        color: "#F76C6C"
-        
+        color: "#F76C6C",
+        textAlign: 'center'
     },
     descrip: {
         marginTop: 6,

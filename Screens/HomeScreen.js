@@ -4,6 +4,7 @@ import * as firebase from "firebase"
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import db from "firebase"
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class HomeScreen extends React.Component {
 
@@ -29,7 +30,9 @@ export default class HomeScreen extends React.Component {
 
     }
 
-
+    signOutUser = () => {
+        firebase.auth().signOut()
+    }
 
 
 
@@ -47,18 +50,29 @@ export default class HomeScreen extends React.Component {
                             <Text style={styles.name}>{post.name}</Text>
                             <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
                         </View>
-                        <Ionicons name="ios-more" size={24} color="#73788B" />
+                        <TouchableOpacity style={{ backgroundColor: "rgba(36, 48, 94, 0.9)", borderRadius: 15, o: 80 }} onPress={() => this.props.navigation.navigate('Report', {
+                            otherParam: post,
+                        })}><Ionicons name="ios-flag" size={24} style={{ alignSelf: 'center', paddingHorizontal: 15, paddingVertical: 7.5 }} color="grey" /></TouchableOpacity>
+
                     </View>
+
                     <Text style={styles.postss}>{post.text}</Text>
+
                     {/* <Image source = {require('../Components/Oreo.jpg'} style = {styles.postImage} resizeMode = "cover"/>  */}
-                    {post.image != " " && <Image
-                        style={styles.postImage}
-                        source={{
-                            uri: post.image
-                        }}
-                    />}
+                    {post.image != " " &&
+
+                        <Image
+                            style={styles.image}
+                            source={{
+                                uri: post.image
+                            }}
+                        />
+
+                    }
+
                     {post.image == " " && <View style={{ height: 15 }}></View>}
                     <View style={{ flexDirection: "row" }}>
+
                         <Ionicons name="ios-heart-empty" size={24} color="#73788B" style={{ marginRight: 16 }} />
                         <Ionicons name="ios-chatboxes" size={24} color="#73788B" style={{ marginRight: 16 }} />
                     </View>
@@ -75,11 +89,18 @@ export default class HomeScreen extends React.Component {
 
         return (
             <View style={styles.container}>
+             
+               
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Feed</Text>
-
+                 
+                    <View style ={{borderBottomColor: "#F76C6C", alignSelf: 'center',width: 85,paddingBottom: 5,borderBottomWidth: 3}}><Text style={styles.headerTitle}>Feed</Text></View>
+                    <TouchableOpacity style={{ backgroundColor: "#24305E", borderRadius: 15, marginTop: -65,padding: 25, marginLeft: 305,}} onPress={this.signOutUser}>
+                        <Ionicons name="ios-log-out" size={36} color="#73788B" />
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreatePost")} style={{alignSelf: 'center', marginVertical: 15}}>
+             
+
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("CreatePost")} style={{ alignSelf: 'center', marginVertical: 15 }}>
                     <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#23405E", overflow: "hidden", borderRadius: 10, color: "#F8E9A1", backgroundColor: "#F76C6C", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>CREATE A POST</Text>
                 </TouchableOpacity>
                 <FlatList
@@ -112,17 +133,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     header: {
-        paddingTop: 64,
-        paddingBottom: 16,
+        paddingTop: 55,
         backgroundColor: "#24305E",
-        alignItems: 'center',
+       
         justifyContent: 'center',
-        borderBottomWidth: 3,
-        borderBottomColor: '#F76C6C',
-        flexDirection: "row",
-        width: "25%",
-        paddingBottom: 5,
-        marginBottom: 15,
+      
+      
+      
+    
         alignSelf: 'center'
     },
     headerTitle: {
@@ -131,9 +149,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: "#F8E9A1",
        
+       
+
     },
     feed: {
-        marginHorizontal: 16
+        marginHorizontal: 16,
+
     },
     feedItem: {
         backgroundColor: "#F8E9A1",
@@ -151,6 +172,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.37,
         shadowRadius: 7.49,
         elevation: 12,
+        width: wp('80%'),
+        alignSelf: 'center'
     },
     name: {
         fontSize: 20,
@@ -163,21 +186,24 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         color: "#24305E"
     },
- 
+
     postss: {
         marginTop: 16,
         fontSize: 14,
         color: "#24305E"
     },
     postImage: {
+        height: 400,
         width: undefined,
-        height: 150,
         borderRadius: 5,
-        marginVertical: 16
+
     },
     image: {
-        width: 500,
-        height: 500
+        width: undefined,
+        height: 300,
+        maxWidth: 500,
+        marginVertical: 15,
+
     },
     back: {
         width: 32,

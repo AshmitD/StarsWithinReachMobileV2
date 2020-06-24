@@ -1,10 +1,14 @@
 import React from 'react';
-import {View, Text, SafeAreaView, TextInput, ScrollView, StyleSheet, FlatList, Image,  TouchableOpacity, LayoutAnimation, ShadowPropTypesIOS} from 'react-native'
+import { View, Text, SafeAreaView, TextInput, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, LayoutAnimation, ShadowPropTypesIOS } from 'react-native'
 import * as firebase from "firebase"
-import {Ionicons} from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import db from "firebase"
+import ViewMoreText from 'react-native-view-more-text';
 import Fire from '../Fire'
+import ShowMore from 'react-native-show-more-button';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 export default class JoinProject extends React.Component {
 
     // fillProjects = () => {
@@ -20,44 +24,63 @@ export default class JoinProject extends React.Component {
     //     }
     //     db.collection("projects").get()
     //         .then(onReceive.bind(this));
-  
+
     // }
     handleJoin = projectID => {
-      Fire.shared.joinProject(projectID)
-    
+        Fire.shared.joinProject(projectID)
+
     }
+    renderTopics = topic => {
+        return (
+            <View style = {{borderRadius: 5,paddingHorizontal: 15,backgroundColor: '#24305E', width: "100%",paddingVertical: 15, marginBottom: 15}}>
+                <Text style ={{alignSelf: 'center',color: "#F8E9A1", fontSize: 15, fontWeight: "600"}}>{topic}</Text>
+            </View>
+        )
+    }
+  
     renderProject = projectID => {
         const { params } = this.props.navigation.state;
         const projects = params ? params.otherParam : null;
- 
+
         const project = projects[projectID]
-
-       // const ref = firebase.storage().ref(post.image);
+        
+        // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
-         return (
+        return (
             <View style={styles.feedItem}>
-            {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
-            <View style={{ flex: 1, alignItems: 'center', }}>
-                <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
-                    <View style={{ flexDirection: 'row', }}>
-                        <Text style = {styles.name}>{project["title"].toUpperCase()}</Text>
+                {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
+                <View style={{ flex: 1, alignItems: 'center', }}>
+                    <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', }}>
+                            <Text style={styles.name}>{project["title"].toUpperCase()}</Text>
+                        </View>
+
                     </View>
+                    <Text style={styles.descrip}>{project.descrip}</Text>
+                    {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+               <ScrollView style ={{marginTop: 15,height: 90}}>
+                    <FlatList
+                    style = {{display: 'block', flexDirection: 'column'}}
+                    data={project.topics}
+                    renderItem={({ item }) => this.renderTopics(item)}
+                    keyExtractor={item => item.id}
+                    showsVerticalScrollIndicator={true}
+                />
+                </ScrollView>
 
+                    <TouchableOpacity onPress={() => this.handleJoin(projectID)} style={{ marginTop: 15 }}>
+                        <View style={{ flexDirection: "row", backgroundColor: "#F8E9A1", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 15 }} >
+                            <Text style={{ padding: 5, textAlignVertical: 'center', fontWeight: "400", fontSize: 20, color: "#F76C6C", fontWeight: "600" }}>JOIN GROUP</Text>
+
+                        </View>
+
+                    </TouchableOpacity>
+
+             
                 </View>
-                <Text style={styles.descrip}>{project.descrip}</Text>
-                 {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
-
-                 <TouchableOpacity onPress={() => this.handleJoin(projectID)} style = {{marginTop: 15}}> 
-                    <View style = {{flexDirection: "row", backgroundColor: "#F8E9A1", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15}} >                                  
-                    <Text style = {{fontWeight: "400", fontSize: 20, color: "#F76C6C", fontWeight: "600"}}>Join project</Text>
-                    <Ionicons name="ios-arrow-dropright" size={30} color={"#F76C6C"} style = {{marginLeft: 7, top:-1,}} />
-                    </View>   
-                </TouchableOpacity>
-      
+              
             </View>
-
-
-        </View>
+          
         )
     }
     render() {
@@ -66,35 +89,36 @@ export default class JoinProject extends React.Component {
         const projects = params ? params.otherParam : null;
         console.log("projects are ", projects)
         return (
-         
-            <View style = {styles.container}>
-    
-                <View style={styles.header}>
-                    <Text style={styles.headerTitle}>JOIN A PROJECT</Text>
-                    <TouchableOpacity style ={styles.back} onPress = {() => this.props.navigation.navigate("Projects")}>
-                 <Ionicons name = "ios-arrow-round-back" size ={32} color = "black"></Ionicons>
-                 </TouchableOpacity>
-                </View>
-               { projects && <FlatList
-                    style={styles.feed} 
-                    data={Object.keys(projects)} 
-                    renderItem={( elem ) => this.renderProject(elem.item)} 
-                    keyExtractor = {elem => elem.item}    
-                    showsVerticalScrollIndicator = {false}  
-               /> }
- 
-               {/* <View style = {{width: 15}}>
+
+            <View style={styles.container}>
+
+<View style={styles.header}>
+
+<TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
+    <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
+</TouchableOpacity>
+<Text style={styles.headerTitle}>JOIN A GROUP</Text>
+</View>
+                {projects && <FlatList
+                    style={styles.feed}
+                    data={Object.keys(projects)}
+                    renderItem={(elem) => this.renderProject(elem.item)}
+                    keyExtractor={elem => elem.item}
+                    showsVerticalScrollIndicator={false}
+                />}
+
+                {/* <View style = {{width: 15}}>
                 <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
                    <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>
                 </TouchableOpacity>  
                 </View> */}
 
             </View>
-           
-                /* <TouchableOpacity style ={{marginTop: 32}} onPress = {this.signOutUser}>
-                    <Text>Logout</Text>
-                </TouchableOpacity> */
-                
+
+            /* <TouchableOpacity style ={{marginTop: 32}} onPress = {this.signOutUser}>
+                <Text>Logout</Text>
+            </TouchableOpacity> */
+
         )
     }
 }
@@ -103,6 +127,60 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#24305E",
         flex: 1,
+    },
+   
+    feed: {
+        marginHorizontal: 16,
+    
+    },
+    feedItem: {
+        backgroundColor: "#F76C6C",
+        borderRadius: 15,
+        padding: 8,
+        flexDirection: 'row',
+        marginVertical: 15,
+        textAlign: 'left',
+        padding: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        width: wp('80%'),
+        alignSelf: 'center'
+    },
+    name: {
+        fontSize: 20,
+        fontWeight: "500",
+        color: "#F8E9A1",
+        marginBottom: 5
+    },
+    timestamp: {
+        fontSize: 15,
+        fontWeight: "500",
+        color: "#24305E"
+    },
+ 
+    postss: {
+        marginTop: 16,
+        fontSize: 14,
+        color: "#24305E"
+    },
+    postImage: {
+        height: 400,
+        width: undefined,
+        borderRadius: 5,
+       
+    },
+    image: {
+        width: undefined,
+        height: 300,
+        maxWidth: 500,
+        marginVertical: 15,
+     
     },
     header: {
         paddingTop: 64,
@@ -113,7 +191,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderBottomColor: '#F76C6C',
         flexDirection: "row",
-        width: "75%",
+        width: wp("45%"),
         paddingBottom: 5,
         marginBottom: 15,
         alignSelf: 'center'
@@ -123,58 +201,20 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         alignSelf: 'center',
         color: "#F8E9A1",
-       
-    },
-    feed: {
-        marginHorizontal: 25,
-        marginTop: 15
-    },
-    feedItem: {
-        marginTop: 25,
-        borderRadius: 5,
-        padding: 15,
-        flexDirection: 'row',
-        marginVertical: 8,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 6,
-        },
-        shadowOpacity: 0.37,
-        shadowRadius: 7.49,
-        elevation: 12,
-        backgroundColor: "#F76C6C",
-        borderRadius: 15
-    },
-    avatar: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        marginRight: 16
-    },
-    name: {
-        fontSize: 30,
-        fontWeight: "900",
-        alignSelf: 'center',
-        color: "#F8E9A1"
-        
-    },
-    descrip: {
-        marginTop: 6,
-        fontSize: 16,
-        color: "#23405E",
         textAlign: 'center'
     },
     back: {
         position: "absolute",
-        top: 60,
-        left: -35,
-        width: 42,
-        height: 42,
-        borderRadius: 21,
+        top: hp("8%"),
+        left: wp("-24%"),
+        width: wp("15%"),
+        height: hp("7.5%"),
+        borderRadius: 31,
         alignItems: 'center',
+
         backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
     },
-    
+
+
 })

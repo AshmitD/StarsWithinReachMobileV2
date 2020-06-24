@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import { Ionicons } from '@expo/vector-icons'
 import JoinProject from '../Screens/JoinProject'
 import MyProjects from '../Screens/MyProjects'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export default class AstronautSpaceEnthusiastPage extends React.Component {
     constructor() {
         super()
@@ -18,18 +19,20 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>MY PROJECTS</Text>
+                    <Text style={styles.headerTitle}>MY GROUPS</Text>
                 </View>
-            <View style = {{flexDirection: 'row', marginVertical: 15,backgroundColor: '#24305E'}}>
+
+             
+                <View style = {{flexDirection: 'row', marginVertical: 15,backgroundColor: '#24305E'}}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('JoinProject', {
                     otherParam: this.state.projects})} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
             
-                    <Text style = {{textAlign: 'center', fontSize: 20,fontWeight: "500",color: "#23405E",overflow: "hidden", borderRadius: 10, backgroundColor: "#F76C6C",paddingVertical: 15,textAlignVertical: 'center', width: 150,}}>JOIN</Text>
+                    <Text style = {{textAlign: 'center', fontSize: 20,fontWeight: "500",color: "#23405E",overflow: "hidden", borderRadius: 10, backgroundColor: "#F76C6C",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>JOIN</Text>
 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('CreateProject')} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
             
-                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center', width: 150,}}>CREATE</Text>
+                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>CREATE</Text>
 
                     </TouchableOpacity>
                 {/* <TouchableOpacity style = {{width: "50%", justifyContent: 'center', height: 50}} onPress={() => this.props.navigation.navigate("CreateProject")} >
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderBottomColor: '#F76C6C',
         flexDirection: "row",
-        width: "55%",
+     
         paddingBottom: 5,
         marginBottom: 15,
         alignSelf: 'center'
