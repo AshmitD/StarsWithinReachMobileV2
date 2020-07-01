@@ -47,7 +47,7 @@ export default class ProfilePage extends React.Component {
             return currName;
 
         }).then((currName) => {
-            Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image, name: currName })
+            Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image, name: currName})
                 .then(ref => {
                     console.log("handle post")
                     this.setState({ text: "", image: null })

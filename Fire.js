@@ -9,7 +9,7 @@ class Fire {
 
     addPost = async ({ text, localUri, name }) => {
         let remoteUri;
-        if(localUri) {
+        if (localUri) {
             console.log("this is url", localUri)
             remoteUri = await this.uploadPhotoAsync(localUri)
         }
@@ -26,7 +26,7 @@ class Fire {
                 timestamp: this.timestamp,
                 uid: this.uid,
                 image: remoteUri,
-
+                email: firebase.auth().currentUser.email,
             })
                 .then(ref => {
                     res(ref)
@@ -39,12 +39,12 @@ class Fire {
 
     }
     addComm = async ({ projectID, type, link }) => {
-       
+
 
         return new Promise((res, rej) => {
 
             this.firestore.collection("projects").doc(projectID).collection("CommunicationLinks").add({
-                type: type,
+                type: type.label,
                 link: link,
 
             })
@@ -60,7 +60,7 @@ class Fire {
     }
     addDesign = async ({ text, localUri, projectID, name }) => {
         let remoteUri;
-        if(localUri) {
+        if (localUri) {
             console.log("this is url", localUri)
             remoteUri = await this.uploadPhotoAsync(localUri)
         }
@@ -77,6 +77,7 @@ class Fire {
                 timestamp: this.timestamp,
                 uid: this.uid,
                 imageLink: remoteUri,
+                email: firebase.auth().currentUser.email,
 
             })
                 .then(ref => {
@@ -90,14 +91,18 @@ class Fire {
 
     }
     getUserData = async (email) => {
+        console.log("this is the email", email)
         return new Promise((res, rej) => {
             this.firestore.collection("users").where("email", "==", email)
                 .get()
                 .then(function (querySnapshot) {
+                    console.log("this",querySnapshot)
+                    //TODO MAKE THIS HANDLE THE CASE WHEN THERE ARE NO DOCUMENTS. IF YOU ARE ERRORING USING THIS METHOD, THAT MIGHT BE THE CAUSE.
                     querySnapshot.forEach(function (doc) {
                         // doc.data() is never undefined for query doc snapshots
-
+                        
                         res({ id: doc.id, user: doc.data() });
+                    
                     });
                 })
                 .catch(function (error) {
@@ -106,7 +111,7 @@ class Fire {
         })
     }
     addUser = async ({ name, email, who, shortBio, projects, topics }) => {
-       console.log("this is topics", topics)
+        console.log("this is topics", topics)
         return new Promise((res, rej) => {
 
             this.firestore.collection("users").add({
@@ -115,42 +120,60 @@ class Fire {
                 who: who,
                 shortBio: shortBio,
                 projects: projects,
-                topics: []
+                topics: [],
+                block: []
             })
                 .get().then(ref => {
                     console.log("this is topics in then", topics)
-                    this.getUserData(email).then(({ id}) => {   
-                            const userDoc = this.firestore.collection("users").doc(id)
-                            userDoc.update({
-                                topics: topics
-                            });
+                    this.getUserData(email).then(({ id }) => {
+                        const userDoc = this.firestore.collection("users").doc(id)
+                        userDoc.update({
+                            topics: topics
+                        });
                     })
                     res(ref)
                 })
                 .catch(error => {
                     console.log("this is the error", error)
                     rej(error)
-                      console.log(error)
+                    console.log(error)
                 })
-        }) 
+        })
     }
 
+    addBlock = email => {
+
+        return this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
+            const arr = user["block"]
+
+            if (arr.includes(email)) {
+                Alert.alert("You have already blocked this user.");
+                throw new Error("User has already been blocked");
+            } else {
+                arr.push(email)
+                const userDoc = this.firestore.collection("users").doc(id)
+                userDoc.update({
+                    block: arr
+                });
+            }
+        })
+    }
     joinProject = projectId => {
-        console.log("This is project id",projectId)
+        console.log("This is project id", projectId)
         this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
             const arr = user["projects"]
             console.log("This is usre", arr)
             if (arr.includes(projectId)) {
-               Alert.alert("You are already in this project.")
+                Alert.alert("You are already in this project.")
             } else {
                 arr.push(projectId)
                 const userDoc = this.firestore.collection("users").doc(id)
                 userDoc.update({
                     projects: arr
                 });
-             
+
             }
-       
+
         })
 
     }
@@ -164,15 +187,12 @@ class Fire {
                 endGoal: endGoal,
                 topics: topics
             })
-                .then(ref => {
-                    console.log("This is ref", ref.data())
-                    this.joinProject
-                    res(ref)
+                .then((docRef) => {
+                    this.joinProject(docRef.id)
                 })
-                .catch(error => {
-                    rej(error)
-                    // console.log("The error is", error)
-                })
+                .catch(function (error) {
+                    console.error("Error adding document: ", error);
+                });
         })
     }
     uploadPhotoAsync = async uri => {
@@ -219,4 +239,3 @@ class Fire {
 
 Fire.shared = new Fire()
 export default Fire
- 

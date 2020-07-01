@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, ScrollView, Image, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native'
+import { View, TouchableHighlight, Modal, ScrollView, Image, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native'
 import firebase from 'firebase'
 import { Ionicons } from '@expo/vector-icons'
 import Fire from '../Fire'
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomMultiPicker from "react-native-multiple-select-list";
 
+import CheckBox from 'react-native-check-box'
 var userList = ["Spaceship design", "Special materials",
     "Eating food grown in space",
     "New propulsion designs",
@@ -27,21 +28,25 @@ export default class RegisterScreen extends React.Component {
         errorMessage: null,
         who: "Space Enthusiast",
         shortBio: "",
-        topics: []
+        topics: [],
+        modalVisible: false
 
     }
-
+    setModalVisible = (visible) => {
+        this.setState({ modalVisible: visible });
+    }
     handleSignUp = () => {
-       
+
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(userCredentials => { Fire.shared.addUser({ name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: [], topics: this.state.topics })
-                .then(userCredentials => {
-                    // return userCredentials.user.updateProfile({
-                    //     displayName: this.state.name
-                    // })
-                })
-                .catch(error => console.log("The error is", error)
-                )
+            .then(userCredentials => {
+                Fire.shared.addUser({ name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: [], topics: this.state.topics })
+                    .then(userCredentials => {
+                        // return userCredentials.user.updateProfile({
+                        //     displayName: this.state.name
+                        // })
+                    })
+                    .catch(error => console.log("The error is", error)
+                    )
                 return userCredentials.user.updateProfile({
                     displayName: this.state.name
                 })
@@ -49,6 +54,7 @@ export default class RegisterScreen extends React.Component {
             .catch(error => this.setState({ errorMessage: error.message }))
     }
     render() {
+        const { modalVisible } = this.state;
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -126,8 +132,8 @@ export default class RegisterScreen extends React.Component {
                             options={userList}
                             multiple={true}
                             returnValue={"label"} // label or value
-                            callback={(res) => {  
-                                this.setState({topics: res}) 
+                            callback={(res) => {
+                                this.setState({ topics: res })
                             }} // callback, array of selected items
                             rowBackgroundColor={"#eee"}
                             rowHeight={40}
@@ -139,6 +145,164 @@ export default class RegisterScreen extends React.Component {
                             scrollViewHeight={130}
                         //selected={[1,2]} // list of options which are selected by default
                         />
+                        <View style={styles.centeredView}>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                    Alert.alert("Modal has been closed.");
+                                }}
+                            >
+                                <View style={{ maringTop: 15, textAlign: 'left' }}>
+                                    <View style={styles.modalView}>
+
+                                        <ScrollView>
+                                            <View style={{ alignSelf: 'center', borderBottomColor: "#F8E9A1", borderBottomWidth: 5, marginBottom: 15 }}><Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 25, color: "#F76C6C" }}>Terms and Services</Text></View>
+                                            <Text>By using the Stars Within Reach Application you are agreeing to be bound by the following terms and conditions ("Terms of Use"). {'\n'}
+                                            </Text>
+                                            <Text style={{ fontWeight: "600", fontSize: 15, color: "black" }}>{'\n'}Responsibilities of the Users:</Text>
+                                            <View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users may not share any content that can cause a negative effect on the overall environment of the app
+</Text>
+                                                </View>
+
+                                            </View>
+                                            <View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users may not share anything that would be considered inappropriate
+</Text>
+                                                </View>
+
+                                            </View>
+                                            <View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users may not share anything that targets a specific race, religion or person in a derogatory way
+</Text>
+                                                </View>
+
+                                            </View>
+                                            <View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users should report any content that violates their rights or any content that they believe is unfit for this learning environment
+</Text>
+                                                </View>
+
+                                            </View><View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users may not use the SWR Application for any illegal or unauthorized purpose.
+
+</Text>
+                                                </View>
+                                            </View><View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users are responsible for any activity that occurs under your screen name.
+</Text>
+                                                </View>
+                                            </View><View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users are responsible for keeping their password secure.
+</Text>
+                                                </View>
+                                            </View><View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users are solely responsible for their conduct and any data, text, information, screen names, graphics, photos, profiles, links ("Content") that they submit, post, and display on the SWR service.
+</Text>
+                                                </View>
+                                            </View><View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>Users may not modify, adapt or hack Stars Within Reach software or modify another website so as to falsely imply that it is associated with Stars Within Reach.
+
+</Text>
+                                                </View>
+                                            </View>
+                                            <Text style={{ fontWeight: "600", fontSize: 15, color: "black" }}>{'\n'}General Conditions:</Text>
+                                            <View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>We reserve the right to modify or terminate the SWR Application for any reason, without notice at any time.
+
+</Text>
+                                                </View>
+                                            </View><View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>We reserve the right to refuse service to anyone for any reason at any time.
+
+</Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>We reserve the right to force forfeiture of any username that becomes inactive, violates trademark, or may mislead other users.
+
+</Text></View>
+                                            </View>
+                                            <View style={styles.row}>
+                                                <View style={styles.bullet}>
+                                                    <Text>{'\u2022' + " "}</Text>
+                                                </View>
+                                                <View style={styles.bulletText}>
+                                                    <Text>We will remove Content and accounts containing Content that we determine in our sole discretion are unlawful, offensive, threatening, libelous, defamatory, obscene or otherwise objectionable or violates any party's intellectual property or these Terms of Use.
+</Text></View>
+                                            </View></ScrollView>
+                                        <TouchableHighlight
+                                            style={{ backgroundColor: 'white', borderBottomColor: "#24305E", borderBottomWidth: 3 }}
+                                            onPress={() => {
+                                                this.setModalVisible(!modalVisible);
+                                            }}
+                                        >
+                                            <Text style={{ color: "#24305E", fontSize: 25, bottom: 25}}>Close</Text>
+                                        </TouchableHighlight>
+                                    </View>
+                                </View>
+                            </Modal>
+
+                            <TouchableHighlight
+                                style={styles.openButton}
+                                onPress={() => {
+                                    this.setModalVisible(true);
+                                }}
+                            >
+                                <Text style={{ lineHeight: 25, paddingHorizontal: 12, marginTop: 25, fontSize: 15, color: "black" }}>By signing up you agree to our <Text style={{ fontSize: 16, fontWeight: "500", color: "#24305E" }}>Terms and Services</Text>. You can always contact us with any questions.</Text>
+                            </TouchableHighlight>
+                        </View>{/*  */}
+
                     </View>
 
                     <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
@@ -162,7 +326,7 @@ export default class RegisterScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        height: 1200
+        height: 1400
     },
     greeting: {
         marginTop: 22,
@@ -224,6 +388,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: -1,
     },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+        flex: 1,
+        marginVertical: 4
+    },
+    bullet: {
+        width: 10
+    },
+    bulletText: {
+        flex: 1
+    },
     back: {
         position: "absolute",
         top: 40,
@@ -234,5 +411,38 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
-    }
+    },
+
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    openButton: {
+
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        alignSelf: 'auto'
+
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
 })

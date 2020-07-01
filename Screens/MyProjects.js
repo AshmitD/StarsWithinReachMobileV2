@@ -67,7 +67,9 @@ export default class MyProjects extends React.Component {
         return (
 
             <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={true} indicatorStyle = "white">
+                {this.state.projectIDs==0 && <View style ={{alignSelf: 'center'}}>
+                    <Text style ={{textAlign:'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25,marginTop: hp("25%")}}>You aren't in any groups yet... Join a group!</Text>
+                </View>}
                 {<FlatList
                     style={styles.feed}
                     data={this.state.projectIDs}
@@ -80,7 +82,7 @@ export default class MyProjects extends React.Component {
                    <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>
                 </TouchableOpacity>  
                 </View> */}
-    </ScrollView>
+
             </View>
 
             /* <TouchableOpacity style ={{marginTop: 32}} onPress = {this.signOutUser}>

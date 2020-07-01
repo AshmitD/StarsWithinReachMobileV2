@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Modal, TouchableHighlight,FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import firebase from 'firebase'
+import Fire from '../Fire'
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native-gesture-handler'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -17,35 +18,58 @@ export default class OneProjectScreen extends React.Component {
         this.state = {
             orderedDocs: [],
             projectID: currProjectID,
-            projectContent: {}
+            projectContent: {},
+            modalVisible: false
         }
-
         firebase.firestore().collection('projects').doc(currProjectID).get().then((doc) => {
             this.setState({ projectContent: doc.data() })
 
         })
-        firebase.firestore().collection("projects")
-            .doc(currProjectID).collection("projectPosts").orderBy("timestamp", "desc")
-            .get().then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    orderedDocs.push(doc.data())
+      Fire.shared.getUserData(firebase.auth().currentUser.email)
+     .then(({user}) => {
+         return user["block"];
+     })
+     .then((blockArr)=> {
+         // TODO MOVE THIS LOGIC TO THE FIRE CLASS DONT BE GARBGE
+         firebase.firestore().collection("projects").doc(currProjectID).collection('projectPosts').orderBy("timestamp", "desc")
+         .get().then(function (querySnapshot) {
+             console.log(querySnapshot)
+             querySnapshot.forEach(function (doc) {
+                 // doc.data() is never undefined for query doc snapshots
+                 console.log("this is ordered", orderedDocs)
+                 orderedDocs.push({ ...doc.data(), id: doc.id})
 
-                });
-            })
-            .then(() => {
-                this.setState({ orderedDocs: orderedDocs })
-                console.log("orederd", this.state.orderedDocs)
-            })
-
-        // .then(() => {
-        //     this.fillProjects()
-        //  })
-
+             });
+         })
+         .then(() => {
+             console.log("this is ordered", orderedDocs)
+             const filteredPosts = orderedDocs.filter((post)=> {
+                 return !blockArr.includes(post["email"]);
+             });
+             const withKey = filteredPosts.map(post => ({
+                 ...post,
+                 key: post.id
+             }));
+             this.setState({ orderedDocs: withKey});
+             console.log("orederd", this.state.posts);
+         })
+     })
 
 
     }
+    blockUser = (email) => {
+        Fire.shared.addBlock(email)
+            .then(userCredentials => {
+               alert(`User blocked`)
+            })
+            .catch(error => console.log("The error is", error)
+            )
+    }
+    setModalVisible = (visible) => {
+        this.setState({ modalVisible: visible });
+      }
     renderPost = design => {
+        const { modalVisible } = this.state;
         // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
         return (
@@ -58,10 +82,52 @@ export default class OneProjectScreen extends React.Component {
                             <Text style={styles.name}>{design.name}</Text>
                             <Text style={styles.timestamp}>{moment(design.timestamp).fromNow()}</Text>
                         </View>
-                        <TouchableOpacity style={{ backgroundColor: "rgba(36, 48, 94, 0.9)", borderRadius: 15, o: 80 }} onPress={() => this.props.navigation.navigate('Report', {
+                        <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+            
+             <TouchableOpacity onPress={() => this.props.navigation.navigate('Report', {
                             otherParam: design,
-                        })}><Ionicons name="ios-flag" size={24} style={{ alignSelf: 'center', paddingHorizontal: 15, paddingVertical: 7.5 }} color="grey" /></TouchableOpacity>
+                        })}>
+                    <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS POST</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style ={{marginTop: 15}}onPress={() => this.props.navigation.navigate('ReportUser', {
+                            otherParam: design,
+                        })}>
+                    <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS USER</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style ={{marginTop: 15}} onPress={() => this.blockUser(design["email"])}>
+                    <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>BLOCK THIS USER</Text>
+                </TouchableOpacity>
+              <TouchableHighlight
+               style ={{marginTop: 15, borderBottomColor: "#24305E", borderBottomWidth: 3}}
+                onPress={() => {
+                  this.setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={{color: "#24305E"}}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
 
+        <TouchableHighlight
+          style={styles.openButton}
+          onPress={() => {
+            this.setModalVisible(true);
+          }}
+        >
+          <Ionicons name = "ios-more" color = "#0a0f21"size ={36}></Ionicons>
+        </TouchableHighlight>
+      </View>
                     </View>
                     <Text style={styles.postss}>{design.text}</Text>
                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
@@ -127,6 +193,7 @@ export default class OneProjectScreen extends React.Component {
                                 })} style = {{alignSelf: 'center',}} size = {32} color = "#24305E"></Ionicons>
                   </TouchableOpacity> 
                 </View>  */}
+               
 
                 <FlatList
                     style={styles.feed}
@@ -179,6 +246,45 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         alignSelf: 'center'
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+      },
+      openButton: {
+        
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        bottom: 25,
+        left: 80
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+      },
     headerTitle: {
         fontSize: 30,
         fontWeight: "500",

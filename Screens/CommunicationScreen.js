@@ -5,6 +5,7 @@ import moment from 'moment'
 import firebase from 'firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import Fire from '../Fire'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import DropDownPicker from 'react-native-dropdown-picker';
 export default class OneProjectScreen extends React.Component {
     constructor(props) {
@@ -27,7 +28,7 @@ export default class OneProjectScreen extends React.Component {
             })
             .then(() => {
                 this.setState({ arrLinks: orderedDocs })
-                console.log("orederd", this.state.posts)
+       
             })
 
 
@@ -80,55 +81,26 @@ export default class OneProjectScreen extends React.Component {
                     <Text style={styles.headerTitle}>Communicate</Text>
                 </View>
 
-
-                <FlatList
+               { !this.state.arrLinks && <View style ={{alignSelf: 'center'}}>
+                    <Text style ={{textAlign:'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25,marginTop: hp("15%")}}>There aren't any ways to communicate yet... Add a link!</Text>
+                </View>}
+              <FlatList
                     style={styles.feed}
                     data={this.state.arrLinks}
                     renderItem={({ item }) => this.renderPost(item)}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
                 />
-                <View style = {{alignSelf: 'center', borderBottomColor: "#F8E9A1", borderBottomWidth: 3, width: "90%", marginBottom: 30}}></View>
-               <View style ={{marginBottom: 150}}>
-                <View style={{ marginHorizontal: 25}}>
-                  <View style ={{alignSelf: 'center', marginBottom: 25, borderColor: '#F76C6C', padding: 5,borderBottomWidth: 5, width: "80%"}} ><Text style={styles.headerTitle}>ADD A LINK</Text></View> 
-                    <View style={{ flexDirection: "row" }}>
-                        <Text style={styles.inputTitle}>What platform is this link for?</Text>
-                       
-                    </View>
-                    <DropDownPicker style={{
-                     
-                         borderRadius: 0,backgroundColor: "#F8E9A1", zIndex: 2031, position: 'absolute',
-                    }}
-                        items={[
-                            { label: 'Google Classroom', value: 'Google Classroom' },
-                            { label: 'Discord', value: 'Discord' },
-                            { label: 'Google Hangouts', value: 'Google Hangouts' },
-                            { label: 'Google Meet', value: 'Google Meet' },
-                     
-                        ]}
-                        defaultIndex={0}
-                       
-                        containerStyle={{ height: 50 }}
-                        onChangeItem={type => this.setState({ type })}
-                    />
-                </View>
-                <View style={{ marginTop: 32, zIndex: -1, marginHorizontal: 25 }}>
-                    <Text style={styles.inputTitle}>Insert the link here:</Text>
-                    <TextInput
-                        style={styles.longText}
-
-                        multiline={true} numberOfLines={1}
-                        onChangeText={link => this.setState({ link })}
-                        value={this.state.link}
-                    ></TextInput>
-                </View>
-                <TouchableOpacity style = {styles.button} onPress={this.handleAdd}>
-                <Text style = {{color: "#F8E9A1", fontWeight: '500', fontSize: 15}}>ADD LINK</Text>
-             </TouchableOpacity>
+             
+              
+                <TouchableOpacity style = {styles.button} onPress={() => this.props.navigation.navigate('AddLink', {
+                        otherParam: this.state.projectID,
+                    })} >
+                <Text style = {{color: "#F8E9A1", fontWeight: '500', fontSize: 15}}>ADD A LINK</Text>
+               </TouchableOpacity>
         
 
-                </View>
+
                
             </View>
         )
@@ -143,13 +115,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#24305E',
         height: "100%"
     },
-    longText: {
-        borderBottomColor: "#8a8F9E",
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        height: 30,
-        fontSize: 15,
-        color: "#161F3D",
-    },
+    // longText: {
+    //     borderBottomColor: "#8a8F9E",
+    //     borderBottomWidth: StyleSheet.hairlineWidth,
+    //     height: 30,
+    //     fontSize: 15,
+    //     color: "#161F3D",
+    // },
     feed: {
         marginHorizontal: 16,
 
@@ -163,7 +135,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderBottomColor: '#F76C6C',
         flexDirection: "row",
-        width: "85%",
+       
         paddingBottom: 5,
         marginBottom: 15,
         marginTop: -5,
@@ -179,8 +151,8 @@ const styles = StyleSheet.create({
     },
     back: {
         position: "absolute",
-        top: 65,
-        left: -20,
+        top: hp("9%"),
+        left: wp("-18%"),
         width: 42,
         height: 42,
         borderRadius: 21,
@@ -191,7 +163,7 @@ const styles = StyleSheet.create({
    
     button: {
         marginHorizontal: 30,
-        marginTop: 15,
+        marginBottom: hp("25%"),
         backgroundColor: "#F76C6C",
         borderRadius: 4,
         height: 52,

@@ -7,6 +7,7 @@ import {Ionicons} from '@expo/vector-icons'
 import RegisterScreen from './Screens/RegisterScreen';
 import HomeScreen from './Screens/HomeScreen';
 import LoginScreen from './Screens/LoginScreen';
+
 import * as firebase from 'firebase'
 import CreatePostScreen from './Screens/CreatePostScreen'
 import AboutScreen from './Screens/About'
@@ -14,7 +15,9 @@ import ProjectsScreen from './Screens/Projects'
 import GroupsScreen from './Screens/Groups'
 import ProfilePage from './Screens/ProfilePage'
 import firebaseKeys from './Config'
+import AddLinkScreen from './Screens/AddLink'
 import ReportScreen from './Screens/Report'
+import ReportUserScreen from './Screens/ReportUser'
 import JoinProjectScreen from './Screens/JoinProject'
 import UploadDesignScreen from './Screens/UploadDesign'
 import OneProjectScreen from './Screens/OneProjectScreen'
@@ -45,30 +48,29 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({tintColor}) => <Ionicons 
         style = {{
           alignContent: 'center',
-   
           shadowColor: "#E9446A",
           shadowOffset: {width: 0, height: 0, shadowRadius: 10, shadowOpacity: 0.3}
         }}
         name = "ios-document" 
         size = {24} 
         color = {tintColor}/>,
-     
+  
       }
     },
-    Group: {
-      screen: GroupsScreen,
-      navigationOptions: {
-        tabBarIcon: ({tintColor}) => <Ionicons 
-        style = {{
-          alignContent: 'center',
-          shadowColor: "#E9446A",
-          shadowOffset: {width: 0, height: 0, shadowRadius: 10, shadowOpacity: 0.3}
-        }}
-        name = "ios-people" 
-        size = {24} 
-        color = {tintColor}/> 
-      }
-    },
+    // Group: {
+    //   screen: GroupsScreen,
+    //   navigationOptions: {
+    //     tabBarIcon: ({tintColor}) => <Ionicons 
+    //     style = {{
+    //       alignContent: 'center',
+    //       shadowColor: "#E9446A",
+    //       shadowOffset: {width: 0, height: 0, shadowRadius: 10, shadowOpacity: 0.3}
+    //     }}
+    //     name = "ios-people" 
+    //     size = {24} 
+    //     color = {tintColor}/> 
+    //   }
+    // },
     // Profile: {
     //   screen: ProfilePage,
     //   navigationOptions: {
@@ -128,6 +130,12 @@ const OtherStack = createSwitchNavigator({
       header: () => false
     }
   },
+  ReportUser: {
+    screen: ReportUserScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
   CreateProject: {
     screen: CreateNewProjectScreen,
     navigationOptions: {
@@ -140,6 +148,7 @@ const OtherStack = createSwitchNavigator({
       header: () => false
     }
   },
+  
   JoinProject: {
     screen: JoinProjectScreen,
     navigationOptions: {
@@ -148,6 +157,12 @@ const OtherStack = createSwitchNavigator({
   },
   UploadDesign: {
     screen: UploadDesignScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  AddLink: {
+    screen: AddLinkScreen,
     navigationOptions: {
       header: () => false
     }

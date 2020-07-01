@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderBottomColor: '#F76C6C',
         flexDirection: "row",
-        width: wp("45%"),
+       
         paddingBottom: 5,
         marginBottom: 15,
         alignSelf: 'center'
@@ -210,8 +210,8 @@ const styles = StyleSheet.create({
     },
     back: {
         position: "absolute",
-        top: hp("6%"),
-        left: wp("-24%"),
+        top: hp("9%"),
+        left: wp("-16%"),
         width: wp("15%"),
         height: hp("7.5%"),
         borderRadius: 31,

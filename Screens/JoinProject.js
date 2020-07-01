@@ -1,14 +1,9 @@
 import React from 'react';
-import { View, Text, SafeAreaView, TextInput, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, LayoutAnimation, ShadowPropTypesIOS } from 'react-native'
-import * as firebase from "firebase"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, LayoutAnimation } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import moment from 'moment'
-import db from "firebase"
-import ViewMoreText from 'react-native-view-more-text';
 import Fire from '../Fire'
-import ShowMore from 'react-native-show-more-button';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import moment from 'moment'
 export default class JoinProject extends React.Component {
 
     // fillProjects = () => {
@@ -26,24 +21,25 @@ export default class JoinProject extends React.Component {
     //         .then(onReceive.bind(this));
 
     // }
+   
     handleJoin = projectID => {
         Fire.shared.joinProject(projectID)
 
     }
     renderTopics = topic => {
         return (
-            <View style = {{borderRadius: 5,paddingHorizontal: 15,backgroundColor: '#24305E', width: "100%",paddingVertical: 15, marginBottom: 15}}>
-                <Text style ={{alignSelf: 'center',color: "#F8E9A1", fontSize: 15, fontWeight: "600"}}>{topic}</Text>
+            <View style={{ borderRadius: 5, paddingHorizontal: 15, backgroundColor: '#24305E', width: "100%", paddingVertical: 15, marginBottom: 15 }}>
+                <Text style={{ alignSelf: 'center', color: "#F8E9A1", fontSize: 15, fontWeight: "600" }}>{topic}</Text>
             </View>
         )
     }
-  
+
     renderProject = projectID => {
         const { params } = this.props.navigation.state;
         const projects = params ? params.otherParam : null;
 
         const project = projects[projectID]
-        
+      
         // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
         return (
@@ -58,15 +54,15 @@ export default class JoinProject extends React.Component {
                     </View>
                     <Text style={styles.descrip}>{project.descrip}</Text>
                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
-               <ScrollView style ={{marginTop: 15,height: 90}}>
-                    <FlatList
-                    style = {{display: 'block', flexDirection: 'column'}}
-                    data={project.topics}
-                    renderItem={({ item }) => this.renderTopics(item)}
-                    keyExtractor={item => item.id}
-                    showsVerticalScrollIndicator={true}
-                />
-                </ScrollView>
+                   
+                        <FlatList
+                         listKey={moment().valueOf().toString()}
+                            data={project.topics}
+                            renderItem={({ item }) => this.renderTopics(item)}
+                            keyExtractor={item => item.id}
+                            showsVerticalScrollIndicator={true}
+                        />
+     
 
                     <TouchableOpacity onPress={() => this.handleJoin(projectID)} style={{ marginTop: 15 }}>
                         <View style={{ flexDirection: "row", backgroundColor: "#F8E9A1", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 15 }} >
@@ -76,11 +72,11 @@ export default class JoinProject extends React.Component {
 
                     </TouchableOpacity>
 
-             
+
                 </View>
-              
+
             </View>
-          
+
         )
     }
     render() {
@@ -92,13 +88,13 @@ export default class JoinProject extends React.Component {
 
             <View style={styles.container}>
 
-<View style={styles.header}>
+                <View style={styles.header}>
 
-<TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
-    <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
-</TouchableOpacity>
-<Text style={styles.headerTitle}>JOIN A GROUP</Text>
-</View>
+                    <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
+                        <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
+                    </TouchableOpacity>
+                    <Text style={styles.headerTitle}>JOIN A GROUP</Text>
+                </View>
                 {projects && <FlatList
                     style={styles.feed}
                     data={Object.keys(projects)}
@@ -128,10 +124,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#24305E",
         flex: 1,
     },
-   
+
     feed: {
         marginHorizontal: 16,
-    
+
     },
     feedItem: {
         backgroundColor: "#F76C6C",
@@ -163,7 +159,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         color: "#24305E"
     },
- 
+
     postss: {
         marginTop: 16,
         fontSize: 14,
@@ -173,14 +169,14 @@ const styles = StyleSheet.create({
         height: 400,
         width: undefined,
         borderRadius: 5,
-       
+
     },
     image: {
         width: undefined,
         height: 300,
         maxWidth: 500,
         marginVertical: 15,
-     
+
     },
     header: {
         paddingTop: 64,
@@ -191,7 +187,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         borderBottomColor: '#F76C6C',
         flexDirection: "row",
-        width: wp("45%"),
+
         paddingBottom: 5,
         marginBottom: 15,
         alignSelf: 'center'
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
     back: {
         position: "absolute",
         top: hp("8%"),
-        left: wp("-24%"),
+        left: wp("-20%"),
         width: wp("15%"),
         height: hp("7.5%"),
         borderRadius: 31,
