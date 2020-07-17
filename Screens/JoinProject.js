@@ -22,8 +22,8 @@ export default class JoinProject extends React.Component {
 
     // }
    
-    handleJoin = projectID => {
-        Fire.shared.joinProject(projectID)
+    handleJoin = (projectID, project) => {
+        Fire.shared.joinProject(projectID, project)
 
     }
     renderTopics = topic => {
@@ -64,7 +64,7 @@ export default class JoinProject extends React.Component {
                         />
      
 
-                    <TouchableOpacity onPress={() => this.handleJoin(projectID)} style={{ marginTop: 15 }}>
+                    <TouchableOpacity onPress={() => this.handleJoin(projectID, project)} style={{ marginTop: 15 }}>
                         <View style={{ flexDirection: "row", backgroundColor: "#F8E9A1", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 15 }} >
                             <Text style={{ padding: 5, textAlignVertical: 'center', fontWeight: "400", fontSize: 20, color: "#F76C6C", fontWeight: "600" }}>JOIN GROUP</Text>
 
@@ -83,7 +83,7 @@ export default class JoinProject extends React.Component {
         LayoutAnimation.easeInEaseOut()
         const { params } = this.props.navigation.state;
         const projects = params ? params.otherParam : null;
-        console.log("projects are ", projects)
+
         return (
 
             <View style={styles.container}>

@@ -4,10 +4,14 @@ import {createStackNavigator} from 'react-navigation-stack';
 import LoadingScreen from './Screens/LoadingScreen';
 import {createBottomTabNavigator} from 'react-navigation-tabs'
 import {Ionicons} from '@expo/vector-icons'
+import ViewProfileScreen from './Screens/ViewProfile'
 import RegisterScreen from './Screens/RegisterScreen';
 import HomeScreen from './Screens/HomeScreen';
 import LoginScreen from './Screens/LoginScreen';
-
+import ChatScreen from './Screens/ChatScreen';
+import AllChatScreens from './Screens/AllChatScreens'
+import ProjectMoreInfoScreen from './Screens/ProjectMoreInfo'
+import LoginScreen2 from './Screens/LoginScreen2'
 import * as firebase from 'firebase'
 import CreatePostScreen from './Screens/CreatePostScreen'
 import AboutScreen from './Screens/About'
@@ -55,6 +59,16 @@ const AppTabNavigator = createBottomTabNavigator(
         size = {24} 
         color = {tintColor}/>,
   
+      }
+    },
+    Chat: {
+      screen: AllChatScreens,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => <Ionicons
+        style = {{alignContent: 'center'}}
+        name = "ios-chatboxes" 
+        size = {24} 
+        color = {tintColor}/> 
       }
     },
     // Group: {
@@ -120,6 +134,24 @@ const AuthStack = createStackNavigator({
 const OtherStack = createSwitchNavigator({
   CreatePost: {
     screen: CreatePostScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  ProjectMoreInfo: {
+    screen: ProjectMoreInfoScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  ViewProfile: {
+    screen: ViewProfileScreen,
+    navigationOptions: {
+      header: () => false
+    }
+  },
+  ChatScreen: {
+    screen: ChatScreen,
     navigationOptions: {
       header: () => false
     }

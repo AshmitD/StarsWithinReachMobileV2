@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, TouchableHighlight, Modal, ScrollView, Image, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native'
+import { View, TouchableHighlight, Modal, ScrollView, Image, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Alert } from 'react-native'
 import firebase from 'firebase'
 import { Ionicons } from '@expo/vector-icons'
 import Fire from '../Fire'
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomMultiPicker from "react-native-multiple-select-list";
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CheckBox from 'react-native-check-box'
 var userList = ["Spaceship design", "Special materials",
     "Eating food grown in space",
@@ -36,7 +36,13 @@ export default class RegisterScreen extends React.Component {
         this.setState({ modalVisible: visible });
     }
     handleSignUp = () => {
+        if(this.state.name.length <=0) {
+            this.setState({ errorMessage: "Please enter your name." })
+        }  else if(this.state.shortBio.length <=0) {
+            this.setState({ errorMessage: "Please enter something in the short bio field." })
+        } else {
 
+        
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(userCredentials => {
                 Fire.shared.addUser({ name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: [], topics: this.state.topics })
@@ -52,6 +58,7 @@ export default class RegisterScreen extends React.Component {
                 })
             })
             .catch(error => this.setState({ errorMessage: error.message }))
+        }
     }
     render() {
         const { modalVisible } = this.state;
@@ -80,7 +87,7 @@ export default class RegisterScreen extends React.Component {
                                 value={this.state.name}></TextInput>
                         </View>
                         <View style={{ marginTop: 32 }}>
-                            <Text style={styles.inputTitle}>Email Adress</Text>
+                            <Text style={styles.inputTitle}>Email address</Text>
                             <TextInput
                                 style={styles.input}
                                 autoCapitalize="none"
@@ -109,13 +116,13 @@ export default class RegisterScreen extends React.Component {
                             ></TextInput>
                         </View>
                         <View style={{ marginTop: 32 }}>
-                            <Text style={styles.inputTitle}>Who are you?</Text>
+                            <Text style={styles.inputTitle}>What best describes you?</Text>
                             <DropDownPicker style={{
                                 borderBottomColor: "#8a8F9E",
                                 borderBottomWidth: StyleSheet.hairlineWidth, zIndex: 2031, position: 'absolute', borderColor: '#FFF'
                             }}
                                 items={[
-                                    { label: 'Space Enthusiast', value: 'Space Enthusiast' },
+                                    { label: 'Space and STEM Enthusiast', value: 'Space Enthusiast' },
                                     { label: 'Professional', value: 'Space Professional' },
                                     { label: 'Student', value: 'Young Girl' },
 
@@ -154,11 +161,23 @@ export default class RegisterScreen extends React.Component {
                                     Alert.alert("Modal has been closed.");
                                 }}
                             >
-                                <View style={{ maringTop: 15, textAlign: 'left' }}>
+                                <View style={{ width: "100%",marginTop: 15, textAlign: 'left' }}>
                                     <View style={styles.modalView}>
-
+                                        <View style = {{flexDirection: 'row'}}>
+                                    <TouchableHighlight
+                                            style={{ position: 'absolute', top: hp("-1%"),left: wp("60%"),backgroundColor: 'rgba(255, 255, 255, 0.8)'}}
+                                            onPress={() => {
+                                                this.setModalVisible(!modalVisible);
+                                            }}
+                                        >
+                                        <Ionicons name="ios-close" size={52} color="black"></Ionicons>
+                                       
+                                        </TouchableHighlight>
+                                        <View style={{ alignSelf: 'center', borderBottomColor: "#F8E9A1", borderBottomWidth: 5, marginBottom: 15 }}><Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 25, color: "#F76C6C" }}>Terms and Services</Text></View>
+                                        </View>
                                         <ScrollView>
-                                            <View style={{ alignSelf: 'center', borderBottomColor: "#F8E9A1", borderBottomWidth: 5, marginBottom: 15 }}><Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 25, color: "#F76C6C" }}>Terms and Services</Text></View>
+                                       
+                                          
                                             <Text>By using the Stars Within Reach Application you are agreeing to be bound by the following terms and conditions ("Terms of Use"). {'\n'}
                                             </Text>
                                             <Text style={{ fontWeight: "600", fontSize: 15, color: "black" }}>{'\n'}Responsibilities of the Users:</Text>
@@ -280,15 +299,8 @@ export default class RegisterScreen extends React.Component {
                                                 <View style={styles.bulletText}>
                                                     <Text>We will remove Content and accounts containing Content that we determine in our sole discretion are unlawful, offensive, threatening, libelous, defamatory, obscene or otherwise objectionable or violates any party's intellectual property or these Terms of Use.
 </Text></View>
-                                            </View></ScrollView>
-                                        <TouchableHighlight
-                                            style={{ backgroundColor: 'white', borderBottomColor: "#24305E", borderBottomWidth: 3 }}
-                                            onPress={() => {
-                                                this.setModalVisible(!modalVisible);
-                                            }}
-                                        >
-                                            <Text style={{ color: "#24305E", fontSize: 25, bottom: 25}}>Close</Text>
-                                        </TouchableHighlight>
+                                            </View><View style ={{height: 200}}></View></ScrollView>
+                                     
                                     </View>
                                 </View>
                             </Modal>
@@ -315,7 +327,9 @@ export default class RegisterScreen extends React.Component {
 
                         </Text>
                     </TouchableOpacity>
-
+                    <View style={styles.errorMessage}>
+                        {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+                    </View>
                 </View>
 
             </ScrollView>

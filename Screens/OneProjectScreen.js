@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import firebase from 'firebase'
 import Fire from '../Fire'
+
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native-gesture-handler'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -14,47 +15,62 @@ export default class OneProjectScreen extends React.Component {
         const { params } = this.props.navigation.state;
         const currProjectID = params ? params.otherParam : null;
         const orderedDocs = []
-
+// ADD MULTI MODAL CRAP HERE
         this.state = {
             orderedDocs: [],
             projectID: currProjectID,
             projectContent: {},
-            modalVisible: false
+            showModalArr: []
         }
         firebase.firestore().collection('projects').doc(currProjectID).get().then((doc) => {
             this.setState({ projectContent: doc.data() })
 
         })
-      Fire.shared.getUserData(firebase.auth().currentUser.email)
-     .then(({user}) => {
-         return user["block"];
-     })
-     .then((blockArr)=> {
-         // TODO MOVE THIS LOGIC TO THE FIRE CLASS DONT BE GARBGE
-         firebase.firestore().collection("projects").doc(currProjectID).collection('projectPosts').orderBy("timestamp", "desc")
-         .get().then(function (querySnapshot) {
-             console.log(querySnapshot)
-             querySnapshot.forEach(function (doc) {
-                 // doc.data() is never undefined for query doc snapshots
-                 console.log("this is ordered", orderedDocs)
-                 orderedDocs.push({ ...doc.data(), id: doc.id})
+        Fire.shared.getUserData(firebase.auth().currentUser.email)
+        .then(({ user }) => {
+          const blockArr = user["block"];
+  
+          // TODO MOVE THIS LOGIC TO THE FIRE CLASS DONT BE GARBGE
+          firebase.firestore().collection("projects").doc(currProjectID).collection("projectPosts").orderBy("timestamp", "desc")
+            .get().then((querySnapshot) => {
+  
+              const promises = querySnapshot.docs.map((doc, i) => {
+                const post = doc.data()
+  
+                return Fire.shared.getUserData(post["email"])
+                  .then(({ user }) => {
+                    post.user = user
 
-             });
-         })
-         .then(() => {
-             console.log("this is ordered", orderedDocs)
-             const filteredPosts = orderedDocs.filter((post)=> {
-                 return !blockArr.includes(post["email"]);
-             });
-             const withKey = filteredPosts.map(post => ({
-                 ...post,
-                 key: post.id
-             }));
-             this.setState({ orderedDocs: withKey});
-             console.log("orederd", this.state.posts);
-         })
-     })
-
+                    orderedDocs[i] = { ...post, id: doc.id }
+  
+                  })
+                })
+                console.log("This is promises", promises)
+                return Promise.all(promises)
+              })
+              .then(() => {
+  
+                const filteredPosts = orderedDocs.filter((post) => {
+                  this.state.showModalArr.push(false)
+                  return !blockArr.includes(post["email"]);
+                });
+  
+                const withKey = filteredPosts.map(post => ({
+  
+                  ...post,
+                  key: post.id
+                }));
+                this.setState({ orderedDocs: withKey });
+  
+  
+              // doc.data() is never undefined for query doc snapshots
+  
+  
+            });
+  
+        })
+  
+  
 
     }
     blockUser = (email) => {
@@ -65,11 +81,13 @@ export default class OneProjectScreen extends React.Component {
             .catch(error => console.log("The error is", error)
             )
     }
-    setModalVisible = (visible) => {
-        this.setState({ modalVisible: visible });
-      }
-    renderPost = design => {
-        const { modalVisible } = this.state;
+    setModalVisible = (visible, index) => {
+      const arr = this.state.showModalArr
+      arr[index] = visible
+      this.setState({ showModalArr: arr });
+    }
+    renderPost = (design, index) => {
+      const modalVisible2 = this.state.showModalArr[index];
         // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
         return (
@@ -79,14 +97,15 @@ export default class OneProjectScreen extends React.Component {
                 <View style={{ flex: 1 }}>
                     <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
                         <View>
-                            <Text style={styles.name}>{design.name}</Text>
+                        <TouchableOpacity  onPress={() => this.props.navigation.navigate('ViewProfile', {
+                    otherParam: design.user})}><Text style={styles.name}>{design.name}</Text></TouchableOpacity>  
                             <Text style={styles.timestamp}>{moment(design.timestamp).fromNow()}</Text>
                         </View>
                         <View style={styles.centeredView}>
         <Modal
           animationType="slide"
           transparent={true}
-          visible={modalVisible}
+          visible={modalVisible2}
           onRequestClose={() => {
             Alert.alert("Modal has been closed.");
           }}
@@ -110,7 +129,7 @@ export default class OneProjectScreen extends React.Component {
               <TouchableHighlight
                style ={{marginTop: 15, borderBottomColor: "#24305E", borderBottomWidth: 3}}
                 onPress={() => {
-                  this.setModalVisible(!modalVisible);
+                  this.setModalVisible(!modalVisible2, index);
                 }}
               >
                 <Text style={{color: "#24305E"}}>Close</Text>
@@ -122,7 +141,7 @@ export default class OneProjectScreen extends React.Component {
         <TouchableHighlight
           style={styles.openButton}
           onPress={() => {
-            this.setModalVisible(true);
+            this.setModalVisible(true, index);
           }}
         >
           <Ionicons name = "ios-more" color = "#0a0f21"size ={36}></Ionicons>
@@ -178,10 +197,20 @@ export default class OneProjectScreen extends React.Component {
                     <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>SHARE</Text>
 
                     </TouchableOpacity>
+               
+                
                 {/* <TouchableOpacity style = {{width: "50%", justifyContent: 'center', height: 50}} onPress={() => this.props.navigation.navigate("CreateProject")} >
                 <Text style = {{textAlign: 'center',borderRadius: 10, overflow: 'hidden', textAlignVertical: "center", backgroundColor: "#F8E9A1", paddingVertical: 15, width: 150}}>Create</Text>
                 </TouchableOpacity> */}
             </View>
+       
+            <TouchableOpacity  onPress={() => this.props.navigation.navigate('ProjectMoreInfo', {
+                        otherParam: this.state.projectContent,
+                    })} style = {{alignSelf: 'center',borderRadius: 15, textAlign: 'center', alignItems: 'center', marginBottom: 25,justifyContent: 'center', }}>
+            
+                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#F8E9A1", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#152563",paddingVertical: 15,textAlignVertical: 'center',width: wp("70%")}}>MORE INFO</Text>
+
+                    </TouchableOpacity>
                
 
                 {/* <View style = {{flexDirection: 'row',padding: 5, marginBottom: 5,alignSelf: 'center'}}>
@@ -198,7 +227,7 @@ export default class OneProjectScreen extends React.Component {
                 <FlatList
                     style={styles.feed}
                     data={this.state.orderedDocs}
-                    renderItem={({ item }) => this.renderPost(item)}
+                    renderItem={({ item, index }) => this.renderPost(item, index)}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
                 />

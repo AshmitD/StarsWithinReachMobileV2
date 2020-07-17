@@ -42,14 +42,13 @@ export default class ProfilePage extends React.Component {
         
         Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
         
-           const currName = user["name"]
-            console.log("This is the name", this.state.name)
-            return currName;
+          
+            return user;
 
-        }).then((currName) => {
-            Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image, name: currName})
+        }).then((user) => {
+            Fire.shared.addPost({ text: this.state.text.trim(), localUri: this.state.image, name: user["name"], email: user["email"]})
                 .then(ref => {
-                    console.log("handle post")
+
                     this.setState({ text: "", image: null })
                 })
                 .catch(error => {

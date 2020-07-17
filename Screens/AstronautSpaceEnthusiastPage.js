@@ -35,6 +35,7 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
                     <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>CREATE</Text>
 
                     </TouchableOpacity>
+                    
                 {/* <TouchableOpacity style = {{width: "50%", justifyContent: 'center', height: 50}} onPress={() => this.props.navigation.navigate("CreateProject")} >
                 <Text style = {{textAlign: 'center',borderRadius: 10, overflow: 'hidden', textAlignVertical: "center", backgroundColor: "#F8E9A1", paddingVertical: 15, width: 150}}>Create</Text>
                 </TouchableOpacity> */}
@@ -55,7 +56,7 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
                 projects[doc.id] = doc.data();
             });
             this.setState({ projects: projects })
-            console.log("state has been set with projects of length " + Object.keys(projects).length)
+           
         }
         db.collection("projects").get()
             .then(onReceive.bind(this));

@@ -10,13 +10,13 @@ class Fire {
     addPost = async ({ text, localUri, name }) => {
         let remoteUri;
         if (localUri) {
-            console.log("this is url", localUri)
+
             remoteUri = await this.uploadPhotoAsync(localUri)
         }
         else {
             remoteUri = " "
         }
-        console.log("This is local uri", localUri)
+
 
         return new Promise((res, rej) => {
 
@@ -32,7 +32,7 @@ class Fire {
                     res(ref)
                 })
                 .catch(error => {
-                    console.log("this is the error", error)
+
                     rej(error)
                 })
         })
@@ -52,7 +52,7 @@ class Fire {
                     res(ref)
                 })
                 .catch(error => {
-                    console.log("this is the error", error)
+
                     rej(error)
                 })
         })
@@ -61,13 +61,13 @@ class Fire {
     addDesign = async ({ text, localUri, projectID, name }) => {
         let remoteUri;
         if (localUri) {
-            console.log("this is url", localUri)
+
             remoteUri = await this.uploadPhotoAsync(localUri)
         }
         else {
             remoteUri = " "
         }
-        console.log("This is local uri", localUri)
+
 
         return new Promise((res, rej) => {
 
@@ -84,19 +84,18 @@ class Fire {
                     res(ref)
                 })
                 .catch(error => {
-                    console.log("this is the error", error)
+
                     rej(error)
                 })
         })
 
     }
     getUserData = async (email) => {
-        console.log("this is the email", email)
+
         return new Promise((res, rej) => {
             this.firestore.collection("users").where("email", "==", email)
                 .get()
                 .then(function (querySnapshot) {
-                    console.log("this",querySnapshot)
                     //TODO MAKE THIS HANDLE THE CASE WHEN THERE ARE NO DOCUMENTS. IF YOU ARE ERRORING USING THIS METHOD, THAT MIGHT BE THE CAUSE.
                     querySnapshot.forEach(function (doc) {
                         // doc.data() is never undefined for query doc snapshots
@@ -111,7 +110,7 @@ class Fire {
         })
     }
     addUser = async ({ name, email, who, shortBio, projects, topics }) => {
-        console.log("this is topics", topics)
+
         return new Promise((res, rej) => {
 
             this.firestore.collection("users").add({
@@ -124,7 +123,7 @@ class Fire {
                 block: []
             })
                 .get().then(ref => {
-                    console.log("this is topics in then", topics)
+
                     this.getUserData(email).then(({ id }) => {
                         const userDoc = this.firestore.collection("users").doc(id)
                         userDoc.update({
@@ -134,35 +133,156 @@ class Fire {
                     res(ref)
                 })
                 .catch(error => {
-                    console.log("this is the error", error)
+
                     rej(error)
-                    console.log(error)
+
                 })
         })
     }
+    addChat = async ({email1, email2 }) => {
 
-    addBlock = email => {
+        // TODO Add an alert if they already have a chat in common
+        // This doesnt work for group chats
+        // TODO CATCH IF ONE OF THE USERS HAS BLOCKED THE OTHER
+        const { id: user1Id, user: user1 } = await this.getUserData(email1);
+        const { id: user2Id, user : user2} = await this.getUserData(email2);
 
-        return this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
-            const arr = user["block"]
+        const commonMessageArr = user1["messageIDs"].filter(messageID => {
+            return user2["messageIDs"].includes(messageID)
+        })
+        
+        if(commonMessageArr.length> 0) {
+            return commonMessageArr[0];
+        }
+        
+        const id = await firebase.database().ref('messages/specificChatss').push(
+           { "email1": email1,
+                "email2": email2}
+        )
+        const chatRef = JSON.stringify(id).split("specificChatss/")[1]
+        const chatId = chatRef.split(`"`)[0]
 
-            if (arr.includes(email)) {
-                Alert.alert("You have already blocked this user.");
-                throw new Error("User has already been blocked");
-            } else {
-                arr.push(email)
-                const userDoc = this.firestore.collection("users").doc(id)
-                userDoc.update({
-                    block: arr
-                });
+    
+        const user1MessageIds = user1["messageIDs"]
+
+        user1MessageIds.push(chatId)
+        const userDoc = this.firestore.collection("users").doc(user1Id)
+        userDoc.update({
+            messageIDs: user1MessageIds
+        });
+        
+
+        const user2MessageIds = user2["messageIDs"]
+        if (user2MessageIds.includes(chatId)) {
+            Alert.alert("You already have a chat with this user.");
+            throw new Error("You already have a chat with this user");
+        } else {
+            user2MessageIds.push(chatId)
+            const userDoc = this.firestore.collection("users").doc(user2Id)
+            userDoc.update({
+                messageIDs: user2MessageIds
+            });
             }
+        console.log("This ihys id", chatId)
+        
+        return chatId
+    }
+    //CHAT SPECIFIC STARTS HERE
+
+    //Create a chat id whenever someone starts a chat
+    //With each user have an array that stores chat ids
+    send = (messages, chatID) => {
+
+
+        messages.forEach(item => {
+
+            const message = {
+                text: item.text,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                user: item.user
+            }
+
+            this.messageDB(chatID).push(message)
         })
     }
-    joinProject = projectId => {
-        console.log("This is project id", projectId)
+    messageDB(chatID) {
+
+        return firebase.database().ref(`messages/specificChatss/${chatID}/actualChats`)
+    }
+    parse = message => {
+
+        const {user, text,timestamp} = message.val();
+        const {key: _id} = message;
+        const createdAt = new Date (timestamp)
+
+        return {
+            _id,
+            createdAt,
+            text,
+            user
+        }   
+    }
+
+    get = (callback, chatID) => {
+        this.messageDB(chatID).on("child_added", snapshot => {
+
+            callback(this.parse(snapshot));
+        } )
+    }
+
+    off(chatID) {
+        this.messageDB(chatID).off()
+    }
+
+    // CHAT SPECIFIC ENDS HERE
+    addBlock = email => {
+
+        return this.getUserData(firebase.auth().currentUser.email).then(({ id, user: user1 }) => {
+            this.getUserData(email).then(({user: user2}) => {
+                console.log("This is user", user1)
+                console.log("This is messageID", user1["messageIDs"])
+                const messageIDs = user1['messageIDs']
+                console.log("This is user2", user2)
+                const commonMessageArr = messageIDs.filter(messageID => {
+                    return user2["messageIDs"].includes(messageID)
+                })
+                if(commonMessageArr.length> 0) {
+                    // commonMessageArr[0]
+         
+                    const currMessageIDs = user1["messageIDs"]
+                    const everythingButBlockedUser = currMessageIDs.filter(messageID => {
+                        return messageID != commonMessageArr[0]
+                    })
+                    const userDoc = this.firestore.collection("users").doc(id)
+                    userDoc.update({
+                        messageIDs: everythingButBlockedUser
+                    });
+    
+                }
+            }).then(() => {
+                console.log("Do we get here?")
+          
+                const arr = user1["block"]
+    
+                if (arr.includes(email)) {
+                    Alert.alert("You have already blocked this user.");
+                    throw new Error("User has already been blocked");
+                } else {
+                    arr.push(email)
+                    const userDoc = this.firestore.collection("users").doc(id)
+                    userDoc.update({
+                        block: arr
+                    });
+                }
+            })
+            })
+
+    }
+    joinProject = (projectId, project) => {
+
         this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
             const arr = user["projects"]
-            console.log("This is usre", arr)
+
             if (arr.includes(projectId)) {
                 Alert.alert("You are already in this project.")
             } else {
@@ -171,7 +291,15 @@ class Fire {
                 userDoc.update({
                     projects: arr
                 });
-
+             const currUsers = project["userEmails"]
+             currUsers.push(firebase.auth().currentUser.email)
+             const projectDoc = this.firestore.collection("projects").doc(projectId)
+             projectDoc.update({
+                 userEmails: currUsers
+             });
+              
+           
+   
             }
 
         })

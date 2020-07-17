@@ -29,7 +29,7 @@ export default class LoginScreen extends React.Component {
 
             <View style = {styles.form}>
                 <View>
-                    <Text style = {styles.inputTitle}>Email Adress</Text>
+                    <Text style = {styles.inputTitle}>Email Address</Text>
                     <TextInput
                     style = {styles.input}
                     autoCapitalize="none"
