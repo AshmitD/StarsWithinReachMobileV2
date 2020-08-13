@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, Text, KeyboardAvoidingView,StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
 import { Ionicons } from "@expo/vector-icons"
 import Contashants from 'expo-constants'
 import * as Permissions from 'expo-permissions'
@@ -51,7 +51,7 @@ export default class Report extends React.Component {
 
     render() {
         return (
-            <View style ={styles.container}>
+            <KeyboardAvoidingView keyboardVerticalOffset = {150} behavior = {'padding'} style ={styles.container}>
                  <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('Home')
                     }>
                         <Ionicons name="ios-arrow-round-back" size={34} color="black"></Ionicons>
@@ -69,7 +69,7 @@ export default class Report extends React.Component {
                     </View>
                    
                 
-                </View>
+                </KeyboardAvoidingView>
         )
     }
 }

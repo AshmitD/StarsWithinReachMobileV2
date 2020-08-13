@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
 import { Ionicons } from "@expo/vector-icons"
 import Contashants from 'expo-constants'
 import * as Permissions from 'expo-permissions'
@@ -51,7 +51,8 @@ export default class Report extends React.Component {
 
     render() {
         return (
-            <View style ={styles.container}>
+        <KeyboardAvoidingView style ={styles.container} 
+        behavior="padding">
                  <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('Home')
                     }>
                         <Ionicons name="ios-arrow-round-back" size={34} color="black"></Ionicons>
@@ -60,7 +61,7 @@ export default class Report extends React.Component {
                 <View style = {{top: "20%"}}>
                     <Text style ={{fontSize: 27, color: "#F76C6C",marginLeft: 27, alignSelf: 'center',lineHeight: 35,textAlign: 'center'}}>{`What's wrong with this post?`}</Text>
                 <View style={styles.inputContainer}>
-                    <TextInput autoFocus={true} multiline={true} numberOfLines={4}  style={{width: "100%", height: 50}}placeholder="Type your answer here ... " onChangeText={text => this.setState({ text:text })} value={this.state.text}></TextInput>
+                    <TextInput autoFocus={true} multiline={true} numberOfLines={4}  autoCapitalize = {true} style={{width: "100%", height: 50}}placeholder="Type your answer here ... " onChangeText={text => this.setState({ text:text })} value={this.state.text}></TextInput>
                 </View>
                 <TouchableOpacity  style ={{backgroundColor: "#F76C6C", borderRadius: 15,width: "70%", marginVertical: 15,alignSelf: 'center',}}onPress={() => this.handleSend()}>
                         <Text style={{ textAlign: 'center',fontSize: 20, color: "#F8E9A1",fontWeight: "500", paddingVertical: 15}}>SUBMIT</Text>
@@ -69,7 +70,8 @@ export default class Report extends React.Component {
                     </View>
                    
                 
-                </View>
+
+        </KeyboardAvoidingView>
         )
     }
 }

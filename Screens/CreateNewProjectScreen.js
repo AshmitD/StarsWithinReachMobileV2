@@ -1,20 +1,12 @@
 import React from 'react';
-import {View, ScrollView, Image, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar} from 'react-native'
+import {View, ScrollView, Image, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Alert} from 'react-native'
 import firebase from 'firebase'
 import {Ionicons} from '@expo/vector-icons'
 import Fire from '../Fire'
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomMultiPicker from "react-native-multiple-select-list";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-var userList = ["SPACESHIP DESIGN","SPECIAL MATERIALS",
-"EATING FOOD GROWN IN SPACE",
-"NEW PROPULSION DESIGNS",
-"BUILDING  ON MARS AND THE MOON",
-"WOMEN ASTRONAUTS",
-"SPACE DIPLOMATS",
-"LIFE ON OTHER PLANETS",
-"AI AND THE COMING QUANTUM BRAIN",
-"HAVE YOU SEEN A UFO?",
+var userList = ["SCIENCE", "TECHNOLOGY", "ENGINEERING", "MATH", "SPACE"
     ];
 export default class CreateNewProjectScreen extends React.Component {
     static navigationOptions = {  
@@ -31,16 +23,25 @@ export default class CreateNewProjectScreen extends React.Component {
     }
     
     handleSignUp = () => { 
+       if(this.state.descrip.length == 0) {
+            Alert.alert("Please describe your group.")
+       }
+       else if(this.state.topics.length == 0) {
+        Alert.alert("Please enter some topics.")
+    }else {
+
         Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, resources: this.state.resources, endGoal: this.state.endGoal, studentsActions: this.state.studentsActions, topics: this.state.topics})
         .then(userCredentials => {
             // return userCredentials.user.updateProfile({
             //     displayName: this.state.name
             // })
         })
-        .catch(error => console.log("The error is",error)
+        .catch(error => Alert(error)
         )
         this.props.navigation.navigate("Projects")
+       }
        
+        
     }
     render() {
         return (

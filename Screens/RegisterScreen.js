@@ -36,28 +36,28 @@ export default class RegisterScreen extends React.Component {
         this.setState({ modalVisible: visible });
     }
     handleSignUp = () => {
-        if(this.state.name.length <=0) {
+        if (this.state.name.length <= 0) {
             this.setState({ errorMessage: "Please enter your name." })
-        }  else if(this.state.shortBio.length <=0) {
+        } else if (this.state.shortBio.length <= 0) {
             this.setState({ errorMessage: "Please enter something in the short bio field." })
         } else {
 
-        
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(userCredentials => {
-                Fire.shared.addUser({ name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: [], topics: this.state.topics })
-                    .then(userCredentials => {
-                        // return userCredentials.user.updateProfile({
-                        //     displayName: this.state.name
-                        // })
+
+            firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+                .then(userCredentials => {
+                    Fire.shared.addUser({ name: this.state.name, email: this.state.email, pass: this.state.password, who: this.state.who, shortBio: this.state.shortBio, projects: [], topics: this.state.topics })
+                        .then(userCredentials => {
+                            // return userCredentials.user.updateProfile({
+                            //     displayName: this.state.name
+                            // })
+                        })
+                        .catch(error => console.log("The error is", error)
+                        )
+                    return userCredentials.user.updateProfile({
+                        displayName: this.state.name
                     })
-                    .catch(error => console.log("The error is", error)
-                    )
-                return userCredentials.user.updateProfile({
-                    displayName: this.state.name
                 })
-            })
-            .catch(error => this.setState({ errorMessage: error.message }))
+                .catch(error => this.setState({ errorMessage: error.message }))
         }
     }
     render() {
@@ -161,23 +161,23 @@ export default class RegisterScreen extends React.Component {
                                     Alert.alert("Modal has been closed.");
                                 }}
                             >
-                                <View style={{ width: "100%",marginTop: 15, textAlign: 'left' }}>
+                                <View style={{ width: "100%", marginTop: 15, textAlign: 'left' }}>
                                     <View style={styles.modalView}>
-                                        <View style = {{flexDirection: 'row'}}>
-                                    <TouchableHighlight
-                                            style={{ position: 'absolute', top: hp("-1%"),left: wp("60%"),backgroundColor: 'rgba(255, 255, 255, 0.8)'}}
-                                            onPress={() => {
-                                                this.setModalVisible(!modalVisible);
-                                            }}
-                                        >
-                                        <Ionicons name="ios-close" size={52} color="black"></Ionicons>
-                                       
-                                        </TouchableHighlight>
-                                        <View style={{ alignSelf: 'center', borderBottomColor: "#F8E9A1", borderBottomWidth: 5, marginBottom: 15 }}><Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 25, color: "#F76C6C" }}>Terms and Services</Text></View>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <TouchableHighlight
+                                                style={{ position: 'absolute', top: hp("-1%"), left: wp("60%"), backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
+                                                onPress={() => {
+                                                    this.setModalVisible(!modalVisible);
+                                                }}
+                                            >
+                                                <Ionicons name="ios-close" size={52} color="black"></Ionicons>
+
+                                            </TouchableHighlight>
+                                            <View style={{ alignSelf: 'center', borderBottomColor: "#F8E9A1", borderBottomWidth: 5, marginBottom: 15 }}><Text style={{ textAlign: 'center', paddingVertical: 5, fontSize: 25, color: "#F76C6C" }}>Terms and Services</Text></View>
                                         </View>
                                         <ScrollView>
-                                       
-                                          
+
+
                                             <Text>By using the Stars Within Reach Application you are agreeing to be bound by the following terms and conditions ("Terms of Use"). {'\n'}
                                             </Text>
                                             <Text style={{ fontWeight: "600", fontSize: 15, color: "black" }}>{'\n'}Responsibilities of the Users:</Text>
@@ -299,8 +299,8 @@ export default class RegisterScreen extends React.Component {
                                                 <View style={styles.bulletText}>
                                                     <Text>We will remove Content and accounts containing Content that we determine in our sole discretion are unlawful, offensive, threatening, libelous, defamatory, obscene or otherwise objectionable or violates any party's intellectual property or these Terms of Use.
 </Text></View>
-                                            </View><View style ={{height: 200}}></View></ScrollView>
-                                     
+                                            </View><View style={{ height: 200 }}></View></ScrollView>
+
                                     </View>
                                 </View>
                             </Modal>

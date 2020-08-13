@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
 import { Ionicons } from "@expo/vector-icons"
 import Contants from 'expo-constants'
 import * as Permissions from 'expo-permissions'
@@ -7,6 +7,7 @@ import Fire from '../Fire'
 import Oreo from '../Components/oreo.png'
 import * as ImagePicker from 'expo-image-picker'
 import firebase from 'firebase'
+
 // const firebase = require('firebase');
 require("firebase/firestore");
 
@@ -77,21 +78,21 @@ export default class ProfilePage extends React.Component {
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('Home')
                     }>
-                        <Ionicons name="ios-arrow-round-back" size={24} color="black"></Ionicons>
+                        <Ionicons name="ios-arrow-round-back" size={24} color="#24305e"></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <Text style={{ fontWeight: "500", marginTop: 5, }} onPress={this.handlePost}>Post</Text>
+                        <Text style={{ fontWeight: "500", color: "#24305e"}} onPress={this.handlePost}>Post</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.inputContainer}>
                     <Image source={require('../Components/oreo.png')} style={styles.avatar}></Image>
-                    <TextInput autoFocus={true} multiline={true} numberOfLines={4} style={{ flex: 1, }} placeholder="Want to share something?" onChangeText={text => this.setState({ text })} value={this.state.text}></TextInput>
+                    <TextInput dataDetectorTypes = {'link'}  autoFocus={true} multiline={true} numberOfLines={4} style={{ flex: 1, }} placeholder="Want to share something?" onChangeText={text => this.setState({ text })} value={this.state.text}></TextInput>
 
 
                 </View>
                 <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                    <Ionicons name="md-camera" size={32} color="#F76C6C"></Ionicons>
+                    <Ionicons name="md-camera" size={32} color="#24305e"></Ionicons>
                 </TouchableOpacity>
 
                 <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
@@ -110,22 +111,19 @@ const styles = StyleSheet.create({
 
     },
     back: {
-
-
-        width: 32,
-        height: 32,
-        borderRadius: 21,
+        width: 35,
+        height: 35,
         alignItems: 'center',
-        backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
     },
     header: {
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
         paddingHorizontal: 32,
         paddingVertical: 12,
-        
-        marginTop: 35
+        backgroundColor: "#F76c6c",
+        paddingTop: 35,
     },
     inputContainer: {
         margin: 32,
@@ -136,6 +134,8 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 24,
         marginRight: 16,
+        borderColor: "#24305e",
+        borderWidth: 2, 
     },
     photo: {
         alignItems: "flex-end",

@@ -307,7 +307,7 @@ class Fire {
     }
     addProject = async ({ title, descrip, resources, endGoal, topics }) => {
         return new Promise((res, rej) => {
-
+    
             this.firestore.collection("projects").add({
                 title: title,
                 descrip: descrip,

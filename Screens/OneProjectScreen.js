@@ -15,7 +15,7 @@ export default class OneProjectScreen extends React.Component {
         const { params } = this.props.navigation.state;
         const currProjectID = params ? params.otherParam : null;
         const orderedDocs = []
-// ADD MULTI MODAL CRAP HERE
+       // ADD MULTI MODAL CRAP HERE
         this.state = {
             orderedDocs: [],
             projectID: currProjectID,

@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import { Ionicons } from '@expo/vector-icons'
 import JoinProject from '../Screens/JoinProject'
 import MyProjects from '../Screens/MyProjects'
+import Fire from '../Fire'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export default class AstronautSpaceEnthusiastPage extends React.Component {
     constructor() {
@@ -18,28 +19,36 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
 
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
+                {/* <View style={styles.header}>
                     <Text style={styles.headerTitle}>MY GROUPS</Text>
-                </View>
+                </View> */}
+                       <View style ={{backgroundColor: "#F76C6C", paddingBottom: hp('0.95%'),justifyContent: 'center',flexDirection: 'row', width: '100%',alignItems: 'center'}}>
+        <TouchableOpacity  style={{  paddingTop: '5%', right: "100%" }} onPress={() => { console.log("Does it get here?") ,this.toggle() }}><Ionicons size={36} color={"#24305E"} name="ios-settings"></Ionicons></TouchableOpacity>
+          <Text style={{  paddingTop: '5%', fontSize: 28, textTransform: 'uppercase', fontStyle: 'normal', fontWeight: '600', color: "#F8E9A1", alignSelf: 'center' }}>My Projects</Text>
+          
+         <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreatePost")}style={{  paddingTop:'5%', left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
+    
+   
 
+        </View>
              
-                <View style = {{flexDirection: 'row', marginVertical: 15,backgroundColor: '#24305E'}}>
+       
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('JoinProject', {
-                    otherParam: this.state.projects})} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
+                    otherParam: this.state.projects})} style ={{height: 'auto',alignItems: 'center', borderRadius: 5,alignSelf: 'center',marginVertical: '4%',justifyContent: 'center', width: '50%', backgroundColor: '#F76C6C'}}>
             
-                    <Text style = {{textAlign: 'center', fontSize: 20,fontWeight: "500",color: "#23405E",overflow: "hidden", borderRadius: 10, backgroundColor: "#F76C6C",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>JOIN</Text>
+                    <Text style ={{color: '#24305E', fontSize: 21,paddingVertical: 18}}>JOIN</Text>
 
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('CreateProject')} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
+                    {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('CreateProject')} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
             
-                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>CREATE</Text>
+                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 2, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>CREATE</Text>
 
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     
                 {/* <TouchableOpacity style = {{width: "50%", justifyContent: 'center', height: 50}} onPress={() => this.props.navigation.navigate("CreateProject")} >
                 <Text style = {{textAlign: 'center',borderRadius: 10, overflow: 'hidden', textAlignVertical: "center", backgroundColor: "#F8E9A1", paddingVertical: 15, width: 150}}>Create</Text>
                 </TouchableOpacity> */}
-            </View>
+
                 <MyProjects projects={this.state.projects} navigation={this.props.navigation} />
                 
             </View>
@@ -60,6 +69,7 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
         }
         db.collection("projects").get()
             .then(onReceive.bind(this));
+    
     }
 }
 
@@ -68,7 +78,7 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#24305E'
+        backgroundColor: '#f8e9a1'
     },
     header: {
         paddingTop: 64,

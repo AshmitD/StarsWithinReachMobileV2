@@ -1,31 +1,39 @@
 import React from 'react';
-
-import { View, TouchableHighlight, Modal, Text, SafeAreaView, TextInput, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, LayoutAnimation, ShadowPropTypesIOS } from 'react-native'
+import { View, Linking, Button, TouchableHighlight, TouchableNativeFeedback,Modal, Text, SafeAreaView, TextInput, ScrollView, StyleSheet, FlatList, Image,TouchableOpacity, LayoutAnimation, ShadowPropTypesIOS, TouchableHighlightBase } from 'react-native'
 import * as firebase from "firebase"
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
+import { LinearGradient } from 'expo-linear-gradient'
 import db from "firebase"
 import Fire from '../Fire'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Alert } from 'react-native'
+import SideMenu from 'react-native-side-menu';
+import Menu from '../Menu';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 export default class HomeScreen extends React.Component {
 
-
   constructor() {
     super()
+
     const orderedDocs = []
     const promises = []
     this.state = {
       posts: [],
+      colors: ["#FFF", "#F8E9A1"],
       modalVisible2: false,
-      modalVisible: false,
-      showModalArr: []
+      modalForSideBar: false,
+      showModalArr: [],
+      isModalVisible: false,
+      isOpen: true,
+      name: ''
     }
+
     Fire.shared.getUserData(firebase.auth().currentUser.email)
       .then(({ user }) => {
         const blockArr = user["block"];
-
+        this.state.name = user['name']
         // TODO MOVE THIS LOGIC TO THE FIRE CLASS DONT BE GARBGE
         firebase.firestore().collection("posts").orderBy("timestamp", "desc")
           .get().then((querySnapshot) => {
@@ -40,24 +48,39 @@ export default class HomeScreen extends React.Component {
                   orderedDocs[i] = { ...post, id: doc.id }
 
                 })
-              })
-              return Promise.all(promises)
             })
-            .then(() => {
+            return Promise.all(promises)
+          })
+          .then(() => {
 
-              const filteredPosts = orderedDocs.filter((post) => {
-                this.state.showModalArr.push(false)
-                return !blockArr.includes(post["email"]);
-              });
-              const withKey = filteredPosts.map(post => ({
-                ...post,
-                key: post.id
-              }));
-              this.setState({ posts: withKey });
+            const filteredPosts = orderedDocs.filter((post) => {
+              this.state.showModalArr.push(false)
+              return !blockArr.includes(post["email"]);
+            });
+            const withKey = filteredPosts.map(post => ({
+              ...post,
+              key: post.id
+            }));
+            this.setState({ posts: withKey });
             // doc.data() is never undefined for query doc snapshots
           });
       })
   }
+  toggleModal() {
+    if (this.state.modalForSideBar == true) {
+      this.setState({ modalForSideBar: false })
+    } else {
+
+      this.setState({ modalForSideBar: true })
+
+    }
+  }
+  toggle() {
+    this.setState({
+      modalForSideBar: !this.state.modalForSideBar,
+    });
+  }
+
   setModalVisible = (visible, index) => {
     const arr = this.state.showModalArr
     arr[index] = visible
@@ -82,143 +105,211 @@ export default class HomeScreen extends React.Component {
       })
   }
 
+  openModal = () => {
+    this.setState({ modalForSideBar: true });
+  }
+
+  closeModal() {
+    this.setState({ modalForSideBar: false });
+  }
+
 
   renderPost = (post, index) => {
-    console.log("This is index", index)
-    console.log("This is show arr", this.state.showModalArr[index])
-    const modalVisible2 = this.state.showModalArr[index];
-    console.log("This is modalvisible", modalVisible2)
-    console.log("This is post", post)
 
+
+    const modalVisible2 = this.state.showModalArr[index];
+    const colorIndex = index % 2
+    const oppColorIndex = (1 - (index % 2))
+    let chars = post.name.split(" ")[0].substring(0,1)
+    if(post.name.split(" ").length > 1) {
+     chars += post.name.split(' ')[1].substring(0, 1)
+    } 
     // const ref = firebase.storage().ref(post.image);
     //const url =  ref.getDownloadURL();
 
     {
       return (
 
-        <View style={styles.feedItem}>
-        
-          <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
-              <View>
-             <TouchableOpacity  onPress={() => this.props.navigation.navigate('ViewProfile', {
-                    otherParam: post.user})}><Text style={styles.name}>{post.name}</Text></TouchableOpacity>  
-                <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
-              </View>
-              <View style={styles.centeredView}>
-                <Modal
-                  animationType="slide"
-                  animationIn = "slideInUp"
-                  animationInTiming = "300"
+        <View style={{
+          height: "auto",
+          width: "95%",
+          flexDirection: "column",
+          justifyContent: "center",
 
-                  transparent={true}
-                  visible={modalVisible2}
-                  onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                  }}
-                  
-                >
+          alignSelf: 'center',
+          backgroundColor: "#F8E9A1",
+          paddingVertical: 20,
+          marginVertical: 10,
+          borderRadius: 3,
+          borderBottomColor: 'black', borderBottomWidth: 2
 
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
+        }}>
 
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('Report', {
+          <View style={{ flexDirection: 'row', marginRight: 20, paddingLeft: '5%', }}>
+            <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+              <Text style={{ color: "#f8e9a1", textAlign: 'center', zIndex: 55 }}>{chars}</Text>
+            </View>
+            <View style={{ marginLeft: 20, flexDirection: 'column' }}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewProfile', {
+                otherParam: post.user
+              })}><Text style={{
+                fontSize: 20,
+                fontWeight: "500",
+                color: '#24305e',
+                marginBottom: 5
+              }}>{post.name}</Text></TouchableOpacity>
+              <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.openButton}
+              onPress={() => {
+                this.setModalVisible(true, index);
+              }}
+            >
+              <Ionicons name="ios-more" color="#f76c6c" size={24} style={{ transform: [{ rotate: "90deg" },], }}></Ionicons>
+            </TouchableOpacity>
+
+            <View style={styles.centeredView}>
+              <Modal
+                animationType="slide"
+                animationIn="slideInUp"
+                animationInTiming="300"
+
+                transparent={true}
+                visible={modalVisible2}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                }}
+              >
+
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Report', {
+                      otherParam: post,
+                    })}>
+                      <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS POST</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ marginTop: 15 }} onPress={() => {
+
+                      this.props.navigation.navigate('ReportUser', {
                         otherParam: post,
-                      })}>
-                        <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS POST</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={{ marginTop: 15 }} onPress={() => {console.log("This is post",post)
-                          this.props.navigation.navigate('ReportUser', {
-                            otherParam: post,
-                          })
-                      } }>
-                        <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS USER</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={{ marginTop: 15 }} onPress={() => this.blockUser(post["email"])}>
-                        <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>BLOCK THIS USER</Text>
-                      </TouchableOpacity>
+                      })
+                    }}>
+                      <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS USER</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ marginTop: 15 }} onPress={() => this.blockUser(post["email"])}>
+                      <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>BLOCK THIS USER</Text>
+                    </TouchableOpacity>
 
-                      <TouchableHighlight
-                        style={{ marginTop: 15, borderBottomColor: "#24305E", borderBottomWidth: 3 }}
-                        onPress={() => {
-                          this.setModalVisible(!modalVisible2, index);
-                        }}
-                      >
-                        <Text style={{ color: "#24305E" }}>Close</Text>
-                      </TouchableHighlight>
-                    </View>
+                    <TouchableOpacity
+                      style={{ marginTop: 15, borderBottomColor: "#24305E", borderBottomWidth: 3 }}
+                      onPress={() => {
+                        this.setModalVisible(!modalVisible2, index);
+                      }}
+                    >
+                      <Text style={{ color: "#24305E" }}>Close</Text>
+                    </TouchableOpacity>
                   </View>
-                </Modal>
+                </View>
+              </Modal>
 
-                <TouchableHighlight
+
+            </View>
+            {/* <TouchableHighlight
                   style={styles.openButton}
                   onPress={() => {
                     this.setModalVisible(true, index);
                   }}
-                >
-                  <Ionicons name="ios-more" color="#0a0f21" size={36}></Ionicons>
-                </TouchableHighlight>
-              </View>
-              {/* <TouchableOpacity style={{ backgroundColor: "rgba(36, 48, 94, 0.9)", borderRadius: 15, o: 80 }} onPress={() => this.props.navigation.navigate('Report', {
-                            otherParam: post,
-                        })}><Ionicons name="ios-flag" size={24} style={{ alignSelf: 'center', paddingHorizontal: 15, paddingVertical: 7.5 }} color="grey" /></TouchableOpacity> */}
+                > <Ionicons name="ios-more" color="#0a0f21" size={36}></Ionicons>
+                </TouchableHighlight> */}
+          </View>
+          {/* Post */}
+          {post.image != " " &&
+
+            <Image
+              style={styles.image}
+              source={{
+                uri: post.image
+              }}
+            />
+
+          }
 
 
-
+          {/* Post content /text */}
+          <View style={{ position: "relative", flexDirection: 'row', paddingHorizontal: 20, marginTop: 20, justifyContent: 'flex-start', alignItems: 'flex-start', height: "auto", width: "100%", position: 'relative' }}>
+            <View style={{ height: "auto", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", }}>
+              <Image style={{ width: 40, height: 40, marginRight: 20, }} source={require('../Components/rocketing.png')}></Image>
+              {/* <Ionicons name="ios-rocket" size={30} color="pink" style={{ marginRight: 16 }} /> */}
             </View>
 
-            <Text style={styles.postss}>{post.text}</Text>
-
-            {/* <Image source = {require('../Components/Oreo.jpg'} style = {styles.postImage} resizeMode = "cover"/>  */}
-            {post.image != " " &&
-
-              <Image
-                style={styles.image}
-                source={{
-                  uri: post.image
-                }}
-              />
-
-            }
-
-            {post.image == " " && <View style={{ height: 15 }}></View>}
-            <View style={{ flexDirection: "row" }}>
-
-              <Ionicons name="ios-heart-empty" size={24} color="#73788B" style={{ marginRight: 16 }} />
-              <Ionicons name="ios-chatboxes" size={24} color="#73788B" style={{ marginRight: 16 }} />
-            </View>
+            <Text style={{ width: "80%", color: "#24305E", fontSize: 16 }}>{post.text}</Text>
 
           </View>
+          {/* <LinearGradient
+    colors={['#24305E', '#F76C6C']}
+    start={{x: 0.0, y: 1.0}} end={{x: 1.0, y: 1.0}}
+    style={{ marginTop: 15,height: 0.75, width: "98%", alignSelf: 'center',alignItems: 'center', justifyContent: 'center'}}
+></LinearGradient> */}
+
 
 
         </View>
       )
     }
   }
+
   render() {
-
+   
     LayoutAnimation.easeInEaseOut()
-
+ 
     return (
-      <View style={styles.container}>
+      <View style = {styles.container}>
+          
+        <Modal 
+                onBackdropPress={this.closeModal}
+                animationIn="slideInLeft"
+                animationOut = 'slideOutRight'
+                
+                transparent = {true}      
+                visible={this.state.modalForSideBar}
+              >
+                <View>
+          <View style ={{ borderBottomColor: "#24305E", borderBottomWidth: 2, borderRightColor: "#222", borderRightWidth: 2, paddingTop: hp("5%"),paddingHorizontal: 15,backgroundColor: '#fff', height: '100%', width: wp('70%')}}>
+                <View style ={{alignItems: 'center',justifyContent: 'flex-start',textAlignVertical: 'center',paddingTop: 25,flexDirection: 'row'}}>
+                <Text style ={{fontSize: 22, color: "#F76C6C"}}>{this.state.name.split(" ")[0]}</Text>
+                <TouchableOpacity style ={{position: "absolute", top: "2.5%", right: 20,}}onPress ={() => {this.toggle()}}><Ionicons size={45} color={"#24305E"} name="ios-close"></Ionicons></TouchableOpacity>
+                </View>
+                <Text style ={{fontSize: 16, color: "#24305E"}}>{firebase.auth().currentUser.email}</Text>
+            
 
+                <TouchableOpacity style ={{flexDirection: 'row',alignItems: 'center',marginTop: hp("5%")}}><Ionicons size ={35} color = {"#24305E"} name ="ios-person"></Ionicons><Text style ={{marginLeft: wp('5%'),fontSize: 20, color: "#24305E"}}>My Profile</Text></TouchableOpacity>
+                <TouchableOpacity  onPress={() => Linking.openURL('http://thestarswithinreach.com')} style ={{flexDirection: 'row',alignItems: 'center',marginTop: hp("5%")}}><Ionicons size ={35} color = {"#24305E"} name ="ios-information-circle"></Ionicons><Text style ={{marginLeft: wp('5%'),fontSize: 20, color: "#24305E"}}>About Us</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL('http://thestarswithinreach.com/privacy')} style ={{flexDirection: 'row',alignItems: 'center',marginTop: hp("5%")}}><Ionicons size ={35} color = {"#24305E"} name ="ios-paper"></Ionicons><Text style ={{marginLeft: wp('5%'),fontSize: 20, color: "#24305E"}}>Privacy Policy</Text></TouchableOpacity>
+            
 
-        <View style={styles.header}>
+          </View>
+        
+          </View>
+        </Modal>
+      
+        <View style ={{backgroundColor: "#F76C6C", paddingBottom: hp('0.95%'),justifyContent: 'center',flexDirection: 'row', width: '100%',alignItems: 'center'}}>
+        <TouchableOpacity  style={{  paddingTop: '5%', right: "200%" }} onPress={() => { console.log("Does it get here?") ,this.toggle() }}><Ionicons size={36} color={"#24305E"} name="ios-menu"></Ionicons></TouchableOpacity>
+          <Text style={{  paddingTop: '5%', fontSize: 28, textTransform: 'uppercase', fontStyle: 'normal', fontWeight: '600', color: "#F8E9A1", alignSelf: 'center' }}>Feed</Text>
+          
+         <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreatePost")}style={{  paddingTop:'5%', left: "200%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
+    
+   
 
-          <View style={{ borderBottomColor: "#F76C6C", alignSelf: 'center', width: 85, paddingBottom: 5, borderBottomWidth: 3 }}><Text style={styles.headerTitle}>Feed</Text></View>
-          <TouchableOpacity style={{ backgroundColor: "#24305E", borderRadius: 15, marginTop: -65, padding: 25, marginLeft: wp("65%"), }} onPress={this.signOutUser}>
-            <Ionicons name="ios-log-out" size={36} color="#73788B" />
-          </TouchableOpacity>
         </View>
-
-
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("CreatePost")} style={{ alignSelf: 'center', marginVertical: 15 }}>
+        {/* <TouchableOpacity onPress={() => this.props.navigation.navigate("CreatePost")} style={{ alignSelf: 'center', marginVertical: 15 }}>
           <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#23405E", overflow: "hidden", borderRadius: 10, color: "#F8E9A1", backgroundColor: "#F76C6C", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>CREATE A POST</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <FlatList
           style={styles.feed}
           data={this.state.posts}
-          renderItem={( {item ,index}) => this.renderPost(item, index)}
+          renderItem={({ item, index }) => this.renderPost(item, index)}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
         />
@@ -231,8 +322,8 @@ export default class HomeScreen extends React.Component {
       </View>
 
       /* <TouchableOpacity style ={{marginTop: 32}} onPress = {this.signOutUser}>
-          <Text>Logout</Text>
-      </TouchableOpacity> */
+            <Text>Logout</Text>
+                </TouchableOpacity> */
 
     )
   }
@@ -240,16 +331,12 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#24305E",
+    backgroundColor: "#fff",
     flex: 1,
-    paddingHorizontal: 15,
+
+   
   },
-  header: {
-    paddingTop: 55,
-    backgroundColor: "#24305E",
-    justifyContent: 'center',
-    alignSelf: 'center'
-  },
+
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -273,12 +360,16 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   openButton: {
-
+    alignItems: 'center', justifyContent: 'center',
+    position: "absolute",
+    alignSelf: 'center',
     borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    bottom: 25,
-    left: 80
+    marginLeft: '94%',
+    marginTop: '-5%',
+    width: 50,
+    zIndex: 500000,
+    height: 50
+
   },
   textStyle: {
     color: "white",
@@ -292,21 +383,20 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 30,
     fontWeight: "500",
-    alignSelf: 'center',
+    textAlign: 'center',
     color: "#F8E9A1",
+    position: 'absolute',
+    left: "10%",
+    bottom: 0,
   },
-  feed: {
-    marginHorizontal: 16,
 
-  },
   feedItem: {
-    backgroundColor: "#F8E9A1",
-    borderRadius: 15,
-    padding: 8,
-    flexDirection: 'row',
-    marginVertical: 15,
+
+    flexDirection: 'column',
+
     textAlign: 'left',
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -315,8 +405,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
     elevation: 12,
-    width: wp('80%'),
-    alignSelf: 'center'
+    width: wp('100%'),
+    alignSelf: 'center',
+    position: 'relative',
+    justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
+    borderTopWidth: 4,
+
+    borderTopColor: "#ddd",
   },
   name: {
     fontSize: 20,
@@ -335,17 +431,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#24305E"
   },
-  postImage: {
-    height: 400,
-    width: undefined,
-    borderRadius: 5,
 
-  },
   image: {
-    width: undefined,
+    width: "95%",
     height: 300,
-    maxWidth: 500,
-    marginVertical: 15,
+    marginTop: hp("2%"),
+    alignSelf: 'center'
 
   },
   back: {

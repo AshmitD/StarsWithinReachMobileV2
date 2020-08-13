@@ -5,56 +5,160 @@ import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import db from "firebase"
 import Fire from '../Fire'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 export default class MyProjects extends React.Component {
 
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.state = {
             projectIDs: [],
-
+            myProjects: []
         }
         this.fillMyProjects()
-    }
 
+    }
 
     fillMyProjects = () => {
         Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
             this.setState({ projectIDs: user["projects"] })
+        }).then(() => {
+            const allProjects = []
+
+
+
+           const allOfTheProjects = this.state.projectIDs.map((projectID => {
+                
+                const currProject = this.props.projects[projectID]
+                const arrNames = []
+                console.log("curr project user emails", currProject['userEmails'])
+                const userNames = currProject['userEmails'].map((email => {
+                   return (
+                    Fire.shared.getUserData(email).then((user) => {
+                        arrNames.push(user.user["name"])
+                        console.log("This is array names",arrNames)
+                    })
+                   )
+                }))
+                return (
+                Promise.all(userNames).then(() => {
+                    console.log("this is arr names", arrNames)
+                    currProject.names = arrNames
+                    allProjects.push(currProject)
+                    console.log("this is all projects", allProjects)
+                })
+                )
+           
+            }))
+                Promise.all(allOfTheProjects).then(() => {
+                    this.setState({ myProjects: allProjects })
+                console.log('this.stateing', this.state)})
+
+
         })
+
+
+
+
     }
 
-    renderProject = projectID => {
+    //     // const projects = [];
+    //     // const db = firebase.firestore();
 
-        const project = this.props.projects[projectID]
+    //     // const onReceive = (querySnapshot) => {
+    //     //     querySnapshot.forEach(function (doc) {
+    //     //         // doc.data() is never undefined for query doc snapshots
+    //     //         projects[doc.id] = doc.data();
+    //     //     });           
+    //     // }
+    //     // db.collection("projects").get()
+    //     //     .then(onReceive.bind(this));
+
+    //     Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
+
+    //         user['projects'].forEach(projectID => {
+    //                 console.log("this is projectsss", projects)
+    //                 const currProject =  projects[projectID]
+    //                 console.log("This is currproject", currProject)
+    //                 let arrNames = []
+    //                 console.log("currproject", currProject.userEmails)
+    //                 const userDataPromises = currProject.userEmails.map(email => {
+    //                     console.log('INSIDE MAP CALLBACK')
+    //                     return Fire.shared.getUserData(email).then(({user}) => {
+    //                         arrNames.push(user["name"])
+    //                         console.log("this is arr Names", arrNames)
+    //                     })
+    //                 })
+    //                 Promise.all(userDataPromises).then(() => {
+    //                     currProject.names = arrNames
+    //                     myProjects.push({'id': projectID, 'project': currProject})
+    //                     console.log('this is id', projects)
+    //                     // const temp = this.state.projects
+    //                     // temp.push(currProject)
+    //                     // 
+    //                     // console.log("this is projects", this.state.projects)
+    //                 })
+
+    //                 console.log("This is arr names before", myProjects)
+
+    //             })
+    //                 console.log("this is projects in state", this.state.projects)
+    //                 this.setState({projects: myProjects}) 
+
+    //         })
+
+
+    // }
+
+    renderProject = project => {
+       
+       
         // console.log("this is projects", project)
         // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
         return project && (
 
-            <View style={styles.feedItem}>
+            <View>
                 {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
-                <View style={{ flex: 1, alignItems: 'center', }}>
-                    <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
+                <View style={{ flex: 1, zIndex: 25, alignItems: 'center', }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', }}>
-                            <Text style = {styles.name}>{project["title"].toUpperCase()}</Text>
+                            {project.topics.includes("math") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-clipboard" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics.includes("science") && <View style={{ width: 70, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 70 }}>
+                                <Ionicons name="ios-beaker" size={40} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics.includes("engineering") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-build" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics.includes("technology") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-git-merge" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics.includes("space") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-rocket" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            <View style={{ flexDirection: 'column', marginLeft: 20, alignItems: "flex-start", justifyContent: "center" }}>
+                                <Text style={{ fontSize: 25, color: "#F76C6C", fontWeight: '500' }}>{project.title}</Text>
+                                <Text style={{ color: '#24305E', fontSize: 15, }}>{project.names.slice(0,3).join(', ')} </Text>
+                            </View>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('OneProject', {
+                                otherParam: project.id,
+                            })} style={{ marginTop: 15 }}>
+                                <View style={{ flexDirection: "row", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15 }} >
+
+                                    <Ionicons name="ios-arrow-dropright" size={30} color={"#F8E9A1"} style={{ marginLeft: 7, top: -1, }} />
+                                </View>
+                            </TouchableOpacity>
                         </View>
 
                     </View>
-                    <Text style={styles.descrip}>{project.descrip}</Text>
-                     {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
 
-                     <TouchableOpacity onPress={() => this.props.navigation.navigate('OneProject', {
-                        otherParam: projectID,
-                    })} style = {{marginTop: 15}}> 
-                        <View style = {{flexDirection: "row", backgroundColor: "#F76C6C", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15}} >                                  
-                        <Text style = {{fontWeight: "400", fontSize: 20, color: "#F8E9A1", fontWeight: "600"}}>Dive In</Text>
-                        <Ionicons name="ios-arrow-dropright" size={30} color={"#F8E9A1"} style = {{marginLeft: 7, top:-1,}} />
-                        </View>   
-                    </TouchableOpacity>
-          
+                    {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+
+
+
                 </View>
 
 
@@ -67,15 +171,15 @@ export default class MyProjects extends React.Component {
         return (
 
             <View style={styles.container}>
-                {this.state.projectIDs==0 && <View style ={{alignSelf: 'center'}}>
-                    <Text style ={{textAlign:'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25,marginTop: hp("25%")}}>You aren't in any groups yet... Join a group!</Text>
+                {this.state.projectIDs == 0 && <View style={{ alignSelf: 'center' }}>
+                    <Text style={{ textAlign: 'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25, marginTop: hp("25%") }}>You aren't in any groups yet... Join a group!</Text>
                 </View>}
                 {<FlatList
                     style={styles.feed}
-                    data={this.state.projectIDs}
+                    data={this.state.myProjects}
                     renderItem={({ item }) => this.renderProject(item)}
                     keyExtractor={item => item}
-                    
+
                 />}
                 {/* <View style = {{width: 15}}>
                 <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
@@ -95,7 +199,7 @@ export default class MyProjects extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#24305E",
+        backgroundColor: "#f8e9a1",
         flex: 1,
 
     },
@@ -116,7 +220,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     feed: {
-        marginHorizontal: 25,
+
         marginTop: 15
     },
     feedItem: {
@@ -149,7 +253,7 @@ const styles = StyleSheet.create({
         fontWeight: "900",
         alignSelf: 'center',
         color: "#F76C6C",
-        textAlign: 'center'
+        textAlign: 'center',
     },
     descrip: {
         marginTop: 6,

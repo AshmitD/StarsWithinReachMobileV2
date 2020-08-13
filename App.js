@@ -13,6 +13,8 @@ import AllChatScreens from './Screens/AllChatScreens'
 import ProjectMoreInfoScreen from './Screens/ProjectMoreInfo'
 import LoginScreen2 from './Screens/LoginScreen2'
 import * as firebase from 'firebase'
+
+import { createDrawerNavigator} from 'react-navigation-drawer'
 import CreatePostScreen from './Screens/CreatePostScreen'
 import AboutScreen from './Screens/About'
 import ProjectsScreen from './Screens/Projects'
@@ -102,12 +104,12 @@ const AppTabNavigator = createBottomTabNavigator(
     },
     {
       tabBarOptions: {
-        inactiveTintColor: "#24305E",
+        inactiveTintColor: "#F8e9a1",
         activeTintColor: "#F76C6C",
         showLabel: false,
         lazy: false,
         style: {
-          backgroundColor: '#F8E9A1',
+          backgroundColor: '#24305E',
           height: 48
         }
       } 
@@ -206,12 +208,14 @@ const OtherStack = createSwitchNavigator({
     }
   }
 })
+
 export default createAppContainer(
   createSwitchNavigator(
    { Loading: LoadingScreen,
     App: AppTabNavigator,
     Auth: AuthStack,
-    Other: OtherStack
+    Other: OtherStack,
+
    },
    {
      initialRouteName: "Loading"
