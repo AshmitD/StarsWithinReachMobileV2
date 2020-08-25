@@ -24,6 +24,7 @@ export default class HomeScreen extends React.Component {
       const chatIDs = user["messageIDs"]
       console.log("this is chatids", chatIDs)
       return this.getEmail(chatIDs).then(() => {
+        
         console.log('got the emails')
         this.sort()
       })
@@ -40,7 +41,9 @@ export default class HomeScreen extends React.Component {
       console.log("This is one id", chatID)
       const promise = firebase.database().ref('/messages/specificChatss/' + chatID).once('value').then((snapshot) => {
         var everything = (snapshot.val()) || 'Anonymous'
-
+        if(everything['groupChat'] == true) {
+          this.setState({ chats: this.state.chats.concat({ id: chatID, newestMessage: everything['newestMessage'], name: everything['name'] }) })
+        } else {
         const email1 = everything["email1"]
         console.log("this is the email", email1, "this is chatttt", chatIDs[i])
         if (email1 != firebase.auth().currentUser.email) {
@@ -52,7 +55,7 @@ export default class HomeScreen extends React.Component {
             this.setState({ chats: this.state.chats.concat({ id: chatID, name: user.name, newestMessage: everything['newestMessage'] }) })
           })
         }
-
+      }
 
       })
       promises.push(promise);

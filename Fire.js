@@ -364,7 +364,9 @@ class Fire {
                     const chatRef = JSON.stringify(id).split("specificChatss/")[1]
                     const chatId = chatRef.split(`"`)[0]
                     firebase.database().ref(`messages/specificChatss/${chatId}`).set({
-                        projectID: docRef.id
+                        name: title,
+                        projectID: docRef.id,
+                        groupChat: true
                     })
                     console.log("this is id", id)
                   
