@@ -32,6 +32,7 @@ export default class MyProjects extends React.Component {
                 
                 const currProject = this.props.projects[projectID]
                 const arrNames = []
+                currProject.id = projectID
                 console.log("curr project user emails", currProject['userEmails'])
                 const userNames = currProject['userEmails'].map((email => {
                    return (
@@ -113,7 +114,7 @@ export default class MyProjects extends React.Component {
 
     renderProject = project => {
        
-       
+        
         // console.log("this is projects", project)
         // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
@@ -124,19 +125,19 @@ export default class MyProjects extends React.Component {
                 <View style={{ flex: 1, zIndex: 25, alignItems: 'center', }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', }}>
-                            {project.topics.includes("math") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                            {project.topics[0].toLowerCase()== "math" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
                                 <Ionicons name="ios-clipboard" size={30} color="#F8E9A1"></Ionicons>
                             </View>}
-                            {project.topics.includes("science") && <View style={{ width: 70, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 70 }}>
+                            {project.topics[0].toLowerCase()== "science" && <View style={{ width: 70, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 70 }}>
                                 <Ionicons name="ios-beaker" size={40} color="#F8E9A1"></Ionicons>
                             </View>}
-                            {project.topics.includes("engineering") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                            {project.topics[0].toLowerCase()== "engineering" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
                                 <Ionicons name="ios-build" size={30} color="#F8E9A1"></Ionicons>
                             </View>}
-                            {project.topics.includes("technology") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                            {project.topics[0].toLowerCase()== "technology" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
                                 <Ionicons name="ios-git-merge" size={30} color="#F8E9A1"></Ionicons>
                             </View>}
-                            {project.topics.includes("space") && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                            {project.topics[0].toLowerCase()== "space" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
                                 <Ionicons name="ios-rocket" size={30} color="#F8E9A1"></Ionicons>
                             </View>}
                             <View style={{ flexDirection: 'column', marginLeft: 20, alignItems: "flex-start", justifyContent: "center" }}>
@@ -148,7 +149,7 @@ export default class MyProjects extends React.Component {
                             })} style={{ marginTop: 15 }}>
                                 <View style={{ flexDirection: "row", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15 }} >
 
-                                    <Ionicons name="ios-arrow-dropright" size={30} color={"#F8E9A1"} style={{ marginLeft: 7, top: -1, }} />
+                                    <Ionicons name="ios-arrow-dropright" size={30} color={"black"} style={{top: -1, }} />
                                 </View>
                             </TouchableOpacity>
                         </View>

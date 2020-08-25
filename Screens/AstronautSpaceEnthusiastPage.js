@@ -26,7 +26,7 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
         <TouchableOpacity  style={{  paddingTop: '5%', right: "100%" }} onPress={() => { console.log("Does it get here?") ,this.toggle() }}><Ionicons size={36} color={"#24305E"} name="ios-settings"></Ionicons></TouchableOpacity>
           <Text style={{  paddingTop: '5%', fontSize: 28, textTransform: 'uppercase', fontStyle: 'normal', fontWeight: '600', color: "#F8E9A1", alignSelf: 'center' }}>My Projects</Text>
           
-         <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreatePost")}style={{  paddingTop:'5%', left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
+         <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreateProject")}style={{  paddingTop:'5%', left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
     
    
 

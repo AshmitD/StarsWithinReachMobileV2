@@ -7,229 +7,241 @@ import moment from 'moment'
 import Fire from '../Fire'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Alert } from 'react-native'
-
+//TODO Add sorting for the messages, enable push notifications
 export default class HomeScreen extends React.Component {
 
 
-    constructor() {
-        super()
-  
-        this.state = {
-            chats: [],
-            modalVisible: false,
+  constructor() {
+    super()
 
+    this.state = {
+      chats: [],
+      modalVisible: false,
+
+    }
+    Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
+      console.log("hi", firebase.auth().currentUser.email)
+      const chatIDs = user["messageIDs"]
+      console.log("this is chatids", chatIDs)
+      return this.getEmail(chatIDs).then(() => {
+        console.log('got the emails')
+        this.sort()
+      })
+    })
+  }
+
+  // TODO RENAME THIS METHOD need to change this logic im dumb
+  getEmail = chatIDs => {
+    const promises = [];
+    console.log("is it getting here?")
+    for (let i = 0; i < chatIDs.length; i++) {
+      // Problem with i for multichats
+      const chatID = chatIDs[i]
+      console.log("This is one id", chatID)
+      const promise = firebase.database().ref('/messages/specificChatss/' + chatID).once('value').then((snapshot) => {
+        var everything = (snapshot.val()) || 'Anonymous'
+
+        const email1 = everything["email1"]
+        console.log("this is the email", email1, "this is chatttt", chatIDs[i])
+        if (email1 != firebase.auth().currentUser.email) {
+          return Fire.shared.getUserData(email1).then(({ user }) => {
+            this.setState({ chats: this.state.chats.concat({ id: chatID, newestMessage: everything['newestMessage'], name: user["name"] }) })
+          })
+        } else {
+          return Fire.shared.getUserData(everything["email2"]).then(({ user }) => {
+            this.setState({ chats: this.state.chats.concat({ id: chatID, name: user.name, newestMessage: everything['newestMessage'] }) })
+          })
         }
-        Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
-            console.log("hi") 
-            const chatIDs = user["messageIDs"]
-            console.log("this is chatids", chatIDs)
-                this.getEmail(chatIDs)
-        })
 
-       
 
+      })
+      promises.push(promise);
     }
 
-    getEmail = chatIDs => {
-        console.log("is it getting here?") 
-        var i;
-        for (i = 0; i < chatIDs.length; i++) {
-         // Problem with i for multichats
-            const chatID = chatIDs[i]
-               console.log("This is one id", chatID)
-            firebase.database().ref('/messages/specificChatss/' + chatID).once('value').then((snapshot) => {
-                var everything = (snapshot.val()) || 'Anonymous'
+    return Promise.all(promises);
+  }
 
-                const email1 = everything["email1"]
-                console.log("this is the email", email1, "this is chatttt", chatIDs[i])
-                if (email1 != firebase.auth().currentUser.email) {
-                    Fire.shared.getUserData(email1).then(({ user }) => {
-                        this.setState({ chats: this.state.chats.concat({id: chatID, name: user["name"]}) })
-                    })
-                } else {
-                    Fire.shared.getUserData(everything["email2"]).then(({ user }) => {
-                        this.setState({chats: this.state.chats.concat({ id: chatID, name: user.name }) })
-                    })
-                }
-        
+  sort = () => {
+    const temp = this.state.chats
+    console.log('himh')
+    temp.sort((a, b) => {
+      if (a.newestMessage.timestamp > b.newestMessage.timestamp) {
+        return -1
+      }
+      else {
+        return 1
+      }
+    })
+    console.log('tempowawy', temp)
+    this.setState({ chats: temp })
 
-            })
-        }
+  }
+  renderChat = chat => {
+    console.log("this is newest message", chat.newestMessage)
+
+    let chars = chat.name.split(" ")[0].substring(0, 1)
+    if (chat.name.split(" ").length > 1) {
+      chars += chat.name.split(' ')[1].substring(0, 1)
     }
-
-
-    renderChat = chat => {
-        console.log("this is the chatt", chat)
-        return (
-        <View style={styles.feedItem}>
-            
-             <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatScreen', {
-                        "id": chat["id"],"name": chat["name"] ,
-            
-                    })} style = {{marginTop: 15}}> 
-                        <View style = {{flexDirection: "row", backgroundColor: "#F76C6C", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15}} >                                  
-                        <Text>{chat["name"]}</Text>
-                        <Ionicons name="ios-arrow-dropright" size={30} color={"#F8E9A1"} style = {{marginLeft: 7, top:-1,}} />
-                        </View>   
-                    </TouchableOpacity></View>)
-    }
-
-    render() {
-
-        LayoutAnimation.easeInEaseOut()
-
-        return (
-            <View style={styles.container}>
-                
-                <View style={styles.header}><View style={{ borderBottomColor: "#F76C6C", alignSelf: 'center', width: 85, paddingBottom: 5, borderBottomWidth: 3 }}><Text style={styles.headerTitle}>Chat</Text></View>
-                </View>
-
-                {this.state.chats.length==0 && <View style ={{alignSelf: 'center'}}>
-                    <Text style ={{textAlign:'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25,marginTop: hp("25%")}}>Click on anyone's name to start a chat!!</Text>
-                </View>}
-                {this.state.chats && <FlatList
-                    style={styles.feed}
-                    data={this.state.chats}
-                    renderItem={({ item }) => this.renderChat(item)}
-                    keyExtractor={item => item}
-                    showsVerticalScrollIndicator={false}
-                />}
-
-                {/* <View style = {{width: 15}}>
-                <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
-                   <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>
-                </TouchableOpacity>  
-                </View> */}
-
+    return (
+      <View style={styles.feedItem}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatScreen', {
+          "id": chat["id"], "name": chat["name"],
+        })} style={{ marginTop: 0 }}>
+          <View style={styles.chatContainer}>
+            <View style={styles.chatProfile}>
+              <View style={{
+                height: 60,
+                width: 60,
+                backgroundColor: "#3772ff",
+                borderRadius: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                borderWidth: 2,
+                borderColor: "#080708"
+              }}><Text style={{ color: "white", fontSize: 20, }}>{chars}</Text></View>
             </View>
+            <View style={styles.chatContent}>
+              <Text style={styles.name}>{chat['name']}</Text>
+             {chat.newestMessage !== undefined && <Text style={styles.message}>{chat.newestMessage.text}</Text>}
+            </View>
+            <View style={styles.chatNotifications}>
+              <View style={{
+                alignItems: "center",
+                justifyContent: "center",
+                height: 30,
+                width: 30,
+                backgroundColor: "#3772ff",
+                borderRadius: "100%",
+              }}>
+                <Text style={styles.chatNotificationsText}>2</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
-            /* <TouchableOpacity style ={{marginTop: 32}} onPress = {this.signOutUser}>
-                <Text>Logout</Text>
-            </TouchableOpacity> */
-        )
+  render() {
 
+    LayoutAnimation.easeInEaseOut()
+    console.log('these are the chats from mom', this.state.chats)
 
-    }
+    LayoutAnimation.easeInEaseOut()
+    console.log('these are the chats from mom', this.state.chats)
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.linesContainer}>
+            <Text style={styles.heading}>Chat</Text>
+            <View style={styles.plus}><Ionicons name="md-add-circle-outline" size={32} color={"#fff"} /></View>
+          </View>
+        </View>
+
+        <View style={{
+          flex: 6,
+          backgroundColor: "#eee",
+          width: "100%",
+          position: "relative",
+          top: -30,
+          borderTopLeftRadius: "35%",
+          borderTopRightRadius: "35%",
+        }}>
+
+          {this.state.chats.length == 0 && <View style={{ alignSelf: 'center' }}>
+            <Text style={{ textAlign: 'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25, marginTop: "25%" }}>"Click on anyone's name to start                         chat!!"</Text>
+          </View>}
+          {this.state.chats && <FlatList
+            style={styles.feed}
+            data={this.state.chats}
+            renderItem={({ item }) => this.renderChat(item)}
+            keyExtractor={item => item}
+            showsVerticalScrollIndicator={false}
+          />}
+
+        </View>
+      </View>
+    )
+
+  }
 }
-
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "#24305E",
-        flex: 1,
-        paddingHorizontal: 15,
-    },
-    header: {
-        paddingTop: 55,
-        backgroundColor: "#24305E",
-        justifyContent: 'center',
-        alignSelf: 'center'
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22,
+  container: {
+    backgroundColor: "#f8f8f8",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    height: "100%",
+    width: "100%",
+  },
+  header: {
+    backgroundColor: "#3772ff",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flex: 0.75,
+    paddingBottom: 40,
+  },
+  linesContainer: {
+    backgroundColor: "transparent",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  plus: {
+    position: "absolute",
+    right: 20,
+  },
+  content: {
 
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
-    openButton: {
+  },
+  heading: {
+    fontSize: 30,
+    textTransform: "uppercase",
+    letterSpacing: 2,
+    paddingHorizontal: 20,
+    marginBottom: 5,
+    color: "#fff",
+  },
+  chatContainer: {
+    borderBottomWidth: 2,
+    borderColor: "#080708",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    height: 100,
+    position: "relative",
+  },
+  chatProfile: {
+    width: 100,
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
 
-        borderRadius: 20,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        bottom: 25,
-        left: 80
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    },
-    headerTitle: {
-        fontSize: 30,
-        fontWeight: "500",
-        alignSelf: 'center',
-        color: "#F8E9A1",
-    },
-    feed: {
-        marginHorizontal: 16,
+  chatContent: {
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignItems: "flex-start",
+  },
+  name: {
+    fontSize: 18,
+    marginVertical: 5,
+  },
+  message: {
+    fontSize: 14,
+    marginVertical: 5,
+  },
+  chatNotifications: {
+    position: "absolute",
+    right: 20,
+  },
 
-    },
-    feedItem: {
-
-        borderRadius: 15,
-        padding: 8,
-        flexDirection: 'row',
-        marginVertical: 15,
-        textAlign: 'left',
-        padding: 15,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 6,
-        },
-        shadowOpacity: 0.37,
-        shadowRadius: 7.49,
-        elevation: 12,
-        width: wp('80%'),
-        alignSelf: 'center'
-    },
-    name: {
-        fontSize: 20,
-        fontWeight: "500",
-        color: "#F76C6C",
-        marginBottom: 5
-    },
-    timestamp: {
-        fontSize: 15,
-        fontWeight: "500",
-        color: "#24305E"
-    },
-
-    postss: {
-        marginTop: 16,
-        fontSize: 14,
-        color: "#24305E"
-    },
-    postImage: {
-        height: 400,
-        width: undefined,
-        borderRadius: 5,
-
-    },
-    image: {
-        width: undefined,
-        height: 300,
-        maxWidth: 500,
-        marginVertical: 15,
-
-    },
-    back: {
-        width: 32,
-        height: 32,
-        borderRadius: 21,
-        alignItems: 'center',
-        backgroundColor: "rgba(21,22,48,0.1)",
-        justifyContent: 'center'
-    },
-
-
+  chatNotificationsText: {
+    color: "#fff",
+  },
 })

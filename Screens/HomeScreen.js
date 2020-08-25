@@ -149,6 +149,12 @@ export default class HomeScreen extends React.Component {
             <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
               <Text style={{ color: "#f8e9a1", textAlign: 'center', zIndex: 55 }}>{chars}</Text>
             </View>
+            <Text style={{
+                fontSize: 20,
+                fontWeight: "500",
+                color: '#24305e',
+                marginBottom: 5
+              }}>{post.projectName}</Text>
             <View style={{ marginLeft: 20, flexDirection: 'column' }}>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewProfile', {
                 otherParam: post.user

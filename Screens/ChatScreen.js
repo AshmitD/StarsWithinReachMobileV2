@@ -55,7 +55,7 @@ export default class ChatScreen extends React.Component {
   render() {
     console.log("Thisi s messages", this.state.messages)
     console.log("This i suer", this.user)
-    const chat = <GiftedChat style={{ zIndex: -1, position: "absolute" }} messages={this.state.messages} onSend={(messages) => Fire.shared.send(messages, this.state.currID)} user={this.user} />
+    const chat = <GiftedChat style={{ zIndex: -1, position: "absolute" }} messages={this.state.messages} onSend={(messages) => Fire.shared.send(messages, this.state.currID, this.user)} user={this.user} />
 
     return (
 

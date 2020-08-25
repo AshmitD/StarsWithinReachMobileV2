@@ -7,7 +7,7 @@ class Fire {
         firebase.initializeApp(FirebaseKeys)
     }
 
-    addPost = async ({ text, localUri, name }) => {
+    addPost = async ({ projectID, projectName, text, localUri, name }) => {
         let remoteUri;
         if (localUri) {
 
@@ -21,6 +21,8 @@ class Fire {
         return new Promise((res, rej) => {
 
             this.firestore.collection("posts").add({
+                projectID: projectID,
+                projectName: projectName,
                 name: name,
                 text: text,
                 timestamp: this.timestamp,
@@ -34,6 +36,22 @@ class Fire {
                 .catch(error => {
 
                     rej(error)
+                }).then(() => {
+                    this.firestore.collection("projects").doc(projectID).collection("projectPosts").add({
+                        name: name,
+                        text: text,
+                        timestamp: this.timestamp,
+                        uid: this.uid,
+                        imageLink: remoteUri,
+                        email: firebase.auth().currentUser.email,
+        
+                    })
+                        .then(ref => {
+                            res(ref)
+                        })
+                        .catch(error => {
+                            rej(error)
+                        })
                 })
         })
 
@@ -139,6 +157,7 @@ class Fire {
                 })
         })
     }
+   
     addChat = async ({email1, email2 }) => {
 
         // TODO Add an alert if they already have a chat in common
@@ -150,8 +169,12 @@ class Fire {
         const commonMessageArr = user1["messageIDs"].filter(messageID => {
             return user2["messageIDs"].includes(messageID)
         })
-        
-        if(commonMessageArr.length> 0) {
+
+        // const groupchatsWithUser2 = user1["messageIDs"].filter(messageID => {
+        //     return user2["messageIDs"].includes(messageID) && this chat is a group chat.
+        // })
+        //  && groupchatsWithUser2.length != 0
+        if(commonMessageArr.length > 0) {
             return commonMessageArr[0];
         }
         
@@ -191,19 +214,28 @@ class Fire {
 
     //Create a chat id whenever someone starts a chat
     //With each user have an array that stores chat ids
-    send = (messages, chatID) => {
+    send = (messages, chatID, user) => {
 
-
+        console.log('this is messages', messages)
         messages.forEach(item => {
 
             const message = {
                 text: item.text,
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
-                user: item.user
+                user: user
             }
 
             this.messageDB(chatID).push(message)
+            this.currMessage(chatID).set({
+                text: message['text'],
+                timestamp: message['timestamp'],
+                user: message['user']
+            })
         })
+    }
+   
+    currMessage(chatID) {
+        return firebase.database().ref(`messages/specificChatss/${chatID}/newestMessage`)
     }
     messageDB(chatID) {
 
@@ -279,16 +311,21 @@ class Fire {
 
     }
     joinProject = (projectId, project) => {
-
+        console.log('this is projecto', project)
         this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
             const arr = user["projects"]
-
+            const messages = user['messageIDs']
             if (arr.includes(projectId)) {
                 Alert.alert("You are already in this project.")
-            } else {
+            } 
+            else if(messages.includes(project['groupChatID'])){
+
+            }else {
+                messages.push(project['groupChatID'])
                 arr.push(projectId)
                 const userDoc = this.firestore.collection("users").doc(id)
                 userDoc.update({
+                    messageIDs: messages,
                     projects: arr
                 });
              const currUsers = project["userEmails"]
@@ -306,17 +343,41 @@ class Fire {
 
     }
     addProject = async ({ title, descrip, resources, endGoal, topics }) => {
+        const id = await firebase.database().ref('messages/specificChatss').push(
+            { "projectID": '', 'groupChat': true}
+         )
+
         return new Promise((res, rej) => {
-    
+            
             this.firestore.collection("projects").add({
                 title: title,
                 descrip: descrip,
                 resources: resources,
                 endGoal: endGoal,
-                topics: topics
+                topics: topics,
+                groupChatID: '', 
+                userEmails: ''
+            })  .catch(function (error) {
+                alert("Error adding project, please try again later");
             })
                 .then((docRef) => {
-                    this.joinProject(docRef.id)
+                    const chatRef = JSON.stringify(id).split("specificChatss/")[1]
+                    const chatId = chatRef.split(`"`)[0]
+                    firebase.database().ref(`messages/specificChatss/${chatId}`).set({
+                        projectID: docRef.id
+                    })
+                    console.log("this is id", id)
+                  
+                    
+                     console.log("this is id", id)
+                     const userDoc = this.firestore.collection("projects").doc(docRef.id)
+                    userDoc.update({
+                        groupChatID: chatId
+                    }).then(() => {
+                        console.log("this is chatId", chatId)
+                        this.joinProject(docRef.id,  {groupChatID: chatId, userEmails: []} )  
+                    })
+                   
                 })
                 .catch(function (error) {
                     console.error("Error adding document: ", error);

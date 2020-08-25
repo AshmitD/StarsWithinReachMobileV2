@@ -13,7 +13,7 @@ import AllChatScreens from './Screens/AllChatScreens'
 import ProjectMoreInfoScreen from './Screens/ProjectMoreInfo'
 import LoginScreen2 from './Screens/LoginScreen2'
 import * as firebase from 'firebase'
-
+import Professionals from './Screens/Professionals'
 import { createDrawerNavigator} from 'react-navigation-drawer'
 import CreatePostScreen from './Screens/CreatePostScreen'
 import AboutScreen from './Screens/About'
@@ -69,6 +69,16 @@ const AppTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({tintColor}) => <Ionicons
         style = {{alignContent: 'center'}}
         name = "ios-chatboxes" 
+        size = {24} 
+        color = {tintColor}/> 
+      }
+    },
+    Prof: {
+      screen: Professionals,
+      navigationOptions: {
+        tabBarIcon: ({tintColor}) => <Ionicons
+        style = {{alignContent: 'center'}}
+        name = "ios-rocket" 
         size = {24} 
         color = {tintColor}/> 
       }
