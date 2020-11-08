@@ -22,23 +22,40 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
                 {/* <View style={styles.header}>
                     <Text style={styles.headerTitle}>MY GROUPS</Text>
                 </View> */}
+<<<<<<< HEAD
                        {/* <View style ={{backgroundColor: "#F76C6C", paddingBottom: hp('0.95%'),justifyContent: 'center',flexDirection: 'row', width: '100%',alignItems: 'center'}}>
         <TouchableOpacity  style={{  paddingTop: '5%', right: "100%" }} onPress={() => { console.log("Does it get here?") ,this.toggle() }}><Ionicons size={36} color={"#24305E"} name="ios-settings"></Ionicons></TouchableOpacity>
           <Text style={{  paddingTop: '5%', fontSize: 28, textTransform: 'uppercase', fontStyle: 'normal', fontWeight: '600', color: "#F8E9A1", alignSelf: 'center' }}>My Projects</Text>
           
          <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreateProject", {ow: 5, hello: () => {console.log('bro'); return Promise.resolve()}})} style={{  paddingTop:'5%', left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
+=======
+                       <View style ={{backgroundColor: "#F76C6C", paddingBottom: hp('0.95%'),justifyContent: 'center',flexDirection: 'row', width: '100%',alignItems: 'center'}}>
+        <TouchableOpacity  style={{  paddingTop: '5%', right: "100%" }} onPress={() => { console.log("Does it get here?") ,this.toggle() }}><Ionicons size={36} color={"#24305E"} name="ios-settings"></Ionicons></TouchableOpacity>
+          <Text style={{  paddingTop: '5%', fontSize: 28, textTransform: 'uppercase', fontStyle: 'normal', fontWeight: '600', color: "#F8E9A1", alignSelf: 'center' }}>My Projects</Text>
+          
+         <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreateProject")}style={{  paddingTop:'5%', left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     
    
 
         </View>
              
+<<<<<<< HEAD
         */}
                 {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('JoinProject', {
+=======
+       
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('JoinProject', {
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     otherParam: this.state.projects})} style ={{height: 'auto',alignItems: 'center', borderRadius: 5,alignSelf: 'center',marginVertical: '4%',justifyContent: 'center', width: '50%', backgroundColor: '#F76C6C'}}>
             
                     <Text style ={{color: '#24305E', fontSize: 21,paddingVertical: 18}}>JOIN</Text>
 
+<<<<<<< HEAD
                     </TouchableOpacity> */}
+=======
+                    </TouchableOpacity>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('CreateProject')} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
             
                     <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 2, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>CREATE</Text>
@@ -58,7 +75,11 @@ export default class AstronautSpaceEnthusiastPage extends React.Component {
     fillProjects = () => {
         const projects = {};
         const db = firebase.firestore();
+<<<<<<< HEAD
         console.log("herehehrehrhehr?")
+=======
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         const onReceive = (querySnapshot) => {
             querySnapshot.forEach(function (doc) {
                 // doc.data() is never undefined for query doc snapshots

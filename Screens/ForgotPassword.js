@@ -39,14 +39,23 @@ export default class ProfilePage extends React.Component {
                    
                 <View style = {{top: "20%"}}>
               
+<<<<<<< HEAD
                     <Text style ={{fontSize: 23, color: "#3772ff",marginLeft: 27, alignSelf: 'center',lineHeight: 35,textAlign: 'center'}}>{`Forgot Your Password? \nDon't Worry.`}</Text>
+=======
+                    <Text style ={{fontSize: 23, color: "#F76C6C",marginLeft: 27, alignSelf: 'center',lineHeight: 35,textAlign: 'center'}}>{`Forgot Your Password? \nDon't Worry.`}</Text>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 <View style={styles.inputContainer}>
                   
                     <TextInput autoFocus={true} style={{ width: "100%"}}placeholder="Please enter your email adress ... " autoCapitalize = {false} onChangeText={text => this.setState({ email:text })} value={this.state.email}></TextInput>
 
                 </View>
+<<<<<<< HEAD
                 <TouchableOpacity  style ={{backgroundColor: "#3772ff", borderRadius: 5,width: "70%", marginVertical: 15,alignSelf: 'center',}}onPress={() => this.forgotPassword(this.state.email)}>
                         <Text style={{ textAlign: 'center',fontSize: 20, color: "#fff",fontWeight: "500", paddingVertical: 15}}>SEND EMAIL</Text>
+=======
+                <TouchableOpacity  style ={{backgroundColor: "#F76C6C", borderRadius: 15,width: "70%", marginVertical: 15,alignSelf: 'center',}}onPress={() => this.forgotPassword(this.state.email)}>
+                        <Text style={{ textAlign: 'center',fontSize: 20, color: "#F8E9A1",fontWeight: "500", paddingVertical: 15}}>SEND EMAIL</Text>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     </TouchableOpacity>
                 
                     </View>
@@ -62,7 +71,11 @@ const styles = StyleSheet.create({
         width: '100%',
        height: "100%",
        
+<<<<<<< HEAD
         backgroundColor: "#fff"
+=======
+        backgroundColor: "#F8E9A1"
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     },
     back: {
 
@@ -72,7 +85,11 @@ const styles = StyleSheet.create({
         borderRadius: wp("10%"),
         alignItems: 'center',
         marginLeft: 15,
+<<<<<<< HEAD
       
+=======
+        backgroundColor: "rgba(21,22,48,0.1)",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         justifyContent: 'center'
     },
     // header: {

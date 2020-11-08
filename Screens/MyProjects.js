@@ -19,12 +19,16 @@ export default class MyProjects extends React.Component {
         this.fillMyProjects()
 
     }
+<<<<<<< HEAD
     componentDidUpdate(prevProps) {
         console.log("this is props", prevProps)
         if (this.props.projects !== prevProps.projects) {
           this.fillMyProjects();
         }
     }
+=======
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     fillMyProjects = () => {
         Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
             this.setState({ projectIDs: user["projects"] })
@@ -37,11 +41,16 @@ export default class MyProjects extends React.Component {
                 
                 const currProject = this.props.projects[projectID]
                 const arrNames = []
+<<<<<<< HEAD
                 if(currProject == undefined) {
                     return 
                 }
                 currProject.id = projectID
                 console.log("curr project user emails", currProject)
+=======
+                currProject.id = projectID
+                console.log("curr project user emails", currProject['userEmails'])
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 const userNames = currProject['userEmails'].map((email => {
                    return (
                     Fire.shared.getUserData(email).then((user) => {
@@ -126,6 +135,7 @@ export default class MyProjects extends React.Component {
         // console.log("this is projects", project)
         // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
+<<<<<<< HEAD
 
         console.log("This is project", project)
             return project && (
@@ -167,6 +177,55 @@ export default class MyProjects extends React.Component {
                 </View>
                 </TouchableOpacity>
     
+=======
+        return project && (
+
+            <View>
+                {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
+                <View style={{ flex: 1, zIndex: 25, alignItems: 'center', }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', }}>
+                            {project.topics[0].toLowerCase()== "math" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-clipboard" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics[0].toLowerCase()== "science" && <View style={{ width: 70, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 70 }}>
+                                <Ionicons name="ios-beaker" size={40} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics[0].toLowerCase()== "engineering" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-build" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics[0].toLowerCase()== "technology" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-git-merge" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            {project.topics[0].toLowerCase()== "space" && <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+                                <Ionicons name="ios-rocket" size={30} color="#F8E9A1"></Ionicons>
+                            </View>}
+                            <View style={{ flexDirection: 'column', marginLeft: 20, alignItems: "flex-start", justifyContent: "center" }}>
+                                <Text style={{ fontSize: 25, color: "#F76C6C", fontWeight: '500' }}>{project.title}</Text>
+                                <Text style={{ color: '#24305E', fontSize: 15, }}>{project.names.slice(0,3).join(', ')} </Text>
+                            </View>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('OneProject', {
+                                otherParam: project.id,
+                            })} style={{ marginTop: 15 }}>
+                                <View style={{ flexDirection: "row", paddingBottom: 2, paddingTop: 9, paddingHorizontal: 10, borderRadius: 15 }} >
+
+                                    <Ionicons name="ios-arrow-dropright" size={30} color={"black"} style={{top: -1, }} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+
+                    {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+
+
+
+                </View>
+
+
+            </View>
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         )
     }
     render() {
@@ -174,6 +233,7 @@ export default class MyProjects extends React.Component {
         return (
 
             <View style={styles.container}>
+<<<<<<< HEAD
             <View style={styles.header}>
               <View style={styles.linesContainer}>
                 <Text style={styles.heading}>Projects</Text>
@@ -197,6 +257,25 @@ export default class MyProjects extends React.Component {
               />}
               </View>
           </View>
+=======
+                {this.state.projectIDs == 0 && <View style={{ alignSelf: 'center' }}>
+                    <Text style={{ textAlign: 'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25, marginTop: hp("25%") }}>You aren't in any groups yet... Join a group!</Text>
+                </View>}
+                {<FlatList
+                    style={styles.feed}
+                    data={this.state.myProjects}
+                    renderItem={({ item }) => this.renderProject(item)}
+                    keyExtractor={item => item}
+
+                />}
+                {/* <View style = {{width: 15}}>
+                <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
+                   <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>
+                </TouchableOpacity>  
+                </View> */}
+
+            </View>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
             /* <TouchableOpacity style ={{marginTop: 32}} onPress = {this.signOutUser}>
                 <Text>Logout</Text>
@@ -208,6 +287,7 @@ export default class MyProjects extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
+<<<<<<< HEAD
         backgroundColor: "#fff",
         height: "100%",
         width: "100%",
@@ -273,4 +353,78 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: 25,
     },
+=======
+        backgroundColor: "#f8e9a1",
+        flex: 1,
+
+    },
+    header: {
+        paddingTop: 16,
+        paddingBottom: 16,
+        backgroundColor: "#FFF",
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: "#EBECF4",
+        flexDirection: "row",
+
+    },
+    headerTitle: {
+        fontSize: 20,
+        fontWeight: "500",
+        alignSelf: 'center'
+    },
+    feed: {
+
+        marginTop: 15
+    },
+    feedItem: {
+        marginTop: 25,
+        borderRadius: 5,
+        padding: 15,
+        flexDirection: 'row',
+        marginVertical: 8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        backgroundColor: "#F8E9A1",
+        borderRadius: 15,
+        width: wp('80%'),
+        alignSelf: 'center'
+    },
+    avatar: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        marginRight: 16
+    },
+    name: {
+        fontSize: 30,
+        fontWeight: "900",
+        alignSelf: 'center',
+        color: "#F76C6C",
+        textAlign: 'center',
+    },
+    descrip: {
+        marginTop: 6,
+        fontSize: 16,
+        color: "#23405E",
+        textAlign: 'center'
+    },
+    back: {
+        width: 32,
+        height: 32,
+        borderRadius: 21,
+        alignItems: 'center',
+        backgroundColor: "rgba(21,22,48,0.1)",
+        justifyContent: 'center'
+    },
+
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 })

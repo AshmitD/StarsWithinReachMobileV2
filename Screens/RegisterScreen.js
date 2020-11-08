@@ -122,9 +122,15 @@ export default class RegisterScreen extends React.Component {
                                 borderBottomWidth: StyleSheet.hairlineWidth, zIndex: 2031, position: 'absolute', borderColor: '#FFF'
                             }}
                                 items={[
+<<<<<<< HEAD
                                     { label: 'Organization', value: 'Organization' },
                                     { label: 'Professional', value: 'Professional' },
                                     { label: 'Student', value: 'Student' },
+=======
+                                    { label: 'Space and STEM Enthusiast', value: 'Space Enthusiast' },
+                                    { label: 'Professional', value: 'Space Professional' },
+                                    { label: 'Student', value: 'Young Girl' },
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
                                 ]}
                                 defaultIndex={0}
@@ -305,25 +311,41 @@ export default class RegisterScreen extends React.Component {
                                 </View>
                             </Modal>
 
+<<<<<<< HEAD
                             <TouchableOpacity
+=======
+                            <TouchableHighlight
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                                 style={styles.openButton}
                                 onPress={() => {
                                     this.setModalVisible(true);
                                 }}
                             >
                                 <Text style={{ lineHeight: 25, paddingHorizontal: 12, marginTop: 25, fontSize: 15, color: "black" }}>By signing up you agree to our <Text style={{ fontSize: 16, fontWeight: "500", color: "#24305E" }}>Terms and Services</Text>. You can always contact us with any questions.</Text>
+<<<<<<< HEAD
                             </TouchableOpacity>
+=======
+                            </TouchableHighlight>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                         </View>{/*  */}
 
                     </View>
 
                     <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
+<<<<<<< HEAD
                         <Text style={{ color: "#fff", fontSize: 15, fontWeight: "500", textTransform: "uppercase" }}>Sign up</Text>
+=======
+                        <Text style={{ color: "#F8E9A1", fontSize: 15, fontWeight: "500", textTransform: "uppercase" }}>Sign up</Text>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ alignSelf: 'center', marginTop: 32 }} onPress={() => this.props.navigation.navigate("Login")}>
                         <Text style={{ color: "#414959", fontSize: 13 }}>
+<<<<<<< HEAD
                             Already have an account? <Text style={{ fontWeight: "500", color: "#3772ff" }}>Login</Text>
+=======
+                            Already have an account? <Text style={{ fontWeight: "500", color: "#E9446A" }}>Login</Text>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
                         </Text>
                     </TouchableOpacity>
@@ -395,7 +417,11 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: 30,
+<<<<<<< HEAD
         backgroundColor: "#3772ff",
+=======
+        backgroundColor: "#F76C6C",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         borderRadius: 4,
         height: 52,
         alignItems: 'center',
@@ -423,7 +449,11 @@ const styles = StyleSheet.create({
         height: 42,
         borderRadius: 21,
         alignItems: 'center',
+<<<<<<< HEAD
         
+=======
+        backgroundColor: "rgba(21,22,48,0.1)",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         justifyContent: 'center'
     },
 

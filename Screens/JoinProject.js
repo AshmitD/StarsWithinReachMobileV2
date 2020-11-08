@@ -4,7 +4,10 @@ import { Ionicons } from '@expo/vector-icons'
 import Fire from '../Fire'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import moment from 'moment'
+<<<<<<< HEAD
 import MyProjects from './MyProjects';
+=======
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 export default class JoinProject extends React.Component {
 
     // fillProjects = () => {
@@ -24,9 +27,13 @@ export default class JoinProject extends React.Component {
     // }
    
     handleJoin = (projectID, project) => {
+<<<<<<< HEAD
         Fire.shared.joinProject(projectID, project).then(() => {
             this.props.navigation.navigate("Projects")
         })
+=======
+        Fire.shared.joinProject(projectID, project)
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
     }
     renderTopics = topic => {
@@ -45,6 +52,7 @@ export default class JoinProject extends React.Component {
       
         // const ref = firebase.storage().ref(post.image);
         //const url =  ref.getDownloadURL();
+<<<<<<< HEAD
         return project && (
             <TouchableOpacity onPress={() => this.handleJoin(projectID, project)} style={{ marginTop: 15 }}>
             <View style={styles.projectCard}>
@@ -76,6 +84,44 @@ export default class JoinProject extends React.Component {
             </TouchableOpacity>
 
     )
+=======
+        return (
+            <View style={styles.feedItem}>
+                {/* <Image source={post.avatar} style = {styles.avatar}></Image> */}
+                <View style={{ flex: 1, alignItems: 'center', }}>
+                    <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', }}>
+                            <Text style={styles.name}>{project["title"].toUpperCase()}</Text>
+                        </View>
+
+                    </View>
+                    <Text style={styles.descrip}>{project.descrip}</Text>
+                    {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
+                   
+                        <FlatList
+                         listKey={moment().valueOf().toString()}
+                            data={project.topics}
+                            renderItem={({ item }) => this.renderTopics(item)}
+                            keyExtractor={item => item.id}
+                            showsVerticalScrollIndicator={true}
+                        />
+     
+
+                    <TouchableOpacity onPress={() => this.handleJoin(projectID, project)} style={{ marginTop: 15 }}>
+                        <View style={{ flexDirection: "row", backgroundColor: "#F8E9A1", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 15 }} >
+                            <Text style={{ padding: 5, textAlignVertical: 'center', fontWeight: "400", fontSize: 20, color: "#F76C6C", fontWeight: "600" }}>JOIN GROUP</Text>
+
+                        </View>
+
+                    </TouchableOpacity>
+
+
+                </View>
+
+            </View>
+
+        )
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     }
     render() {
         LayoutAnimation.easeInEaseOut()
@@ -85,6 +131,7 @@ export default class JoinProject extends React.Component {
         return (
 
             <View style={styles.container}>
+<<<<<<< HEAD
   <View style={styles.header}>
           <View style={styles.linesContainer}>
             <TouchableOpacity style={{
@@ -97,6 +144,16 @@ export default class JoinProject extends React.Component {
         </View>
         <View style = {styles.content}>
         
+=======
+
+                <View style={styles.header}>
+
+                    <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
+                        <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
+                    </TouchableOpacity>
+                    <Text style={styles.headerTitle}>JOIN A GROUP</Text>
+                </View>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 {projects && <FlatList
                     style={styles.feed}
                     data={Object.keys(projects)}
@@ -104,7 +161,11 @@ export default class JoinProject extends React.Component {
                     keyExtractor={elem => elem.item}
                     showsVerticalScrollIndicator={false}
                 />}
+<<<<<<< HEAD
 </View>
+=======
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 {/* <View style = {{width: 15}}>
                 <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
                    <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>
@@ -181,6 +242,7 @@ const styles = StyleSheet.create({
 
     },
     header: {
+<<<<<<< HEAD
         backgroundColor: "#3772ff",
         width: "100%",
         alignItems: "center",
@@ -218,6 +280,28 @@ const styles = StyleSheet.create({
         color: "#fff",
       },
     
+=======
+        paddingTop: 64,
+        paddingBottom: 16,
+        backgroundColor: "#24305E",
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 3,
+        borderBottomColor: '#F76C6C',
+        flexDirection: "row",
+
+        paddingBottom: 5,
+        marginBottom: 15,
+        alignSelf: 'center'
+    },
+    headerTitle: {
+        fontSize: 30,
+        fontWeight: "500",
+        alignSelf: 'center',
+        color: "#F8E9A1",
+        textAlign: 'center'
+    },
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     back: {
         position: "absolute",
         top: hp("8%"),
@@ -230,6 +314,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(21,22,48,0.1)",
         justifyContent: 'center'
     },
+<<<<<<< HEAD
     projectCard: {
         flexDirection: "column",
         width: "100%",
@@ -250,6 +335,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: 25,
     },
+=======
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
 
 })

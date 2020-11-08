@@ -1,5 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD
 import { View, Linking, Button, TouchableHighlight, TouchableNativeFeedback, Modal, Text, SafeAreaView, TextInput, ScrollView, StyleSheet, FlatList, Image, TouchableOpacity, LayoutAnimation, ShadowPropTypesIOS, TouchableHighlightBase } from 'react-native'
+=======
+import { View, Linking, Button, TouchableHighlight, TouchableNativeFeedback,Modal, Text, SafeAreaView, TextInput, ScrollView, StyleSheet, FlatList, Image,TouchableOpacity, LayoutAnimation, ShadowPropTypesIOS, TouchableHighlightBase } from 'react-native'
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 import * as firebase from "firebase"
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
@@ -10,7 +14,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Alert } from 'react-native'
 import SideMenu from 'react-native-side-menu';
 import Menu from '../Menu';
+<<<<<<< HEAD
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+=======
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
 export default class HomeScreen extends React.Component {
 
@@ -116,6 +124,7 @@ export default class HomeScreen extends React.Component {
 
   renderPost = (post, index) => {
 
+<<<<<<< HEAD
     let name = post.name
     name = name.split(' ')[0]
     const modalVisible2 = this.state.showModalArr[index];
@@ -125,6 +134,16 @@ export default class HomeScreen extends React.Component {
     if (post.name.split(" ").length > 1) {
       chars += post.name.split(' ')[1].substring(0, 1)
     }
+=======
+
+    const modalVisible2 = this.state.showModalArr[index];
+    const colorIndex = index % 2
+    const oppColorIndex = (1 - (index % 2))
+    let chars = post.name.split(" ")[0].substring(0,1)
+    if(post.name.split(" ").length > 1) {
+     chars += post.name.split(' ')[1].substring(0, 1)
+    } 
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     // const ref = firebase.storage().ref(post.image);
     //const url =  ref.getDownloadURL();
 
@@ -136,9 +155,15 @@ export default class HomeScreen extends React.Component {
           width: "95%",
           flexDirection: "column",
           justifyContent: "center",
+<<<<<<< HEAD
           zIndex: 50,
           alignSelf: 'center',
           backgroundColor: "white",
+=======
+
+          alignSelf: 'center',
+          backgroundColor: "#F8E9A1",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
           paddingVertical: 20,
           marginVertical: 10,
           borderRadius: 3,
@@ -147,6 +172,7 @@ export default class HomeScreen extends React.Component {
         }}>
 
           <View style={{ flexDirection: 'row', marginRight: 20, paddingLeft: '5%', }}>
+<<<<<<< HEAD
             <View style={{ width: 50, borderWidth: 2, justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#3772ff", height: 50 }}>
               <Text style={{ color: "white", textAlign: 'center', zIndex: 55 }}>{chars}</Text>
             </View>
@@ -176,13 +202,39 @@ export default class HomeScreen extends React.Component {
               <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
             </View>
 
+=======
+            <View style={{ width: 50, borderWidth: 2, borderColor: "#f76c6c", justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#f76c6c", height: 50 }}>
+              <Text style={{ color: "#f8e9a1", textAlign: 'center', zIndex: 55 }}>{chars}</Text>
+            </View>
+            <Text style={{
+                fontSize: 20,
+                fontWeight: "500",
+                color: '#24305e',
+                marginBottom: 5
+              }}>{post.projectName}</Text>
+            <View style={{ marginLeft: 20, flexDirection: 'column' }}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewProfile', {
+                otherParam: post.user
+              })}><Text style={{
+                fontSize: 20,
+                fontWeight: "500",
+                color: '#24305e',
+                marginBottom: 5
+              }}>{post.name}</Text></TouchableOpacity>
+              <Text style={styles.timestamp}>{moment(post.timestamp).fromNow()}</Text>
+            </View>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             <TouchableOpacity
               style={styles.openButton}
               onPress={() => {
                 this.setModalVisible(true, index);
               }}
             >
+<<<<<<< HEAD
               <Ionicons name="ios-more" color="#3772ff" size={24} style={{ transform: [{ rotate: "90deg" },], left: 15, position: 'absolute' }}></Ionicons>
+=======
+              <Ionicons name="ios-more" color="#f76c6c" size={24} style={{ transform: [{ rotate: "90deg" },], }}></Ionicons>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             </TouchableOpacity>
 
             <View style={styles.centeredView}>
@@ -277,6 +329,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+<<<<<<< HEAD
 
     LayoutAnimation.easeInEaseOut()
 
@@ -313,12 +366,50 @@ export default class HomeScreen extends React.Component {
         {/* <View style ={{backgroundColor: "#F76C6C", paddingBottom: hp('0.95%'),justifyContent: 'center',flexDirection: 'row', width: '100%',alignItems: 'center'}}>
        
      
+=======
+   
+    LayoutAnimation.easeInEaseOut()
+ 
+    return (
+      <View style = {styles.container}>
+          
+        <Modal 
+                onBackdropPress={this.closeModal}
+                animationIn="slideInLeft"
+                animationOut = 'slideOutRight'
+                
+                transparent = {true}      
+                visible={this.state.modalForSideBar}
+              >
+                <View>
+          <View style ={{ borderBottomColor: "#24305E", borderBottomWidth: 2, borderRightColor: "#222", borderRightWidth: 2, paddingTop: hp("5%"),paddingHorizontal: 15,backgroundColor: '#fff', height: '100%', width: wp('70%')}}>
+                <View style ={{alignItems: 'center',justifyContent: 'flex-start',textAlignVertical: 'center',paddingTop: 25,flexDirection: 'row'}}>
+                <Text style ={{fontSize: 22, color: "#F76C6C"}}>{this.state.name.split(" ")[0]}</Text>
+                <TouchableOpacity style ={{position: "absolute", top: "2.5%", right: 20,}}onPress ={() => {this.toggle()}}><Ionicons size={45} color={"#24305E"} name="ios-close"></Ionicons></TouchableOpacity>
+                </View>
+                <Text style ={{fontSize: 16, color: "#24305E"}}>{firebase.auth().currentUser.email}</Text>
+            
+
+                <TouchableOpacity style ={{flexDirection: 'row',alignItems: 'center',marginTop: hp("5%")}}><Ionicons size ={35} color = {"#24305E"} name ="ios-person"></Ionicons><Text style ={{marginLeft: wp('5%'),fontSize: 20, color: "#24305E"}}>My Profile</Text></TouchableOpacity>
+                <TouchableOpacity  onPress={() => Linking.openURL('http://thestarswithinreach.com')} style ={{flexDirection: 'row',alignItems: 'center',marginTop: hp("5%")}}><Ionicons size ={35} color = {"#24305E"} name ="ios-information-circle"></Ionicons><Text style ={{marginLeft: wp('5%'),fontSize: 20, color: "#24305E"}}>About Us</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL('http://thestarswithinreach.com/privacy')} style ={{flexDirection: 'row',alignItems: 'center',marginTop: hp("5%")}}><Ionicons size ={35} color = {"#24305E"} name ="ios-paper"></Ionicons><Text style ={{marginLeft: wp('5%'),fontSize: 20, color: "#24305E"}}>Privacy Policy</Text></TouchableOpacity>
+            
+
+          </View>
+        
+          </View>
+        </Modal>
+      
+        <View style ={{backgroundColor: "#F76C6C", paddingBottom: hp('0.95%'),justifyContent: 'center',flexDirection: 'row', width: '100%',alignItems: 'center'}}>
+        <TouchableOpacity  style={{  paddingTop: '5%', right: "200%" }} onPress={() => { console.log("Does it get here?") ,this.toggle() }}><Ionicons size={36} color={"#24305E"} name="ios-menu"></Ionicons></TouchableOpacity>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
           <Text style={{  paddingTop: '5%', fontSize: 28, textTransform: 'uppercase', fontStyle: 'normal', fontWeight: '600', color: "#F8E9A1", alignSelf: 'center' }}>Feed</Text>
           
          <TouchableOpacity onPress ={() => this.props.navigation.navigate("CreatePost")}style={{  paddingTop:'5%', left: "200%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
     
    
 
+<<<<<<< HEAD
         </View> */}
         <View style={styles.header}>
           <View style={styles.linesContainer}>
@@ -344,6 +435,24 @@ export default class HomeScreen extends React.Component {
           />
         </View>
 
+=======
+        </View>
+        {/* <TouchableOpacity onPress={() => this.props.navigation.navigate("CreatePost")} style={{ alignSelf: 'center', marginVertical: 15 }}>
+          <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#23405E", overflow: "hidden", borderRadius: 10, color: "#F8E9A1", backgroundColor: "#F76C6C", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>CREATE A POST</Text>
+        </TouchableOpacity> */}
+        <FlatList
+          style={styles.feed}
+          data={this.state.posts}
+          renderItem={({ item, index }) => this.renderPost(item, index)}
+          keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
+        />
+        {/* <View style = {{width: 15}}>
+                <TouchableOpacity style = {{backgroundColor: "lightgrey", position: "fixed", width: 24, height: 44, borderRadius: 16, alignItems: 'center', alignContent: 'center'}}>
+                   <Ionicons name = "ios-add" onPress ={() => this.props.navigation.navigate("CreatePost")} style = {{alignSelf: 'center'}} size = {32} color = "black"></Ionicons>
+                </TouchableOpacity>  
+                </View> */}
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
       </View>
 
@@ -357,6 +466,7 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+<<<<<<< HEAD
     backgroundColor: "white",
     height: "100%",
     width: "100%",
@@ -402,6 +512,21 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 
+=======
+    backgroundColor: "#fff",
+    flex: 1,
+
+   
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+
+  },
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -438,11 +563,24 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center"
   },
+<<<<<<< HEAD
   feed: {
     backgroundColor: 'white',
 
 
   },
+=======
+  headerTitle: {
+    fontSize: 30,
+    fontWeight: "500",
+    textAlign: 'center',
+    color: "#F8E9A1",
+    position: 'absolute',
+    left: "10%",
+    bottom: 0,
+  },
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
   feedItem: {
 
     flexDirection: 'column',
@@ -464,6 +602,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'flex-start',
     borderTopWidth: 4,
+<<<<<<< HEAD
     borderTopColor: "#ddd",
   },
 
@@ -473,11 +612,32 @@ const styles = StyleSheet.create({
     color: "#24305E",
     fontStyle: 'italic'
   },
+=======
+
+    borderTopColor: "#ddd",
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: "500",
+    color: "#F76C6C",
+    marginBottom: 5
+  },
+  timestamp: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#24305E"
+  },
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
   postss: {
     marginTop: 16,
     fontSize: 14,
     color: "#24305E"
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
   image: {
     width: "95%",
     height: 300,
@@ -485,5 +645,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
 
   },
+<<<<<<< HEAD
+=======
+  back: {
+    width: 32,
+    height: 32,
+    borderRadius: 21,
+    alignItems: 'center',
+    backgroundColor: "rgba(21,22,48,0.1)",
+    justifyContent: 'center'
+  },
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
 })

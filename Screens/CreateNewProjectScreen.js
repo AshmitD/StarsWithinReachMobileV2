@@ -27,6 +27,7 @@ export default class CreateNewProjectScreen extends React.Component {
             Alert.alert("Please describe your group.")
        }
        else if(this.state.topics.length == 0) {
+<<<<<<< HEAD
             Alert.alert("Please enter some topics.")
         }else {
 
@@ -39,20 +40,34 @@ export default class CreateNewProjectScreen extends React.Component {
                 this.props.navigation.navigate("Projects")
             
             // return userC$redentials.user.updateProfile({
+=======
+        Alert.alert("Please enter some topics.")
+    }else {
+
+        Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, resources: this.state.resources, endGoal: this.state.endGoal, studentsActions: this.state.studentsActions, topics: this.state.topics})
+        .then(userCredentials => {
+            // return userCredentials.user.updateProfile({
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             //     displayName: this.state.name
             // })
         })
         .catch(error => Alert(error)
+<<<<<<< HEAD
         ).then(() => {
            
         })
       
+=======
+        )
+        this.props.navigation.navigate("Projects")
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
        }
        
         
     }
     render() {
         return (
+<<<<<<< HEAD
 
                  <ScrollView style = {styles.scrollContainer}>
         <View style = {styles.container}>
@@ -66,6 +81,21 @@ export default class CreateNewProjectScreen extends React.Component {
               </View>
             </View> 
             <View style ={styles.content}>
+=======
+   <ScrollView>
+        <View style = {styles.container}>
+            <StatusBar barStyle = "light-content"></StatusBar>
+             {/* <Image style = {{left: 305, width: 100, height: 100, marginTop: 2}}source ={require('../forreallogo.png')}></Image> */}
+            
+             <View style={styles.header}>
+
+<TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
+    <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
+</TouchableOpacity>
+<Text style={styles.headerTitle}>CREATE A GROUP</Text>
+</View>
+            
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             <View style = {styles.errorMessage}>
                 {this.state.errorMessage && <Text style = {styles.error}>{this.state.errorMessage}</Text>}
             </View>
@@ -137,7 +167,11 @@ export default class CreateNewProjectScreen extends React.Component {
                             rowHeight={40}
                             rowRadius={5}
                            
+<<<<<<< HEAD
                             iconColor={"#3772ff"}
+=======
+                            iconColor={"#F76C6C"}
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                             iconSize={25}
                             selected={[]}
                             selectedIconName={"ios-checkmark-circle-outline"}
@@ -153,7 +187,11 @@ export default class CreateNewProjectScreen extends React.Component {
             </TouchableOpacity>
             
           
+<<<<<<< HEAD
             </View>
+=======
+
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         </View>
 
         </ScrollView>
@@ -163,6 +201,7 @@ export default class CreateNewProjectScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
+<<<<<<< HEAD
         backgroundColor: "#f8f8f8",
         height: "100%",
         width: "100%", 
@@ -212,6 +251,11 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         color: "#fff",
       },
+=======
+      backgroundColor: '#F8E9A1',
+      height: 1200
+    },
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     greeting: {
         marginTop: 102,
         fontSize: 18,
@@ -238,6 +282,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     inputTitle: {
+<<<<<<< HEAD
         color: "black",
         fontSize: 14,
         textTransform: "uppercase"
@@ -253,13 +298,65 @@ const styles = StyleSheet.create({
     },
     longText: {
         borderBottomColor: "black",
+=======
+        color: "#24305E",
+        fontSize: 14,
+        textTransform: "uppercase"
+    },
+    header: {
+        paddingTop: 64,
+        paddingBottom: 16,
+        backgroundColor: "#F8E9A1",
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 3,
+        borderBottomColor: '#F76C6C',
+        flexDirection: "row",
+       
+        paddingBottom: 5,
+        marginBottom: 15,
+        alignSelf: 'center'
+    },
+    headerTitle: {
+        fontSize: 30,
+        fontWeight: "500",
+        alignSelf: 'center',
+        color: "#24305E",
+        textAlign: 'center'
+    },
+    back: {
+        position: "absolute",
+        top: hp("9%"),
+        left: wp("-16%"),
+        width: wp("15%"),
+        height: hp("7.5%"),
+        borderRadius: 31,
+        alignItems: 'center',
+        backgroundColor: "rgba(21,22,48,0.1)",
+        justifyContent: 'center'
+    },
+    input: {
+        borderBottomColor: "#24305E",
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        height: 40,
+        fontSize: 15,
+        color: "#24305E",
+        paddingTop: 10,
+    },
+    longText: {
+        borderBottomColor: "#24305E",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         borderBottomWidth: StyleSheet.hairlineWidth,
         height: 80,
         fontSize: 15,
         color: "#161F3D",      
     },
    lastInputTitle: { 
+<<<<<<< HEAD
     color: "black",
+=======
+    color: "#24305E",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         fontSize: 13,
         textTransform: "uppercase",
         marginLeft: 6,
@@ -268,7 +365,11 @@ const styles = StyleSheet.create({
 },
     button: {
         marginHorizontal: 30,
+<<<<<<< HEAD
         backgroundColor: "#3772ff",
+=======
+        backgroundColor: "#F76C6C",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         borderRadius: 4,
         height: 52,
         alignItems: 'center',

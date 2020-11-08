@@ -49,12 +49,20 @@ export default class LoginScreen extends React.Component {
             </View>
 
             <TouchableOpacity style = {styles.button} onPress = {this.handleLogin}>
+<<<<<<< HEAD
                 <Text style = {{color: "#fff", fontWeight: '500', fontSize: 15}}>SIGN IN</Text>
+=======
+                <Text style = {{color: "#F8E9A1", fontWeight: '500', fontSize: 15}}>SIGN IN</Text>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             </TouchableOpacity>
             
             <TouchableOpacity style ={{alignSelf: 'center',marginTop: 32}} onPress ={() => this.props.navigation.navigate("Register")}>
                 <Text style = {{color: "#414959", fontSize: 13}}>
+<<<<<<< HEAD
                     New to Stars Within Reach? <Text style = {{fontWeight: "500", color: "#3772ff"}}>Sign Up</Text>
+=======
+                    New to Stars Within Reach? <Text style = {{fontWeight: "500", color: "#F76C6C"}}>Sign Up</Text>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity style ={{alignSelf: 'center',marginTop: 12}} onPress ={() => this.props.navigation.navigate("Forgot")}>
@@ -110,7 +118,11 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: 30,
+<<<<<<< HEAD
         backgroundColor: "#3772ff",
+=======
+        backgroundColor: "#F76C6C",
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         borderRadius: 4,
         height: 52,
         alignItems: 'center',

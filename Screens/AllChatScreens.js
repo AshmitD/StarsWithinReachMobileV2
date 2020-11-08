@@ -23,12 +23,20 @@ export default class HomeScreen extends React.Component {
       console.log("hi", firebase.auth().currentUser.email)
       const chatIDs = user["messageIDs"]
       console.log("this is chatids", chatIDs)
+<<<<<<< HEAD
       this.getEmail(chatIDs).then(() => {
         console.log("Do you get here")
         this.sort()
       })
       console.log("Do you get here")
      
+=======
+      return this.getEmail(chatIDs).then(() => {
+        
+        console.log('got the emails')
+        this.sort()
+      })
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     })
   }
 
@@ -58,8 +66,11 @@ export default class HomeScreen extends React.Component {
         }
       }
 
+<<<<<<< HEAD
       }).catch(() => {
         console.log("this is the erroror")
+=======
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
       })
       promises.push(promise);
     }
@@ -69,6 +80,7 @@ export default class HomeScreen extends React.Component {
 
   sort = () => {
     const temp = this.state.chats
+<<<<<<< HEAD
     console.log('himh', temp)
     temp.sort((a, b) => {
       console.log("This is aa", a, '\n this is bb', b)
@@ -78,6 +90,10 @@ export default class HomeScreen extends React.Component {
       if(b.newestMessage == undefined) {
         return -1
       }
+=======
+    console.log('himh')
+    temp.sort((a, b) => {
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
       if (a.newestMessage.timestamp > b.newestMessage.timestamp) {
         return -1
       }
@@ -148,7 +164,11 @@ export default class HomeScreen extends React.Component {
         <View style={styles.header}>
           <View style={styles.linesContainer}>
             <Text style={styles.heading}>Chat</Text>
+<<<<<<< HEAD
             <View style={styles.plus}><TouchableOpacity onPress = {() => this.props.navigation.navigate('FindChat')}><Ionicons name="md-add-circle-outline" size={32} color={"#fff"} /></TouchableOpacity></View>
+=======
+            <View style={styles.plus}><Ionicons name="md-add-circle-outline" size={32} color={"#fff"} /></View>
+>>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
           </View>
         </View>
 
