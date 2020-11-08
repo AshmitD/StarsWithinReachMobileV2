@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "edusolve",
-    "slug": "edusolve",
-    "version": "1.0.0",
+    "name": "StarsWithinReachMobileV4",
+    "slug": "StarsWithinReachMobileV4",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,10 +17,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ashmitdewan.starswithinreach",
+          "infoPlist": {
+            "NSPhotoLibraryAddUsageDescription": "This app takes user-selected photos from the photo library, saves them in the database and displays them in the 'feed' feature."
+          }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "android": {
+      "package": "com.ashmitdewan.starswithinreach"
+    },
+    "sdkVersion": "35.0.0"
   }
+
 }

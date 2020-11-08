@@ -1,14 +1,14 @@
- // Your web app's Firebase configuration
- import firebase from 'firebase'
+import firebase from 'firebase'
  
- var firebaseConfig = {
-    apiKey: "AIzaSyCy3Ge11YwPBc7Q8L-8F5_IAKH-tkbfZaM",
-    authDomain: "edusolve2-9d83f.firebaseapp.com",
-    databaseURL: "https://edusolve2-9d83f.firebaseio.com",
-    projectId: "edusolve2-9d83f",
-    storageBucket: "edusolve2-9d83f.appspot.com",
-    messagingSenderId: "572274590272",
-    appId: "1:572274590272:web:5893524baa85198be515a5"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+var firebaseConfig = {
+    apiKey: "AIzaSyBg6py3OOeOv-qZAtDu1DiGm5tShi5V8TI",
+    authDomain: "starswithinreach-5450d.firebaseapp.com",
+    databaseURL: "https://starswithinreach-5450d.firebaseio.com",
+    projectId: "starswithinreach-5450d",
+    storageBucket: "starswithinreach-5450d.appspot.com",
+    messagingSenderId: "248696860280",
+    appId: "1:248696860280:web:919a59cebeb841f780c78d",
+    measurementId: "G-WSW92G5VQ9"
+ };
+ // Initialize Firebase
+ firebase.initializeApp(firebaseConfig);
