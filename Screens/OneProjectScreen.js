@@ -35,7 +35,6 @@ export default class OneProjectScreen extends React.Component {
             .get().then((querySnapshot) => {
   
               const promises = querySnapshot.docs.map((doc, i) => {
-<<<<<<< HEAD
                 const design = doc.data()
   
                 return Fire.shared.getUserData(design["email"])
@@ -43,15 +42,6 @@ export default class OneProjectScreen extends React.Component {
                     design.user = user
 
                     orderedDocs[i] = { ...design, id: doc.id }
-=======
-                const post = doc.data()
-  
-                return Fire.shared.getUserData(post["email"])
-                  .then(({ user }) => {
-                    post.user = user
-
-                    orderedDocs[i] = { ...post, id: doc.id }
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
   
                   })
                 })
@@ -60,7 +50,6 @@ export default class OneProjectScreen extends React.Component {
               })
               .then(() => {
   
-<<<<<<< HEAD
                 const filtereddesigns = orderedDocs.filter((design) => {
                   this.state.showModalArr.push(false)
                   return !blockArr.includes(design["email"]);
@@ -70,17 +59,6 @@ export default class OneProjectScreen extends React.Component {
   
                   ...design,
                   key: design.id
-=======
-                const filteredPosts = orderedDocs.filter((post) => {
-                  this.state.showModalArr.push(false)
-                  return !blockArr.includes(post["email"]);
-                });
-  
-                const withKey = filteredPosts.map(post => ({
-  
-                  ...post,
-                  key: post.id
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 }));
                 this.setState({ orderedDocs: withKey });
   
@@ -108,7 +86,6 @@ export default class OneProjectScreen extends React.Component {
       arr[index] = visible
       this.setState({ showModalArr: arr });
     }
-<<<<<<< HEAD
     renderdesign = (design, index) => {
       console.log('this is the designing', design)
       let chars = design.name.split(" ")[0].substring(0, 1)
@@ -263,104 +240,11 @@ export default class OneProjectScreen extends React.Component {
 
             <View style={styles.container}>
                 {/* <View style={styles.header}>
-=======
-    renderPost = (design, index) => {
-      const modalVisible2 = this.state.showModalArr[index];
-        // const ref = firebase.storage().ref(post.image);
-        //const url =  ref.getDownloadURL();
-        return (
-
-            <View style={styles.feedItem}>
-                {/* <Image source={post.avatar} style={styles.avatar}></Image> */}
-                <View style={{ flex: 1 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
-                        <View>
-                        <TouchableOpacity  onPress={() => this.props.navigation.navigate('ViewProfile', {
-                    otherParam: design.user})}><Text style={styles.name}>{design.name}</Text></TouchableOpacity>  
-                            <Text style={styles.timestamp}>{moment(design.timestamp).fromNow()}</Text>
-                        </View>
-                        <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible2}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-            
-             <TouchableOpacity onPress={() => this.props.navigation.navigate('Report', {
-                            otherParam: design,
-                        })}>
-                    <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS POST</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style ={{marginTop: 15}}onPress={() => this.props.navigation.navigate('ReportUser', {
-                            otherParam: design,
-                        })}>
-                    <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>REPORT THIS USER</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style ={{marginTop: 15}} onPress={() => this.blockUser(design["email"])}>
-                    <Text style={{ textAlign: 'center', fontSize: 20, marginBottom: 5, fontWeight: "700", color: "#F76C6C", overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1", paddingVertical: 15, textAlignVertical: 'center', width: 250, }}>BLOCK THIS USER</Text>
-                </TouchableOpacity>
-              <TouchableHighlight
-               style ={{marginTop: 15, borderBottomColor: "#24305E", borderBottomWidth: 3}}
-                onPress={() => {
-                  this.setModalVisible(!modalVisible2, index);
-                }}
-              >
-                <Text style={{color: "#24305E"}}>Close</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
-
-        <TouchableHighlight
-          style={styles.openButton}
-          onPress={() => {
-            this.setModalVisible(true, index);
-          }}
-        >
-          <Ionicons name = "ios-more" color = "#0a0f21"size ={36}></Ionicons>
-        </TouchableHighlight>
-      </View>
-                    </View>
-                    <Text style={styles.postss}>{design.text}</Text>
-                    {/* <Image source = {{Image_Http_URL }} style = {styles.postImage} resizeMode = "cover"/>  */}
-                    {design.imageLink != " " && <Image
-                        style={styles.postImage}
-                        source={{
-                            uri: design.imageLink
-                        }}
-                    />}
-                    {design.imageLink == " " && <View style={{ height: 15 }}></View>
-
-                    }
-                    <View style={{ flexDirection: "row" }}>
-                        <Ionicons name="ios-heart-empty" size={24} color="#73788B" style={{ marginRight: 16 }} />
-                        <Ionicons name="ios-chatboxes" size={24} color="#73788B" style={{ marginRight: 16 }} />
-                    </View>
-
-                </View>
-
-
-            </View>
-        )
-    }
-    render() {
-
-        return (
-
-            <View style={styles.container}>
-                <View style={styles.header}>
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Projects")}>
                         <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>{this.state.projectContent.title}</Text>
-<<<<<<< HEAD
                 </View> */}
            <View style={styles.header}>
           
@@ -385,22 +269,6 @@ export default class OneProjectScreen extends React.Component {
                     })} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
             
                     <Text style = {{fontSize: 20, fontWeight: "500", color: "#fff", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#3772ff",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>SHARE</Text>
-=======
-                </View>
-                <View style = {{flexDirection: 'row', marginVertical: 15,backgroundColor: '#24305E'}}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Communicate', {
-                        otherParam: this.state.projectID,
-                    })} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
-            
-                    <Text style = {{textAlign: 'center', fontSize: 20,fontWeight: "500",color: "#23405E",overflow: "hidden", borderRadius: 10, backgroundColor: "#F76C6C",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>CHAT</Text>
-
-                    </TouchableOpacity>
-                    <TouchableOpacity  onPress={() => this.props.navigation.navigate('UploadDesign', {
-                        otherParam: this.state.projectID,
-                    })} style = {{width: "50%",borderRadius: 15, textAlign: 'center', alignItems: 'center', justifyContent: 'center', }}>
-            
-                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#23405E", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#F8E9A1",paddingVertical: 15,textAlignVertical: 'center',width: wp("30%")}}>SHARE</Text>
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
                     </TouchableOpacity>
                
@@ -410,17 +278,7 @@ export default class OneProjectScreen extends React.Component {
                 </TouchableOpacity> */}
             </View>
        
-<<<<<<< HEAD
          
-=======
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate('ProjectMoreInfo', {
-                        otherParam: this.state.projectContent,
-                    })} style = {{alignSelf: 'center',borderRadius: 15, textAlign: 'center', alignItems: 'center', marginBottom: 25,justifyContent: 'center', }}>
-            
-                    <Text style = {{fontSize: 20, fontWeight: "500", color: "#F8E9A1", textAlign: 'center', overflow: "hidden", borderRadius: 10, backgroundColor: "#152563",paddingVertical: 15,textAlignVertical: 'center',width: wp("70%")}}>MORE INFO</Text>
-
-                    </TouchableOpacity>
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                
 
                 {/* <View style = {{flexDirection: 'row',padding: 5, marginBottom: 5,alignSelf: 'center'}}>
@@ -433,28 +291,16 @@ export default class OneProjectScreen extends React.Component {
                   </TouchableOpacity> 
                 </View>  */}
                
-<<<<<<< HEAD
 {console.log('this is ordereddocs', this.state.orderedDocs)}
                 <FlatList
                     style={{height: '100%'}}
                     data={this.state.orderedDocs}
                     renderItem={({ item, index }) => this.renderdesign(item, index)}
-=======
-
-                <FlatList
-                    style={styles.feed}
-                    data={this.state.orderedDocs}
-                    renderItem={({ item, index }) => this.renderPost(item, index)}
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
                 />
 
-<<<<<<< HEAD
   </View>
-=======
-
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
             </View>
         )
@@ -469,7 +315,6 @@ export default class OneProjectScreen extends React.Component {
 
 }
 const styles = StyleSheet.create({
-<<<<<<< HEAD
   container: {
     backgroundColor: "white",
     height: "100%",
@@ -516,43 +361,6 @@ const styles = StyleSheet.create({
     textAlign:'center'
   },
 
-=======
-    container: {
-        flex: 1,
-        backgroundColor: "#24305E",
-
-    },
-    communicate: {
-        fontWeight: "600",
-        height: 50,
-        fontSize: 30,
-        textAlignVertical: "center",
-        padding: 5,
-        color: "#23405E",
-
-    },
-    header: {
-        paddingTop: 64,
-        paddingBottom: 16,
-        backgroundColor: "#24305E",
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: 3,
-        borderBottomColor: '#F76C6C',
-        flexDirection: "row",
-        width: wp("45%"),
-        paddingBottom: 5,
-        marginBottom: 15,
-        alignSelf: 'center'
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22,
-
-      },
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
       modalView: {
         margin: 20,
         backgroundColor: "white",
@@ -593,26 +401,12 @@ const styles = StyleSheet.create({
 
     },
     back: {
-<<<<<<< HEAD
       width: 35,
       height: 35,
       alignSelf: 'baseline',
       top: '28%',
       left: '5%'
   },
-=======
-        position: "absolute",
-        top: hp("6%"),
-        left: wp("-24%"),
-        width: wp("15%"),
-        height: hp("7.5%"),
-        borderRadius: 31,
-        alignItems: 'center',
-
-        backgroundColor: "rgba(21,22,48,0.1)",
-        justifyContent: 'center'
-    },
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
 
     feed: {
@@ -649,7 +443,6 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         color: "#24305E"
     },
-<<<<<<< HEAD
     openButton: {
       alignItems: 'center', justifyContent: 'center',
       position: "absolute",
@@ -663,19 +456,11 @@ const styles = StyleSheet.create({
   
     },
     designss: {
-=======
-
-    postss: {
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         marginTop: 16,
         fontSize: 14,
         color: "#24305E"
     },
-<<<<<<< HEAD
     designImage: {
-=======
-    postImage: {
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         width: wp("80%"),
         height: hp("40%"),
         borderRadius: 5,

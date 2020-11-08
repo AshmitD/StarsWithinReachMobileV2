@@ -4,13 +4,9 @@ import { Alert } from 'react-native'
 
 class Fire {
     constructor() {
-<<<<<<< HEAD
         if (!firebase.apps.length) {
             firebase.initializeApp({});
         }
-=======
-        firebase.initializeApp(FirebaseKeys)
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     }
 
     addPost = async ({ projectID, projectName, text, localUri, name }) => {
@@ -114,7 +110,6 @@ class Fire {
         })
 
     }
-<<<<<<< HEAD
     getProjs = async (email) => {
         let allProjects = []
         return this.firestore.collection("projects").where("ownerEmail", "==", email)
@@ -155,8 +150,6 @@ class Fire {
     userRef.remove()
     this.firestore.collection("projects").doc(proj.id).delete()
 }
-=======
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     getUserData = async (email) => {
 
         return new Promise((res, rej) => {
@@ -176,7 +169,6 @@ class Fire {
                 });
         })
     }
-<<<<<<< HEAD
     getProject = async (projID) => {
         console.log('this is projo id', projID.projID)
         return new Promise((res, rej) => {
@@ -205,8 +197,6 @@ class Fire {
         })
         
     }
-=======
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     addUser = async ({ name, email, who, shortBio, projects, topics }) => {
 
         return new Promise((res, rej) => {
@@ -218,12 +208,8 @@ class Fire {
                 shortBio: shortBio,
                 projects: projects,
                 topics: [],
-<<<<<<< HEAD
                 block: [],
                 messageIDs: []
-=======
-                block: []
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             })
                 .get().then(ref => {
 
@@ -265,12 +251,8 @@ class Fire {
         
         const id = await firebase.database().ref('messages/specificChatss').push(
            { "email1": email1,
-<<<<<<< HEAD
                 "email2": email2,
             'groupChat': false}
-=======
-                "email2": email2}
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         )
         const chatRef = JSON.stringify(id).split("specificChatss/")[1]
         const chatId = chatRef.split(`"`)[0]
@@ -314,7 +296,6 @@ class Fire {
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
                 user: user
             }
-<<<<<<< HEAD
             // if(firebase.database().ref(`messages/specificChatts/${chatID}/email1`) == user['email']) {
             //     firebase.database().ref(`messages/specificChatts/${chatID}`).set({
             //         email2MR: 1
@@ -325,9 +306,6 @@ class Fire {
             //     })
             // }
    
-=======
-
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             this.messageDB(chatID).push(message)
             this.currMessage(chatID).set({
                 text: message['text'],
@@ -414,7 +392,6 @@ class Fire {
 
     }
     joinProject = (projectId, project) => {
-<<<<<<< HEAD
         console.log('this is projecto', project, projectId)
         return this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
             let arr = user["projects"]
@@ -449,40 +426,11 @@ class Fire {
                         userEmails: currUsers
                     })
                 )
-=======
-        console.log('this is projecto', project)
-        this.getUserData(firebase.auth().currentUser.email).then(({ id, user }) => {
-            const arr = user["projects"]
-            const messages = user['messageIDs']
-            if (arr.includes(projectId)) {
-                Alert.alert("You are already in this project.")
-            } 
-            else if(messages.includes(project['groupChatID'])){
-
-            }else {
-                messages.push(project['groupChatID'])
-                arr.push(projectId)
-                const userDoc = this.firestore.collection("users").doc(id)
-                userDoc.update({
-                    messageIDs: messages,
-                    projects: arr
-                });
-             const currUsers = project["userEmails"]
-             currUsers.push(firebase.auth().currentUser.email)
-             const projectDoc = this.firestore.collection("projects").doc(projectId)
-             projectDoc.update({
-                 userEmails: currUsers
-             });
-              
-           
-   
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             }
 
         })
 
     }
-<<<<<<< HEAD
     leaveChat = async(messageID) => {
         this.getUserData(firebase.auth().currentUser.email).then(({user, id}) => {
             console.log("message ID", messageID)
@@ -530,32 +478,20 @@ class Fire {
             })
         })
     }
-=======
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     addProject = async ({ title, descrip, resources, endGoal, topics }) => {
         const id = await firebase.database().ref('messages/specificChatss').push(
             { "projectID": '', 'groupChat': true}
          )
 
-<<<<<<< HEAD
         return this.firestore.collection("projects").add({
-=======
-        return new Promise((res, rej) => {
-            
-            this.firestore.collection("projects").add({
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 title: title,
                 descrip: descrip,
                 resources: resources,
                 endGoal: endGoal,
                 topics: topics,
                 groupChatID: '', 
-<<<<<<< HEAD
                 userEmails: '',
                 ownerEmail: firebase.auth().currentUser.email,
-=======
-                userEmails: ''
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             })  .catch(function (error) {
                 alert("Error adding project, please try again later");
             })
@@ -568,7 +504,6 @@ class Fire {
                         groupChat: true
                     })
                     console.log("this is id", id)
-<<<<<<< HEAD
                     console.log("this is id", id)
                      const userDoc = this.firestore.collection("projects").doc(docRef.id)
                     return userDoc.update({
@@ -576,27 +511,12 @@ class Fire {
                     }).then(() => {
                         console.log("this is chatId", chatId)
                         return this.joinProject(docRef.id,  {groupChatID: chatId, userEmails: []} )  
-=======
-                  
-                    
-                     console.log("this is id", id)
-                     const userDoc = this.firestore.collection("projects").doc(docRef.id)
-                    userDoc.update({
-                        groupChatID: chatId
-                    }).then(() => {
-                        console.log("this is chatId", chatId)
-                        this.joinProject(docRef.id,  {groupChatID: chatId, userEmails: []} )  
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     })
                    
                 })
                 .catch(function (error) {
                     console.error("Error adding document: ", error);
                 });
-<<<<<<< HEAD
-=======
-        })
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     }
     uploadPhotoAsync = async uri => {
         const path = `photos/${this.uid}/${Date.now()}.jpg`
@@ -640,9 +560,6 @@ class Fire {
 }
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 Fire.shared = new Fire()
 export default Fire

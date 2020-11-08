@@ -1,19 +1,8 @@
 {
   "expo": {
-<<<<<<< HEAD
     "name": "StarsWithinReachMobileV4",
     "slug": "StarsWithinReachMobileV4",
     "version": "3.0.0",
-=======
-    "name": "StarsWithinReachV5",
-    "slug": "StarsWithinReachV5",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "version": "1.1.2",
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -29,7 +18,6 @@
     ],
     "ios": {
       "supportsTablet": true,
-<<<<<<< HEAD
       "bundleIdentifier": "com.ashmitdewan.starswithinreach",
           "infoPlist": {
             "NSPhotoLibraryAddUsageDescription": "This app takes user-selected photos from the photo library, saves them in the database and displays them in the 'feed' feature."
@@ -37,19 +25,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-=======
-       "bundleIdentifier": "com.ashmitdewan.starswithinreach"
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     },
     "android": {
       "package": "com.ashmitdewan.starswithinreach"
     },
-<<<<<<< HEAD
     "sdkVersion": "35.0.0"
   }
 
-=======
-    "sdkVersion": "37.0.0"
-  }
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 }

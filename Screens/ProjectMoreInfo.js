@@ -74,12 +74,6 @@ export default class ProjectMoreInfo extends React.Component {
                     <Text style={{ fontSize: 35, color: "#F76C6C", marginVertical: 15, textAlignVertical: 'center', alignSelf: 'center' }}>{this.state.project.title.toUpperCase()}</Text>
                     <Text style={{ color: "#24305E", textAlignVertical: 'center', alignSelf: 'center' }}>{this.state.project.descrip}</Text>
                     <Text style={{ textAlignVertical: 'center', alignSelf: 'center' }}>{this.state.project.endGoal}</Text>
-<<<<<<< HEAD
-=======
-
-
-                 
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                          <FlatList
                             listKey={moment().valueOf().toString()}
                             data={this.state.projectUsers}

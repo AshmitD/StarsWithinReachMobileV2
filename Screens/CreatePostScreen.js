@@ -32,11 +32,7 @@ export default class ProfilePage extends React.Component {
     }
     fillProjectNames() {
         Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
-<<<<<<< HEAD
             this.setState({name: user['name']})
-=======
-            
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         const projects = {};
         const db = firebase.firestore();
 
@@ -52,15 +48,11 @@ export default class ProfilePage extends React.Component {
                 console.log('this is ids', user['projects'], ' these are all projects', projects)
                 const temp = []
                 for(let i =0; i<user['projects'].length; i++) {
-<<<<<<< HEAD
                     if(projects[user['projects'][i]] == undefined) {
 
                     } else {
                     temp.push({'projectID': user['projects'][i], 'project': projects[user['projects'][i]].title})
                     }
-=======
-                    temp.push({'projectID': user['projects'][i], 'project': projects[user['projects'][i]].title})
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                 }
                 return temp
                 }).then((temp) => {
@@ -75,10 +67,7 @@ export default class ProfilePage extends React.Component {
                         names.push({'id': temp[i].projectID,'name': temp[i].project, 'label': temp[i].project, 'value': temp[i].projectID})
                         
                     }
-<<<<<<< HEAD
                    
-=======
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     console.log('this is names',names)
                     this.setState({projectNames:names})
             })
@@ -138,11 +127,7 @@ export default class ProfilePage extends React.Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-<<<<<<< HEAD
             aspect: [10,20]
-=======
-            aspect: [4, 3]
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         })
 
         if (!result.cancelled) {
@@ -150,7 +135,6 @@ export default class ProfilePage extends React.Component {
         }
     }
     render() {
-<<<<<<< HEAD
         let chars = this.state.name.split(" ")[0].substring(0,1)
     if(this.state.name.split(" ").length > 1) {
      chars += this.state.name.split(' ')[1].substring(0, 1)
@@ -159,13 +143,6 @@ export default class ProfilePage extends React.Component {
         return (
            
             <View style ={{backgroundColor: "white", height: "100%"}}>
-=======
-       
-        console.log(this.state.projectNames)
-        return (
-           
-            <View style ={{backgroundColor: "#F8E9A1", height: "100%"}}>
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                  <KeyboardAwareScrollView
        
             resetScrollToCoords={{ x: 0, y: 0 }}
@@ -177,29 +154,20 @@ export default class ProfilePage extends React.Component {
                         <Ionicons name="ios-arrow-round-back" size={24} color="#24305e"></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity>
-<<<<<<< HEAD
                         <Text style={{fontSize: 17, fontWeight: "500", color: "white"}} onPress={this.handlePost}>POST</Text>
-=======
-                        <Text style={{ fontWeight: "500", color: "#24305e"}} onPress={this.handlePost}>Post</Text>
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.inputContainer}>
-<<<<<<< HEAD
                 <View style={{ width: 50, marginRight: 15,borderWidth: 2,  justifyContent: 'center', alignItems: 'center', borderRadius: "100%", backgroundColor: "#3772ff", height: 50 }}>
               <Text style={{ color: "white", textAlign: 'center', zIndex: 55 }}>{chars}</Text>
             </View>
-=======
-                    <Image source={require('../Components/oreo.png')} style={styles.avatar}></Image>
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                    
                     <TextInput scrollEnabled = {true} dataDetectorTypes = {'link'}  maxHeight = {200} maxLength = {700} multiline={true} numberOfLines={4} style={{ flex: 1, }} placeholder="Want to share something?" onChangeText={text => {this.setState({ text })}} value={this.state.text}></TextInput>
 
 
                 </View>
                 <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-<<<<<<< HEAD
                     <Ionicons name="md-camera" size={32} color="#3772ff"></Ionicons>
                 </TouchableOpacity>
 
@@ -229,25 +197,6 @@ export default class ProfilePage extends React.Component {
                             />}
                             </View>}
                             
-=======
-                    <Ionicons name="md-camera" size={32} color="#24305e"></Ionicons>
-                </TouchableOpacity>
-
-                <View style={{ marginHorizontal: 32, marginTop: 32, height: 150 }}>
-                    {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: "100%", height: "100%" }}></Image>}
-                </View>
-
-                    <Text>Which one of your projects would you like to post this in?</Text>
-                    <DropDownPicker style={{
-                                borderBottomColor: "#8a8F9E",
-                                borderBottomWidth: StyleSheet.hairlineWidth, zIndex: 2031, position: 'absolute', borderColor: '#FFF'
-                            }}
-                  
-                            items={this.state.projectNames}
-                                containerStyle={{ height: 40 }}
-                                onChangeItem={selectedProjectName => this.setState({ selectedProjectName })}
-                            />
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                                     </KeyboardAwareScrollView>
                 </View>
         )
@@ -271,11 +220,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 32,
         paddingVertical: 12,
-<<<<<<< HEAD
         backgroundColor: "#3772ff",
-=======
-        backgroundColor: "#F76c6c",
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         paddingTop: 35,
     },
     inputContainer: {
@@ -287,11 +232,7 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 24,
         marginRight: 16,
-<<<<<<< HEAD
         backgroundColor: '#3772ff',
-=======
-        borderColor: "#24305e",
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         borderWidth: 2, 
     },
     photo: {

@@ -14,7 +14,6 @@ export default class ProfilePage extends React.Component {
     constructor(props) {
         super(props)
         const { params } = this.props.navigation.state;
-<<<<<<< HEAD
         const project = params ? params.otherParam : null;
        
         this.state = {
@@ -22,13 +21,6 @@ export default class ProfilePage extends React.Component {
             image: null,
             currProjectID: project.id,
             projectContent: project.project,
-=======
-        const projectID = params ? params.otherParam : null;
-        this.state = {
-            text: "",
-            image: null,
-            currProjectID: projectID,
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             name: ""
         } 
     }
@@ -47,31 +39,18 @@ export default class ProfilePage extends React.Component {
 
 
     handlePost = () => {
-<<<<<<< HEAD
 
         console.log("this is project content", this.state.projectContent)
-=======
-        
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
         if(this.state.localUri === null) {
             this.setState({localUri: ""})
         } 
         Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
-<<<<<<< HEAD
                     Fire.shared.addPost({ projectID: this.state.currProjectID, projectName: this.state.projectContent.title,text: this.state.text.trim(), localUri: this.state.image, name: user['name'], email: user["email"]})
-=======
-            this.setState({ name: user["name"] })
-
-        }).then(() => {
-            Fire.shared.addDesign({ text: this.state.text.trim(), localUri: this.state.image, projectID: this.state.currProjectID, name: this.state.name })
-                .then(ref => {
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
                     console.log("handle post")
                     this.setState({ text: "", image: null })
                     this.props.navigation.navigate('OneProject', {
                         otherParam: this.state.currProjectID,
                     })
-<<<<<<< HEAD
                 
                 .catch(error => {
                     alert(error)
@@ -79,13 +58,6 @@ export default class ProfilePage extends React.Component {
             })
         
  
-=======
-                })
-                .catch(error => {
-                    alert(error)
-                })
-        })
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 
     }
 

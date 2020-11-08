@@ -62,7 +62,6 @@ export default class ChatScreen extends React.Component {
 
 
       <View style={{flex: 1 }} behavior="padding" keyboardVerticalOffset={10} enabled>
-<<<<<<< HEAD
          <View style={styles.header}>
               <View style={styles.linesContainer}>
               <View style={styles.plus}><TouchableOpacity onPress = {() => this.props.navigation.navigate('Chat')}><Ionicons name="ios-arrow-round-back" size={32} color={"#fff"} /></TouchableOpacity></View>
@@ -76,18 +75,6 @@ export default class ChatScreen extends React.Component {
         {chat}
         </View>
 
-=======
-        <View style={styles.header}>
-         
-          <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Chat")}>
-            <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
-          </TouchableOpacity>
-          <Text style ={{textAlign: 'center',alignSelf: 'center'}}>{this.state.otherName}</Text>
-        </View>
-
-        {chat}
-
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
       </View>
 
 
@@ -99,7 +86,6 @@ export default class ChatScreen extends React.Component {
 
 const styles = StyleSheet.create({
 
-<<<<<<< HEAD
   container: {
     backgroundColor: "#f8f8f8",
     height: "100%",
@@ -144,25 +130,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: "#fff",
     zIndex: -1
-=======
-  header: {
-    textAlign: 'center',
-    flexDirection: "row",
-    alignSelf: 'center',
-    width: "100%",
-    alignContent: 'center',
-    marginTop: 45,
-  },
-  headerTitle: {
-    
-    fontSize: 30,
-    fontWeight: "500",
-    alignSelf: 'center',
-    color: "#F8E9A1",
-    textTransform: 'uppercase',
-
-
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
   },
   back: {
     marginHorizontal: 15,

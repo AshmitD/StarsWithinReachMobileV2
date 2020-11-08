@@ -1,17 +1,10 @@
 import React from 'react'
-<<<<<<< HEAD
 import { View, Modal, TextInput, TouchableHighlight, FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
-=======
-import { View, Modal, TouchableHighlight,FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import firebase from 'firebase'
 import Fire from '../Fire'
-<<<<<<< HEAD
 import DropDownPicker from 'react-native-dropdown-picker';
-=======
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { ScrollView } from 'react-native-gesture-handler'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -24,7 +17,6 @@ export default class ViewProfile extends React.Component {
         this.state = {
             user: thisUser
         }
-<<<<<<< HEAD
 
     }
     handleChat = () => {
@@ -42,31 +34,11 @@ export default class ViewProfile extends React.Component {
     }
 
 
-=======
-    
-     }
-     handleChat = () => {
-            // this.state.user.email
-            // firebase.auth().current.user.email
-            console.log("This is email in handle", this.state.user.email, firebase.auth().currentUser.email)
-         Fire.shared.addChat({"email1": this.state.user.email, "email2": firebase.auth().currentUser.email}).then((thisID) => {
-            console.log("this is id in handle chat", thisID)
-            this.props.navigation.navigate('ChatScreen', {
-                "id": thisID, "name": this.state.user.name 
-         })
-         })
-          
-        
-     }
-
-    
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
     render() {
 
         return (
 
             <View style={styles.container}>
-<<<<<<< HEAD
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('Home')
                     }>
@@ -93,18 +65,6 @@ export default class ViewProfile extends React.Component {
                 </View>
 
 
-=======
-                  <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate("Home")}>
-                        <Ionicons name="ios-arrow-round-back" size={32} color="black"></Ionicons>
-                    </TouchableOpacity>
-                <View style ={{marginHorizontal: 35, backgroundColor: "#F8E9A1", top: "20%", borderRadius: 25}}>
-                <Text style ={{fontSize: 35, color: "#F76C6C",marginVertical: 15,textAlignVertical: 'center', alignSelf: 'center'}}>{this.state.user.name.toUpperCase()}</Text>
-                <Text style ={{color: "#24305E",textAlignVertical: 'center', alignSelf: 'center'}}>{this.state.user.shortBio}</Text>
-                <Text style ={{textAlignVertical: 'center', alignSelf: 'center'}}>{this.state.user.topics}</Text>
-                <Text style ={{textAlignVertical: 'center', alignSelf: 'center'}}>I am a {this.state.user.who.toUpperCase()}</Text>
-                <TouchableOpacity onPress = {this.handleChat}><Text style ={{marginVertical: 15,alignSelf: 'center'}}>Chat with me</Text></TouchableOpacity>
-                </View>
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
             </View>
         )
 
@@ -119,7 +79,6 @@ export default class ViewProfile extends React.Component {
 }
 const styles = StyleSheet.create({
     container: {
-<<<<<<< HEAD
         backgroundColor: "#3772ff",
         height: "100%",
         width: "100%",
@@ -201,24 +160,4 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         backgroundColor: "#00BFFF",
     },
-=======
-        flex: 1,
-        backgroundColor: "#24305E",
-       
-        textAlignVertical: 'center'
-    },
-    back: {
-        position: "absolute",
-        top: hp("6%"),
-        left: "5%",
-        width: wp("15%"),
-        height: hp("7.5%"),
-        borderRadius: 31,
-        alignItems: 'center',
-        backgroundColor: "rgba(21,22,48,0.1)",
-        justifyContent: 'center'
-    },
-  
-   
->>>>>>> 262bd03bbf28744a8f1e0f042fa0f72db6b7942b
 })
